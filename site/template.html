@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--BEGIN-ARTIFACT-->
+<title>Almost Integer Rank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F4F6F2; --surface:#FFFFFF; --ink:#18222B; --muted:#5E6A75; --rule:#D3D9D1; --rule-soft:#E6EAE4;
+  --accent:#0E6B74; --accent-ink:#0A555C; --tint:#DCEEEF; --mark:#FFF1B8; --mark-ink:#5A4400;
+  --neg:#8A939B; --focus:#0E6B74;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#12171B; --surface:#1A2126; --ink:#E4E9E4; --muted:#9AA5AE; --rule:#2E3840; --rule-soft:#242D34;
+    --accent:#5CC3CA; --accent-ink:#8FD9DE; --tint:#173B3F; --mark:#4A3F12; --mark-ink:#FFE79A;
+    --neg:#7C868F; --focus:#5CC3CA;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12171B; --surface:#1A2126; --ink:#E4E9E4; --muted:#9AA5AE; --rule:#2E3840; --rule-soft:#242D34;
+  --accent:#5CC3CA; --accent-ink:#8FD9DE; --tint:#173B3F; --mark:#4A3F12; --mark-ink:#FFE79A;
+  --neg:#7C868F; --focus:#5CC3CA;
+  color-scheme:dark;
+}
+/* language switch: default zh, en when the root carries data-lang="en" */
+:root[data-lang="en"] .l-zh{display:none !important}
+:root:not([data-lang="en"]) .l-en{display:none !important}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"Source Sans 3", "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  line-height:1.55; padding-block:0 4rem; padding-inline:clamp(16px, 4vw, 40px);
+}
+h1,h2,h3{font-family:Spectral, Georgia, "Songti SC", serif; font-weight:600; line-height:1.2; text-wrap:balance; margin:0}
+h1{font-size:clamp(1.6rem, 1.2rem + 1.6vw, 2.4rem); letter-spacing:-0.01em}
+h2{font-size:1.45rem; margin-block:2.2rem .8rem}
+h3{font-size:1.1rem; margin-block:1.6rem .5rem}
+p{margin-block:0 .9rem}
+a{color:var(--accent-ink)}
+code,.mono{font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric:tabular-nums}
+code{font-size:.92em; background:var(--rule-soft); padding:.05em .35em; border-radius:3px}
+.wrap{max-width:1120px; margin-inline:auto}
+.prose{max-width:68ch}
+.prose ul,.prose ol{padding-left:1.3em; margin-block:0 1rem}
+.prose li{margin-block:.25rem}
+.rules p,.rules ul,.rules .callout{max-width:68ch}
+.rules ul{padding-left:1.3em; margin-block:0 1rem}
+.rules li{margin-block:.25rem}
+.rules .tablewrap{margin-block:.5rem 1rem}
+.rules table.weights td:last-child{max-width:40rem}
+.eyebrow{font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600}
+header.site{display:flex; flex-wrap:wrap; align-items:baseline; gap:.6rem 1.2rem; padding-block:1.6rem 1rem; border-bottom:1px solid var(--rule)}
+header.site .brand{display:flex; flex-direction:column; gap:.2rem; margin-right:auto}
+header.site .brand small{color:var(--muted); font-size:.95rem}
+nav.tabs{display:flex; gap:.25rem}
+nav.tabs a{display:inline-block; padding:.45rem .9rem; border-radius:6px 6px 0 0; text-decoration:none; color:var(--muted); font-weight:600; border-bottom:2px solid transparent}
+nav.tabs a[aria-current="page"]{color:var(--ink); border-bottom-color:var(--accent)}
+nav.tabs a:hover{color:var(--ink)}
+.lang{display:inline-flex; border:1px solid var(--rule); border-radius:6px; overflow:hidden; align-self:center}
+.lang button{font:inherit; font-size:.82rem; font-weight:600; padding:.3rem .7rem; border:none; background:transparent; color:var(--muted); cursor:pointer; border-radius:0}
+.lang button[aria-pressed="true"]{background:var(--accent); color:#fff}
+.lang button:not([aria-pressed="true"]):hover{color:var(--ink)}
+nav.tabs a:focus-visible,button:focus-visible,textarea:focus-visible{outline:2px solid var(--focus); outline-offset:2px}
+main{padding-block:1.6rem 0}
+.page[hidden]{display:none}
+.lede{display:flex; flex-wrap:wrap; gap:1rem 3rem; align-items:flex-end; margin-block:0 1.4rem}
+.lede p{max-width:62ch; margin:0; color:var(--muted)}
+.stats{display:flex; gap:2rem; flex-wrap:wrap}
+.stat{display:flex; flex-direction:column; gap:.1rem}
+.stat b{font-family:Spectral, Georgia, serif; font-size:1.6rem; font-weight:600; line-height:1.1; font-variant-numeric:tabular-nums}
+.stat span{font-size:.8rem; color:var(--muted); letter-spacing:.04em; text-transform:uppercase}
+.tablewrap{overflow-x:auto; border:1px solid var(--rule); border-radius:8px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; font-size:.95rem}
+th,td{padding:.55rem .75rem; text-align:left; vertical-align:middle; border-top:1px solid var(--rule-soft)}
+thead th{border-top:none; background:var(--ground); color:var(--muted); font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; font-weight:600; white-space:nowrap; position:sticky; top:0}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap}
+td.rank{color:var(--muted); font-variant-numeric:tabular-nums; width:3.2rem}
+tr.positive td.rank{color:var(--accent-ink); font-weight:600}
+tr.positive{box-shadow:inset 3px 0 0 var(--accent)}
+td.expr{font-size:1.02rem}
+.ex{max-width:min(24rem, 70vw); display:inline-block; vertical-align:middle}
+.ex > div{line-height:1.35}
+.ex > div + div{padding-left:1.2em}
+.ex.fit mjx-container svg{max-width:100%; height:auto}
+td.expr mjx-container{margin:0 !important}
+td.rank sup{margin-left:.15em; line-height:1}
+td.rank sup a{text-decoration:none; color:var(--accent-ink); font-weight:600}
+td.val{font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:.86rem; max-width:26rem; overflow-wrap:anywhere; color:var(--muted)}
+td.val .int{color:var(--ink)}
+mark{background:var(--mark); color:var(--mark-ink); padding:0 .05em; border-radius:2px}
+.sur{display:inline-flex; align-items:center; gap:.5rem; justify-content:flex-end}
+.bar{display:inline-block; width:64px; height:6px; border-radius:3px; background:var(--rule-soft); position:relative; overflow:hidden}
+.bar i{position:absolute; top:0; bottom:0; background:var(--neg)}
+.bar i.pos{background:var(--accent)}
+.bar::after{content:""; position:absolute; left:50%; top:-2px; bottom:-2px; width:1px; background:var(--muted); opacity:.6}
+td.num.pos{color:var(--accent-ink); font-weight:600}
+.notes{margin-block:1.4rem 0; font-size:.92rem; color:var(--muted); max-width:78ch}
+.notes ol{padding-left:1.4em; margin:0}
+.notes li{margin-block:.3rem}
+.notes li:target{color:var(--ink)}
+.legend{font-size:.9rem; color:var(--muted); margin-block:.7rem 0}
+table.weights{width:auto; min-width:min(100%, 44rem)}
+table.weights td,table.weights th{padding:.4rem .7rem}
+.callout{border-left:3px solid var(--accent); padding:.6rem 1rem; background:var(--surface); border-radius:0 6px 6px 0; margin-block:1rem}
+.calc{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:1.4rem 2.4rem; align-items:start}
+@media (max-width:800px){.calc{grid-template-columns:1fr}}
+label{display:block; font-weight:600; margin-block:0 .4rem}
+textarea{width:100%; min-height:6.5rem; resize:vertical; font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:.95rem; padding:.7rem .8rem; border:1px solid var(--rule); border-radius:6px; background:var(--surface); color:var(--ink); line-height:1.5}
+.preview{min-height:3.4rem; padding:.7rem .9rem; background:var(--surface); border:1px dashed var(--rule); border-radius:6px; font-size:1.15rem; display:flex; align-items:center}
+.preview.err{color:var(--muted); font-size:.95rem}
+.row{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-block:.7rem 0}
+button{font:inherit; font-weight:600; padding:.5rem 1.1rem; border-radius:6px; border:1px solid var(--accent); background:var(--accent); color:#fff; cursor:pointer}
+button.ghost{background:transparent; color:var(--accent-ink); border-color:var(--rule)}
+button.ghost:hover{border-color:var(--accent)}
+.examples{display:flex; flex-wrap:wrap; gap:.4rem; margin-block:.6rem 0}
+.examples button{font-family:"IBM Plex Mono", ui-monospace, monospace; font-weight:400; font-size:.82rem; padding:.3rem .6rem}
+.result{background:var(--surface); border:1px solid var(--rule); border-radius:8px; padding:1rem 1.2rem}
+.result dl{display:grid; grid-template-columns:max-content 1fr; gap:.45rem 1.2rem; margin:0}
+.result dt{color:var(--muted); font-size:.85rem; letter-spacing:.04em; text-transform:uppercase; align-self:baseline}
+.result dd{margin:0; overflow-wrap:anywhere}
+.result dd.big{font-family:Spectral, Georgia, serif; font-size:1.7rem; font-weight:600; line-height:1.1; font-variant-numeric:tabular-nums}
+.result dd.big.pos{color:var(--accent-ink)}
+.result .val{font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:.9rem}
+.warn{margin-block:.8rem 0; padding:.6rem .9rem; border-radius:6px; background:var(--mark); color:var(--mark-ink); font-size:.92rem}
+.error{margin-block:.8rem 0; padding:.6rem .9rem; border-radius:6px; background:var(--rule-soft); color:var(--ink); font-size:.95rem}
+.small{font-size:.88rem; color:var(--muted)}
+.syntax{columns:2; column-gap:2rem; font-size:.9rem}
+@media (max-width:640px){.syntax{columns:1}}
+.syntax code{white-space:nowrap}
+footer{margin-block:3rem 0; color:var(--muted); font-size:.85rem; border-top:1px solid var(--rule); padding-block:1rem 0}
+@media (prefers-reduced-motion: no-preference){ nav.tabs a{transition:color .15s} }
+</style>
+<script>
+window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:{fontCache:'global'}, startup:{typeset:false}, options:{enableMenu:false} };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.4.3/decimal.min.js"></script>
+<!--END-HEAD-->
+</head>
+<body>
+<!--BEGIN-BODY-->
+<div class="wrap">
+<header class="site">
+  <div class="brand">
+    <h1>Almost Integer Rank</h1>
+    <small><span class="l-zh">MathWorld 收录的近整数，按 surplus = n − complexity/10 排序</span><span class="l-en">MathWorld's almost integers, ranked by surplus = n − complexity/10</span></small>
+  </div>
+  <nav class="tabs" aria-label="pages">
+    <a href="#/" data-route="home"><span class="l-zh">排行榜</span><span class="l-en">Ranking</span></a>
+    <a href="#rules" data-route="rules"><span class="l-zh">计算规则</span><span class="l-en">How it works</span></a>
+    <a href="#calc" data-route="calc"><span class="l-zh">计算器</span><span class="l-en">Calculator</span></a>
+  </nav>
+  <div class="lang" role="group" aria-label="language">
+    <button type="button" id="lang-zh" data-lang="zh" aria-pressed="true">中文</button>
+    <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+
+<main>
+<!-- ============ HOME ============ -->
+<section class="page" id="page-home">
+  <div class="lede">
+    <p class="l-zh">每个条目的 <b>n</b> 是它离最近整数的距离取负对数，即小数点后连续 0 或 9 的位数；<b>complexity</b> 是 RIES 符号权重之和；<b>surplus</b> 大于 0 表示这个巧合比同等复杂度下随机可期的更罕见。</p>
+    <p class="l-en">For each entry, <b>n</b> is the negative log of its distance to the nearest integer, i.e. the run of 0s or 9s after the decimal point; <b>complexity</b> is the sum of RIES symbol weights; a <b>surplus</b> above 0 means the coincidence is rarer than chance would produce at that complexity.</p>
+    <div class="stats" id="stats"></div>
+  </div>
+  <div class="tablewrap">
+    <table id="ranktable">
+      <thead><tr>
+        <th class="rank"><span class="l-zh">名次</span><span class="l-en">Rank</span></th>
+        <th><span class="l-zh">表达式</span><span class="l-en">Expression</span></th>
+        <th><span class="l-zh">数值</span><span class="l-en">Value</span></th>
+        <th class="num">n</th>
+        <th class="num"><span class="l-zh">复杂度</span><span class="l-en">Complexity</span></th>
+        <th class="num">surplus</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="legend l-zh">数值列中<mark>高亮</mark>的是小数点后连续的 0 或 9；n 是它的连续量版本。surplus 一栏的小条以 0 为中心，向右为正（深青）、向左为负（灰）。左侧带竖线的行 surplus 为正。名次旁的角标指向下方注释。</p>
+  <p class="legend l-en">In the value column the <mark>highlighted</mark> digits are the run of 0s or 9s after the decimal point; n is its continuous version. The small bar in the surplus column is centred on 0, extending right for positive (teal) and left for negative (grey). Rows with a vertical rule on the left have positive surplus. Superscripts next to the rank point to the notes below.</p>
+  <div class="notes" id="notes"></div>
+</section>
+
+<!-- ============ RULES (zh) ============ -->
+<section class="page" id="page-rules" hidden>
+  <div class="rules l-zh">
+  <p class="eyebrow">定义</p>
+  <h2>质量函数</h2>
+  <p>对一个 almost integer $x$，定义</p>
+  <p>$$\text{surplus}(x) = n(x) - \frac{\text{complexity}(x)}{10},\qquad n(x) = -\log_{10}\left|x - \operatorname{nint}(x)\right|$$</p>
+  <p>$n$ 用绝对误差计算，是小数点后连续 0 或 9 位数的连续量版本：$e^{\pi\sqrt{163}}$ 与最近整数相差 $7.5\times10^{-13}$，$n = 12.12$。不采用相对精度，因为一个数的整数部分有多少位与巧合无关：给定量级后，随机实数的小数部分是均匀分布的，落在整数 $\varepsilon$ 邻域内的概率就是 $2\varepsilon$。</p>
+
+  <h2>复杂度：RIES 的符号权重</h2>
+  <p>complexity 借用 Robert Munafo 的 <a href="https://mrob.com/pub/ries/" target="_blank" rel="noopener">RIES</a> 中的 <code>complexity()</code> 函数。表达式写成后缀形式，复杂度是每个符号权重之和，权重 = 基数 10 + 符号的个别权重。基数保证每个符号权重为正，搜索才能按复杂度递增终止；它同时让 complexity/10 近似于描述整个表达式所需的十进制位数。</p>
+  <div class="tablewrap">
+  <table class="weights">
+    <thead><tr><th>类别</th><th>符号</th><th class="num">权重</th></tr></thead>
+    <tbody>
+      <tr><td>常数</td><td>1, 2, 3, 4, 5, 6, 7, 8, 9</td><td class="num">10, 13, 15, 16, 17, 18, 18, 19, 19</td></tr>
+      <tr><td>常数</td><td>$\pi$, $e$, $\phi$</td><td class="num">14, 16, 18</td></tr>
+      <tr><td>一元</td><td>取负, 倒数</td><td class="num">7</td></tr>
+      <tr><td>一元</td><td>平方, 开方</td><td class="num">9</td></tr>
+      <tr><td>一元</td><td>$\ln$, $\exp$, $\sin$, $\cos$</td><td class="num">13</td></tr>
+      <tr><td>一元</td><td>$\tan$, Lambert $W$</td><td class="num">16, 15</td></tr>
+      <tr><td>二元</td><td>$+$, $\times$</td><td class="num">4</td></tr>
+      <tr><td>二元</td><td>$-$, $\div$</td><td class="num">5</td></tr>
+      <tr><td>二元</td><td>幂</td><td class="num">6</td></tr>
+      <tr><td>二元</td><td>$n$ 次方根, $\log_b$, $\operatorname{atan2}$</td><td class="num">7, 9, 9</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>RIES 只有一位数字，10 要写成 <code>2 5 *</code>。ries.c 的注释说常数权重约为 $10\log_{10}x$，本站据此外推：整数 $N \ge 10$ 的权重取 $10 + \operatorname{round}(10\log_{10}N)$，如 163 计 32。RIES 没有的符号按类比赋权：$\cosh,\sinh,\tanh$ 同三角函数计 13；$\Gamma$、digamma、erfi、$\zeta$ 同 Lambert $W$ 计 15；欧拉常数 $\gamma$、Catalan 常数、Khinchin 常数、supergolden 数 $\psi$ 同 $\phi$ 计 18。每个条目取权重最低的写法，例如 $e^{\pi}$ 写作 <code>pi exp</code>（27）而不是 <code>e pi ^</code>（36），$\pi^4$ 写作 <code>pi sq sq</code>（32）。</p>
+
+  <p class="eyebrow">校准</p>
+  <h2>为什么是 n − complexity/10</h2>
+  <p>ries.c 的日志记录了复杂度 $\le 64$ 的表达式共 2 236 462 个，$\log_{10}$ 后为 6.35，约等于 $64/10$。也就是说复杂度 $c$ 对应大约 $10^{c/10}$ 个同样简单的表达式。随机实数落在整数 $10^{-n}$ 邻域内的概率约为 $10^{-n}$，于是在复杂度不超过 $c$ 的表达式中，和某条目一样好的近整数期望有 $10^{c/10-n}$ 个。surplus 就是这个期望个数的负对数：大于 0 说明比随机碰巧更罕见，小于 0 说明这种精度在这个复杂度下本来就会出现。这与 Borwein 讨论"high precision fraud"时的判据一致。</p>
+  <div class="callout">
+    <p style="margin:0">对平凡家族做穷举检验：$\sqrt2\cdot a/b$（$a\le 20000$, $b\le 300$）最好只有 $-3.1$，$\pi\cdot 113 = 354.99997$ 为 $-0.38$，$a/\ln a$（$a \le 10^6$）最好是 $163/\ln 163$ 的 $-2.3$。对 RIES 全空间枚举到复杂度 74（约 197 万个不同值），剔除放大器后没有任何条目 surplus 为正。表中三个正盈余的条目全部来自模函数（$j$ 不变量）。</p>
+  </div>
+  <p>作为比较，$n/c$ 与 $n/c^2$ 没有概率含义：$n/c$ 把 5 位换 33 的 $\sin 11$ 与 34 位换 93 的嵌套余弦看成只差 2.4 倍，实际稀有程度差 $10^{23}$ 倍；$n/c^2$ 的排名会随 RIES 基数的任意选择而重排。</p>
+
+  <p class="eyebrow">剥离</p>
+  <h2>放大器</h2>
+  <p>按符号计数的复杂度识别不了两类机械结构，它们能用很低的复杂度换取任意多的精度，因此单独处理：</p>
+  <ul>
+    <li><b>临界点处的三角函数。</b>$\cos y \approx \pm1$ 等价于 $y \approx k\pi$，而 $\cos(k\pi+\varepsilon) = \pm(1 - \varepsilon^2/2)$，底层近似 $y\approx k\pi$ 的误差被平方。$\cos(\pi\cos(\pi\cos(\ln(\pi+20))))$ 有 34 位，全部由 $e^{\pi} - \pi \approx 20$ 的 3 位机械放大而来。此类条目归并到核心近整数打分。</li>
+    <li><b>Pisot 数的幂。</b>若代数整数 $x$ 的其余共轭根模都小于 1，则 $x^k$ 与整数的距离按几何级数收缩，而复杂度只随 $\log k$ 增长，surplus 随 $k$ 无界上升。用 findpoly 求底数的最小多项式自动检测，命中者直接退出排名，如 supergolden 数 $\psi^{11}$。</li>
+  </ul>
+  <div class="stripped-slot"></div>
+
+  <p class="eyebrow">范围</p>
+  <h2>收录与排除</h2>
+  <p>条目取自 MathWorld 的 <a href="https://mathworld.wolfram.com/AlmostInteger.html" target="_blank" rel="noopener">Almost Integer</a> 页面，包括 $e^{\pi\sqrt n}$ 表格的 13 个值与 Hickerson 数 $h_0$ 到 $h_{17}$。排除需要无穷级数或无穷乘积的条目（Borwein 级数、theta 和、Maze–Minder 的 $u_k$、q-Pochhammer 符号）、非封闭形式（第三类椭圆积分、Student $t$ 分位数）以及涉及物理常数或单位的条目。所有数值用 mpmath 以 120 位精度计算，与 MathWorld 给出的数字核对一致；页面公式图片的 alt 文本有三处歧义或错误，已按数值核对更正。</p>
+
+  <p class="eyebrow">附录</p>
+  <h2>RIES 内置符号</h2>
+  <p>RIES 用单个字符表示每个符号，表达式是这些字符组成的后缀串，例如 <code>pE</code> 是 $e^{\pi}$，<code>2q</code> 是 $\sqrt2$，<code>5 2 v</code> 是 $\sqrt[5]{2}$。按"栈效应类型"（seft）分为三类：常数入栈、一元函数替换栈顶、二元运算弹出两项压入一项。下表列出全部内置符号，权重已含基数 10。</p>
+  <h3>常数（seft a）</h3>
+  <div class="tablewrap"><table class="weights">
+    <thead><tr><th>符号</th><th>名称</th><th class="num">权重</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td><code>1</code> … <code>9</code></td><td>1 … 9</td><td class="num">10, 13, 15, 16, 17, 18, 18, 19, 19</td><td>一位整数。RIES 没有多位数，10 写作 <code>25*</code>，权重约为 $10 + 10\log_{10}n$</td></tr>
+      <tr><td><code>p</code></td><td>pi</td><td class="num">14</td><td>圆周率 $\pi = 3.14159\ldots$</td></tr>
+      <tr><td><code>e</code></td><td>e</td><td class="num">16</td><td>自然对数的底 $e = 2.71828\ldots$</td></tr>
+      <tr><td><code>f</code></td><td>phi</td><td class="num">18</td><td>黄金比 $\phi = (1+\sqrt5)/2 = 1.61803\ldots$</td></tr>
+      <tr><td><code>x</code></td><td>x</td><td class="num">15</td><td>方程的未知数，即用户输入的目标值。RIES 搜索的是形如 LHS(x) = RHS 的等式；本站只对不含 $x$ 的常数表达式计复杂度</td></tr>
+    </tbody>
+  </table></div>
+  <h3>一元函数（seft b）</h3>
+  <div class="tablewrap"><table class="weights">
+    <thead><tr><th>符号</th><th>名称</th><th class="num">权重</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td><code>n</code></td><td>neg</td><td class="num">7</td><td>取负 $-x$</td></tr>
+      <tr><td><code>r</code></td><td>recip</td><td class="num">7</td><td>倒数 $1/x$</td></tr>
+      <tr><td><code>s</code></td><td>dup*</td><td class="num">9</td><td>平方 $x^2$。名字来自 FORTH 的"复制再相乘"</td></tr>
+      <tr><td><code>q</code></td><td>sqrt</td><td class="num">9</td><td>平方根 $\sqrt x$</td></tr>
+      <tr><td><code>l</code></td><td>ln</td><td class="num">13</td><td>自然对数 $\ln x$</td></tr>
+      <tr><td><code>E</code></td><td>exp</td><td class="num">13</td><td>指数函数 $e^{x}$</td></tr>
+      <tr><td><code>S</code></td><td>sinpi</td><td class="num">13</td><td>$\sin(\pi x)$。默认三角函数的参数以 $\pi$ 为单位，这样 $\sin$ 在有理数处取到代数值；加 <code>-s</code> 选项后改为弧度制的 $\sin x$，权重不变</td></tr>
+      <tr><td><code>C</code></td><td>cospi</td><td class="num">13</td><td>$\cos(\pi x)$，同上</td></tr>
+      <tr><td><code>T</code></td><td>tanpi</td><td class="num">16</td><td>$\tan(\pi x)$，同上。权重比正余弦高 3，因为它在 $\pi/2$ 附近发散，容易制造虚假匹配</td></tr>
+      <tr><td><code>W</code></td><td>W</td><td class="num">15</td><td>Lambert W 函数，$w e^{w} = x$ 的反函数</td></tr>
+    </tbody>
+  </table></div>
+  <h3>二元运算（seft c）</h3>
+  <div class="tablewrap"><table class="weights">
+    <thead><tr><th>符号</th><th>名称</th><th class="num">权重</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td><code>+</code></td><td>+</td><td class="num">4</td><td>加法 $A + B$</td></tr>
+      <tr><td><code>-</code></td><td>−</td><td class="num">5</td><td>减法 $A - B$</td></tr>
+      <tr><td><code>*</code></td><td>*</td><td class="num">4</td><td>乘法 $A \times B$</td></tr>
+      <tr><td><code>/</code></td><td>/</td><td class="num">5</td><td>除法 $A / B$</td></tr>
+      <tr><td><code>^</code></td><td>**</td><td class="num">6</td><td>幂 $A^{B}$</td></tr>
+      <tr><td><code>v</code></td><td>root</td><td class="num">7</td><td>$A$ 次方根：<code>A B v</code> $= \sqrt[A]{B}$，注意根指数在前</td></tr>
+      <tr><td><code>L</code></td><td>logN</td><td class="num">9</td><td>以 $A$ 为底的对数：<code>A B L</code> $= \log_A B = \ln B / \ln A$</td></tr>
+      <tr><td><code>A</code></td><td>atan2</td><td class="num">9</td><td>两参数反正切：<code>y x A</code> $= \operatorname{atan2}(y, x)$，即原点到点 $(x, y)$ 的射线幅角。权重设为 11 即可禁用</td></tr>
+    </tbody>
+  </table></div>
+  <p>此外还有几个不参与搜索的内部符号：空格是空操作，供 <code>--eval-expression</code> 使用；<code>!/</code>、<code>!-</code>、<code>!^</code>、<code>&gt;&lt;</code> 是后缀转中缀时用的"反向运算"占位符，权重为 0；括号、逗号和等号只用于输出格式；当用户禁用了全部一元函数时，RIES 会临时加入权重 20 的恒等符号 <code>I</code> 以维持表达式形状的完整。用户可以用 <code>--define</code> 增加自定义常数并指定权重，用 <code>--symbol-weights</code> 覆盖任一符号的权重，用 <code>--eval-expression</code> 直接查看某个后缀串的值和复杂度。</p>
+  </div>
+
+  <!-- ============ RULES (en) ============ -->
+  <div class="rules l-en">
+  <p class="eyebrow">Definition</p>
+  <h2>The quality function</h2>
+  <p>For an almost integer $x$ define</p>
+  <p>$$\text{surplus}(x) = n(x) - \frac{\text{complexity}(x)}{10},\qquad n(x) = -\log_{10}\left|x - \operatorname{nint}(x)\right|$$</p>
+  <p>$n$ uses the absolute error and is the continuous version of the run of 0s or 9s after the decimal point: $e^{\pi\sqrt{163}}$ misses the nearest integer by $7.5\times10^{-13}$, so $n = 12.12$. Relative precision is not used, because the number of digits before the decimal point has nothing to do with the coincidence: once the magnitude is fixed, the fractional part of a random real is uniformly distributed, and the probability of landing within $\varepsilon$ of an integer is simply $2\varepsilon$.</p>
+
+  <h2>Complexity: RIES symbol weights</h2>
+  <p>Complexity is borrowed from the <code>complexity()</code> function in Robert Munafo's <a href="https://mrob.com/pub/ries/" target="_blank" rel="noopener">RIES</a>. An expression is written in postfix form and its complexity is the sum of the weights of its symbols, where weight = base 10 + the symbol's individual weight. The base keeps every symbol weight positive, so that a search ordered by increasing complexity terminates; it also makes complexity/10 roughly the number of decimal digits needed to describe the whole expression.</p>
+  <div class="tablewrap">
+  <table class="weights">
+    <thead><tr><th>Kind</th><th>Symbols</th><th class="num">Weight</th></tr></thead>
+    <tbody>
+      <tr><td>Constant</td><td>1, 2, 3, 4, 5, 6, 7, 8, 9</td><td class="num">10, 13, 15, 16, 17, 18, 18, 19, 19</td></tr>
+      <tr><td>Constant</td><td>$\pi$, $e$, $\phi$</td><td class="num">14, 16, 18</td></tr>
+      <tr><td>Unary</td><td>negate, reciprocal</td><td class="num">7</td></tr>
+      <tr><td>Unary</td><td>square, square root</td><td class="num">9</td></tr>
+      <tr><td>Unary</td><td>$\ln$, $\exp$, $\sin$, $\cos$</td><td class="num">13</td></tr>
+      <tr><td>Unary</td><td>$\tan$, Lambert $W$</td><td class="num">16, 15</td></tr>
+      <tr><td>Binary</td><td>$+$, $\times$</td><td class="num">4</td></tr>
+      <tr><td>Binary</td><td>$-$, $\div$</td><td class="num">5</td></tr>
+      <tr><td>Binary</td><td>power</td><td class="num">6</td></tr>
+      <tr><td>Binary</td><td>$n$-th root, $\log_b$, $\operatorname{atan2}$</td><td class="num">7, 9, 9</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>RIES only has single digits; 10 must be written <code>2 5 *</code>. A comment in ries.c says constant weights are close to $10\log_{10}x$, and this site extrapolates from it: an integer $N \ge 10$ weighs $10 + \operatorname{round}(10\log_{10}N)$, so 163 costs 32. Symbols RIES lacks are weighted by analogy: $\cosh,\sinh,\tanh$ cost 13 like the trigonometric functions; $\Gamma$, digamma, erfi and $\zeta$ cost 15 like Lambert $W$; Euler's $\gamma$, Catalan's constant, Khinchin's constant and the supergolden ratio $\psi$ cost 18 like $\phi$. Each entry is scored on its cheapest form: $e^{\pi}$ is <code>pi exp</code> (27) rather than <code>e pi ^</code> (36), and $\pi^4$ is <code>pi sq sq</code> (32).</p>
+
+  <p class="eyebrow">Calibration</p>
+  <h2>Why n − complexity/10</h2>
+  <p>The ries.c log records 2 236 462 expressions of complexity $\le 64$; $\log_{10}$ of that is 6.35, about $64/10$. So complexity $c$ corresponds to roughly $10^{c/10}$ equally simple expressions. A random real lands within $10^{-n}$ of an integer with probability about $10^{-n}$, so among expressions of complexity at most $c$ one expects $10^{c/10-n}$ almost integers as good as a given entry. The surplus is the negative log of that expected count: above 0 means rarer than chance, below 0 means such precision is bound to appear at that complexity anyway. This is the same test Borwein used when discussing "high precision fraud".</p>
+  <div class="callout">
+    <p style="margin:0">Exhaustive checks on trivial families: $\sqrt2\cdot a/b$ ($a\le 20000$, $b\le 300$) peaks at $-3.1$; $\pi\cdot 113 = 354.99997$ reaches $-0.38$; $a/\ln a$ ($a \le 10^6$) peaks at $163/\ln 163$ with $-2.3$. Enumerating the whole RIES space up to complexity 74 (about 1.97 million distinct values) and removing amplifiers leaves no entry with positive surplus. The three positive entries in the table all come from modular functions (the $j$-invariant).</p>
+  </div>
+  <p>By comparison, $n/c$ and $n/c^2$ carry no probabilistic meaning: $n/c$ rates $\sin 11$ (5 digits for 33) and the nested cosine (34 digits for 93) as differing by a factor of 2.4, when their rarity differs by $10^{23}$; the ranking under $n/c^2$ reshuffles with the arbitrary choice of the RIES base weight.</p>
+
+  <p class="eyebrow">Stripping</p>
+  <h2>Amplifiers</h2>
+  <p>A symbol-counting complexity cannot see two mechanical constructions that buy arbitrary precision at almost no cost, so they are handled separately:</p>
+  <ul>
+    <li><b>Trigonometric functions at a critical point.</b> $\cos y \approx \pm1$ is the same as $y \approx k\pi$, and $\cos(k\pi+\varepsilon) = \pm(1 - \varepsilon^2/2)$ squares the error of the underlying approximation $y\approx k\pi$. The 34 digits of $\cos(\pi\cos(\pi\cos(\ln(\pi+20))))$ are all manufactured from the 3 digits of $e^{\pi} - \pi \approx 20$. Such entries are scored on their core almost integer.</li>
+    <li><b>Powers of Pisot numbers.</b> If an algebraic integer $x$ has all its other conjugates inside the unit circle, then $x^k$ approaches integers geometrically while complexity grows only like $\log k$, so the surplus rises without bound. The base's minimal polynomial is found with findpoly and matching entries are dropped from the ranking, e.g. the supergolden ratio $\psi^{11}$.</li>
+  </ul>
+  <div class="stripped-slot"></div>
+
+  <p class="eyebrow">Scope</p>
+  <h2>Included and excluded</h2>
+  <p>Entries come from MathWorld's <a href="https://mathworld.wolfram.com/AlmostInteger.html" target="_blank" rel="noopener">Almost Integer</a> page, including the 13 values of the $e^{\pi\sqrt n}$ table and the Hickerson numbers $h_0$ to $h_{17}$. Excluded are entries requiring infinite sums or products (the Borwein series, the theta sum, the Maze–Minder $u_k$, the q-Pochhammer symbol), non-closed forms (an elliptic integral of the third kind, a Student $t$ quantile) and anything involving physical constants or units. All values were computed with mpmath at 120 digits and agree with the figures MathWorld prints; three formula images on that page have ambiguous or wrong alt text, corrected here by numerical check.</p>
+
+  <p class="eyebrow">Appendix</p>
+  <h2>RIES built-in symbols</h2>
+  <p>RIES writes every symbol as a single character and an expression as a postfix string of them: <code>pE</code> is $e^{\pi}$, <code>2q</code> is $\sqrt2$, <code>5 2 v</code> is $\sqrt[5]{2}$. Symbols fall into three "stack effect types" (seft): constants push a value, unary functions replace the top of the stack, binary operators pop two values and push one. The tables list every built-in symbol with its weight including the base of 10.</p>
+  <h3>Constants (seft a)</h3>
+  <div class="tablewrap"><table class="weights">
+    <thead><tr><th>Symbol</th><th>Name</th><th class="num">Weight</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>1</code> … <code>9</code></td><td>1 … 9</td><td class="num">10, 13, 15, 16, 17, 18, 18, 19, 19</td><td>Single digits. RIES has no multi-digit numerals: 10 is <code>25*</code>. Weight is close to $10 + 10\log_{10}n$</td></tr>
+      <tr><td><code>p</code></td><td>pi</td><td class="num">14</td><td>$\pi = 3.14159\ldots$</td></tr>
+      <tr><td><code>e</code></td><td>e</td><td class="num">16</td><td>Base of natural logarithms, $e = 2.71828\ldots$</td></tr>
+      <tr><td><code>f</code></td><td>phi</td><td class="num">18</td><td>Golden ratio $\phi = (1+\sqrt5)/2 = 1.61803\ldots$</td></tr>
+      <tr><td><code>x</code></td><td>x</td><td class="num">15</td><td>The unknown of the equation, i.e. the user's target value. RIES searches for equations LHS(x) = RHS; this site only scores constant expressions without $x$</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Unary functions (seft b)</h3>
+  <div class="tablewrap"><table class="weights">
+    <thead><tr><th>Symbol</th><th>Name</th><th class="num">Weight</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>n</code></td><td>neg</td><td class="num">7</td><td>Negation $-x$</td></tr>
+      <tr><td><code>r</code></td><td>recip</td><td class="num">7</td><td>Reciprocal $1/x$</td></tr>
+      <tr><td><code>s</code></td><td>dup*</td><td class="num">9</td><td>Square $x^2$. The name is FORTH for "duplicate and multiply"</td></tr>
+      <tr><td><code>q</code></td><td>sqrt</td><td class="num">9</td><td>Square root $\sqrt x$</td></tr>
+      <tr><td><code>l</code></td><td>ln</td><td class="num">13</td><td>Natural logarithm $\ln x$</td></tr>
+      <tr><td><code>E</code></td><td>exp</td><td class="num">13</td><td>Exponential $e^{x}$</td></tr>
+      <tr><td><code>S</code></td><td>sinpi</td><td class="num">13</td><td>$\sin(\pi x)$. By default the trigonometric argument is in units of $\pi$, so $\sin$ takes algebraic values at rationals; the <code>-s</code> option switches to radians $\sin x$ at the same weight</td></tr>
+      <tr><td><code>C</code></td><td>cospi</td><td class="num">13</td><td>$\cos(\pi x)$, likewise</td></tr>
+      <tr><td><code>T</code></td><td>tanpi</td><td class="num">16</td><td>$\tan(\pi x)$, likewise. Weighted 3 above sine and cosine because it diverges near $\pi/2$ and produces spurious matches</td></tr>
+      <tr><td><code>W</code></td><td>W</td><td class="num">15</td><td>Lambert W function, the inverse of $w e^{w} = x$</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Binary operators (seft c)</h3>
+  <div class="tablewrap"><table class="weights">
+    <thead><tr><th>Symbol</th><th>Name</th><th class="num">Weight</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>+</code></td><td>+</td><td class="num">4</td><td>Addition $A + B$</td></tr>
+      <tr><td><code>-</code></td><td>−</td><td class="num">5</td><td>Subtraction $A - B$</td></tr>
+      <tr><td><code>*</code></td><td>*</td><td class="num">4</td><td>Multiplication $A \times B$</td></tr>
+      <tr><td><code>/</code></td><td>/</td><td class="num">5</td><td>Division $A / B$</td></tr>
+      <tr><td><code>^</code></td><td>**</td><td class="num">6</td><td>Power $A^{B}$</td></tr>
+      <tr><td><code>v</code></td><td>root</td><td class="num">7</td><td>$A$-th root: <code>A B v</code> $= \sqrt[A]{B}$; note the index comes first</td></tr>
+      <tr><td><code>L</code></td><td>logN</td><td class="num">9</td><td>Logarithm to base $A$: <code>A B L</code> $= \log_A B = \ln B / \ln A$</td></tr>
+      <tr><td><code>A</code></td><td>atan2</td><td class="num">9</td><td>Two-argument arctangent: <code>y x A</code> $= \operatorname{atan2}(y, x)$, the angle of the ray from the origin through $(x, y)$. Setting the weight to 11 disables it</td></tr>
+    </tbody>
+  </table></div>
+  <p>A few internal symbols take no part in the search: a space is a no-op for <code>--eval-expression</code>; <code>!/</code>, <code>!-</code>, <code>!^</code> and <code>&gt;&lt;</code> are "reversed operation" placeholders used when converting postfix to infix, with weight 0; parentheses, comma and equals sign are output formatting only; and when the user disables every unary function, RIES temporarily adds an identity symbol <code>I</code> of weight 20 to keep expression shapes intact. Users can add constants with a chosen weight via <code>--define</code>, override any weight with <code>--symbol-weights</code>, and print the value and complexity of a postfix string with <code>--eval-expression</code>.</p>
+  </div>
+</section>
+
+<!-- ============ CALC ============ -->
+<section class="page" id="page-calc" hidden>
+  <div class="calc">
+    <div>
+      <label for="latex-input"><span class="l-zh">输入一个 LaTeX 表达式</span><span class="l-en">Enter a LaTeX expression</span></label>
+      <textarea id="latex-input" spellcheck="false" placeholder="e^{\pi\sqrt{163}}"></textarea>
+      <div class="preview" id="preview" aria-live="polite"></div>
+      <div class="row">
+        <button id="btn-calc" type="button"><span class="l-zh">计算</span><span class="l-en">Compute</span></button>
+        <button id="btn-clear" type="button" class="ghost"><span class="l-zh">清空</span><span class="l-en">Clear</span></button>
+        <span class="small"><span class="l-zh">或按 Ctrl/⌘ + Enter</span><span class="l-en">or press Ctrl/⌘ + Enter</span></span>
+      </div>
+      <p class="small" style="margin-block:.8rem 0 .3rem"><span class="l-zh">试试这些：</span><span class="l-en">Try one of these:</span></p>
+      <div class="examples" id="examples"></div>
+      <h3><span class="l-zh">支持的写法</span><span class="l-en">Supported syntax</span></h3>
+      <div class="syntax prose l-zh">
+        <ul>
+          <li>整数、小数（小数按分数计价）</li>
+          <li><code>\pi</code>, <code>e</code>, <code>\phi</code>（黄金比）, <code>\gamma</code>（欧拉常数）</li>
+          <li><code>+ - \cdot \times /</code>，并列即相乘</li>
+          <li><code>\frac{a}{b}</code>, <code>a^{b}</code>, <code>\sqrt{x}</code>, <code>\sqrt[n]{x}</code></li>
+          <li><code>\ln</code>, <code>\log_{b}</code>（无底数按 10）, <code>\exp</code>, <code>e^{x}</code></li>
+          <li><code>\sin \cos \tan \sinh \cosh \tanh \arctan</code></li>
+          <li><code>\left( \right)</code>、<code>( )</code>、<code>[ ]</code>、<code>{ }</code></li>
+          <li>不支持 $\Gamma$、$\zeta$、erfi 等特殊函数与变量</li>
+        </ul>
+      </div>
+      <div class="syntax prose l-en">
+        <ul>
+          <li>Integers and decimals (a decimal is priced as a fraction)</li>
+          <li><code>\pi</code>, <code>e</code>, <code>\phi</code> (golden ratio), <code>\gamma</code> (Euler's constant)</li>
+          <li><code>+ - \cdot \times /</code>; juxtaposition multiplies</li>
+          <li><code>\frac{a}{b}</code>, <code>a^{b}</code>, <code>\sqrt{x}</code>, <code>\sqrt[n]{x}</code></li>
+          <li><code>\ln</code>, <code>\log_{b}</code> (base 10 if omitted), <code>\exp</code>, <code>e^{x}</code></li>
+          <li><code>\sin \cos \tan \sinh \cosh \tanh \arctan</code></li>
+          <li><code>\left( \right)</code>, <code>( )</code>, <code>[ ]</code>, <code>{ }</code></li>
+          <li>Special functions such as $\Gamma$, $\zeta$, erfi, and variables are not supported</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="result" id="result"></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><span class="l-zh">数据由 <code>rank.py</code> 生成；公式用 MathJax 渲染，高精度计算用 decimal.js。</span><span class="l-en">Data generated by <code>rank.py</code>; formulas rendered with MathJax, high-precision arithmetic by decimal.js.</span><span id="build"></span></footer>
+</div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+'use strict';
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const $ = (s, el=document) => el.querySelector(s);
+const fmt = (x, d=2) => (x>0?'+':'') + x.toFixed(d);
+const esc = (t) => t.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+
+/* ---------- i18n ---------- */
+const I18N = {
+  zh: {
+    entries:'条目', positive:'surplus > 0', stripped:'已剥离放大器', notesTitle:'注释', seeNote:'见注释',
+    strippedTitle:'本次剥离的条目', thExpr:'表达式', thN:'n', thC:'复杂度', thSurAsWritten:'按原式的 surplus', thCore:'归并到',
+    resultIdle:'结果会显示在这里：数值、n、复杂度、surplus，以及它在排行榜中的位置。数值以 90 位精度计算。',
+    enterFirst:'请先输入表达式。', preview:'预览', badLatex:'LaTeX 无法渲染', cannot:'无法计算：',
+    value:'数值', nearest:'最近整数', off:'相差', n:'n', complexity:'复杂度', postfix:'后缀式', surplus:'surplus', position:'排行榜位置',
+    wouldRank:(r,t)=>`会排在第 <b>${r}</b> 位（共 ${t} 条）`, belowAll:(t)=>`低于榜上全部 ${t} 条`,
+    exact:'这个表达式在 90 位精度下就是整数（或是一个精确恒等式），不属于 almost integer。',
+    footnote:'复杂度按上面的后缀式计算，已做常见化简（$e^{x}$ 计 exp，平方计 sq，$\\sqrt{}$ 计 sqrt，$1/x$ 计 recip）。RIES 搜索可能找到更省的等价写法。',
+    warnTrig:'最外层是三角函数且取值靠近 ±1 或 0：这是临界点处的误差平方放大器，排行榜会把它归并到内部近似 y ≈ kπ 的核心去打分。',
+    warnPow:'最外层是整数次幂：如果底数是 Pisot 数（代数整数，其余共轭根模小于 1），这是几何级数放大器，排行榜会将其剥离。',
+    pisotCore:(base,poly)=>`Pisot 幂：底数 ${base}，最小多项式 ${poly}（没有近整数核心）`,
+    err:{ unknownChar:(c)=>`无法识别的字符 “${c}”`, missing:(v)=>`缺少 “${v}”`, funcArg:'函数缺少参数', incomplete:'表达式不完整',
+      badNumber:(v)=>`数字格式错误 “${v}”`, unsupportedVar:(v)=>`不支持变量 “${v}”`, unexpectedSym:(v)=>`意外的符号 “${v}”`,
+      unsupportedCmd:(v)=>`不支持的命令 “\\${v}”`, trailing:(v)=>`多余的内容从 “${v}” 开始`, negSqrt:'负数开方', logPos:'对数的参数必须为正',
+      divZero:'除以零', negPow:'负数的非整数次幂', logBasePos:'对数的参数与底数必须为正', overflow:'数值溢出', internal:'内部错误' },
+    notes:[
+      '被剥离的放大器 cos(ln(π+20)) 与 cos(π cos(π cos(ln(π+20)))) 的核心：由 e^π ≈ π+20 得 ln(π+20) ≈ π，每一层余弦把误差平方一次',
+      '被剥离的放大器 sin 11 与 cos 22 的核心：22 ≈ 7π，而 cos(7π+ε) = −1 + ε²/2，sin²11 = (1 − cos 22)/2',
+      '被剥离的放大器 sin(2017·2^(1/5)) 的核心：2017·2^(1/5) ≈ 737.5π，正弦把误差平方',
+      'Hickerson 数 h_n = n!/(2 (ln 2)^(n+1))，表中为约化形式',
+      'MathWorld 公式图片的 alt 文本写作 π^(−1/4)；Apéry 常数近似页面给出 π^(−4)，与其声称的 4 位精度相符' ]
+  },
+  en: {
+    entries:'entries', positive:'surplus > 0', stripped:'amplifiers stripped', notesTitle:'Notes', seeNote:'see note',
+    strippedTitle:'Entries stripped in this run', thExpr:'Expression', thN:'n', thC:'Complexity', thSurAsWritten:'Surplus as written', thCore:'Merged into',
+    resultIdle:'Results appear here: the value, n, complexity, surplus, and where it would sit in the ranking. Values are computed to 90 digits.',
+    enterFirst:'Enter an expression first.', preview:'Preview', badLatex:'LaTeX could not be rendered', cannot:'Cannot compute: ',
+    value:'Value', nearest:'Nearest integer', off:'off by', n:'n', complexity:'Complexity', postfix:'Postfix', surplus:'surplus', position:'Position in ranking',
+    wouldRank:(r,t)=>`would rank <b>${r}</b> of ${t}`, belowAll:(t)=>`below all ${t} entries`,
+    exact:'At 90 digits this expression is an integer (or an exact identity), so it is not an almost integer.',
+    footnote:'Complexity is computed from the postfix form above after the usual simplifications ($e^{x}$ as exp, squares as sq, $\\sqrt{}$ as sqrt, $1/x$ as recip). A RIES search may find a cheaper equivalent form.',
+    warnTrig:'The outermost operation is a trigonometric function with a value near ±1 or 0: this is an error-squaring amplifier at a critical point, and the ranking scores its core y ≈ kπ instead.',
+    warnPow:'The outermost operation is an integer power: if the base is a Pisot number (an algebraic integer whose other conjugates lie inside the unit circle) this is a geometric amplifier and the ranking strips it.',
+    pisotCore:(base,poly)=>`Pisot power: base ${base}, minimal polynomial ${poly} (no almost-integer core)`,
+    err:{ unknownChar:(c)=>`unrecognised character “${c}”`, missing:(v)=>`missing “${v}”`, funcArg:'function without an argument', incomplete:'incomplete expression',
+      badNumber:(v)=>`malformed number “${v}”`, unsupportedVar:(v)=>`variables are not supported (“${v}”)`, unexpectedSym:(v)=>`unexpected symbol “${v}”`,
+      unsupportedCmd:(v)=>`unsupported command “\\${v}”`, trailing:(v)=>`unexpected content starting at “${v}”`, negSqrt:'square root of a negative number', logPos:'the argument of a logarithm must be positive',
+      divZero:'division by zero', negPow:'non-integer power of a negative number', logBasePos:'logarithm argument and base must be positive', overflow:'numeric overflow', internal:'internal error' },
+    notes:null   // English notes come from the data itself
+  }
+};
+let lang = 'zh';
+try{ lang = localStorage.getItem('air-lang') || (String(navigator.language||'').toLowerCase().startsWith('zh') ? 'zh' : 'en'); }catch(e){}
+const T = () => I18N[lang];
+function applyLang(){
+  document.documentElement.dataset.lang = lang;
+  document.documentElement.lang = lang==='zh' ? 'zh-CN' : 'en';
+  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.lang===lang)));
+  try{ localStorage.setItem('air-lang', lang); }catch(e){}
+}
+function noteText(i){ const z=I18N.zh.notes; return (lang==='zh' && z && z[i]) ? z[i] : DATA.notes[i]; }
+function coreText(core){
+  const m = /^Pisot power: base (\S+), minpoly (\[.*\]) \(no almost-integer core\)$/.exec(core);
+  if (m) return T().pisotCore(m[1], m[2]);
+  return core.replace(/\(eq 6\)/,'').replace(/~/g,'≈').replace(/pi/g,'π');
+}
+
+/* ---------- value rendering: highlight the run of 0s / 9s ---------- */
+function renderValue(str){
+  str = String(str);
+  let [ip, fp=''] = str.split('.');
+  if (ip.startsWith('-')) ip = '−' + ip.slice(1);
+  let run = 0;
+  if (fp && (fp[0]==='0' || fp[0]==='9')){ const d=fp[0]; while(run<fp.length && fp[run]===d) run++; }
+  const head = fp.slice(0, run), tail = fp.slice(run);
+  return `<span class="int">${ip}</span>${fp?'.':''}${run?`<mark>${head}</mark>`:''}${tail}`;
+}
+function bar(s){
+  const max = 12, w = Math.min(Math.abs(s), max)/max*50;
+  const style = s>=0 ? `left:50%;width:${w}%` : `right:50%;width:${w}%`;
+  return `<span class="bar" aria-hidden="true"><i class="${s>=0?'pos':''}" style="${style}"></i></span>`;
+}
+
+/* ---------- fit long expressions: break at a top-level + / − into two lines, else scale ---------- */
+function splitTex(tex){
+  let depth=0, best=-1, bestDist=Infinity; const mid=tex.length/2;
+  for (let i=0;i<tex.length;i++){
+    const ch=tex[i];
+    if (ch==='\\'){ const m=tex.slice(i).match(/^\\([A-Za-z]+|.)/); if(m){ if(m[1]==='left') depth++; else if(m[1]==='right') depth--; i+=m[0].length-1; continue; } }
+    if (ch==='{'||ch==='(') depth++;
+    else if (ch==='}'||ch===')') depth--;
+    else if (depth===0 && i>0 && (ch==='+'||ch==='-')){ const d=Math.abs(i-mid); if(d<bestDist){ bestDist=d; best=i; } }
+  }
+  return best<0 ? null : [tex.slice(0,best).trim(), tex.slice(best).trim()];
+}
+async function fitExpressions(root){
+  if (!(window.MathJax && MathJax.typesetPromise)) return;
+  for (const ex of root.querySelectorAll('.ex:not([data-done])')){
+    const svg=ex.querySelector('svg'); if(!svg) continue;
+    const limit=ex.clientWidth+1;
+    if (svg.getBoundingClientRect().width>limit){
+      const parts=splitTex(ex.dataset.tex);
+      if (parts){
+        MathJax.typesetClear([ex]);
+        ex.innerHTML=`<div>$${parts[0]}$</div><div>$${parts[1]}$</div>`;
+        await MathJax.typesetPromise([ex]);
+        if ([...ex.querySelectorAll('svg')].some(s=>s.getBoundingClientRect().width>limit)) ex.classList.add('fit');
+      } else ex.classList.add('fit');
+    }
+    ex.dataset.done='1';
+  }
+}
+
+/* ---------- home ---------- */
+const rows = DATA.rows.slice(0, 100);
+function renderTable(){   // language-independent, rendered once
+  $('#ranktable tbody').innerHTML = rows.map(r => `
+    <tr class="${r.surplus>0?'positive':''}">
+      <td class="rank">${r.rank}${r.note?`<sup><a href="#note-${r.note}" data-note="${r.note}">${r.note}</a></sup>`:''}</td>
+      <td class="expr"><span class="ex" data-tex="${esc(r.latex)}">$${r.latex}$</span></td>
+      <td class="val">${renderValue(r.value)}</td>
+      <td class="num">${r.n.toFixed(2)}</td>
+      <td class="num">${r.complexity}</td>
+      <td class="num ${r.surplus>0?'pos':''}"><span class="sur">${bar(r.surplus)}<span>${fmt(r.surplus)}</span></span></td>
+    </tr>`).join('');
+}
+function renderTexts(){   // language-dependent bits
+  const t=T(); const pos=rows.filter(r=>r.surplus>0).length;
+  $('#stats').innerHTML = `
+    <div class="stat"><b>${rows.length}</b><span>${t.entries}</span></div>
+    <div class="stat"><b>${pos}</b><span>${t.positive}</span></div>
+    <div class="stat"><b>${DATA.stripped.length}</b><span>${t.stripped}</span></div>`;
+  $('#notes').innerHTML = DATA.notes.length ? `<p class="eyebrow">${t.notesTitle}</p><ol>${DATA.notes.map((_,i)=>`<li id="note-${i+1}">${noteText(i)}</li>`).join('')}</ol>` : '';
+  document.querySelectorAll('td.rank sup a').forEach(a=>a.title=`${t.seeNote} ${a.dataset.note}`);
+  const slot = document.querySelector(`.rules.l-${lang} .stripped-slot`);
+  document.querySelectorAll('.stripped-slot').forEach(s=>{ if(s!==slot) s.innerHTML=''; });
+  slot.innerHTML = `<h3>${t.strippedTitle}</h3><div class="tablewrap"><table>
+    <thead><tr><th>${t.thExpr}</th><th class="num">${t.thN}</th><th class="num">${t.thC}</th><th class="num">${t.thSurAsWritten}</th><th>${t.thCore}</th></tr></thead>
+    <tbody>${DATA.stripped.map(s=>`<tr><td class="expr"><span class="ex" data-tex="${esc(s.latex)}">$${s.latex}$</span></td><td class="num">${s.n.toFixed(2)}</td><td class="num">${s.complexity}</td><td class="num">${fmt(s.surplus)}</td><td>${coreText(s.core)}</td></tr>`).join('')}</tbody></table></div>`;
+  return slot;
+}
+
+/* ---------- complexity weights (ries.c, base 10 included) ---------- */
+const W = {'1':10,'2':13,'3':15,'4':16,'5':17,'6':18,'7':18,'8':19,'9':19,
+  pi:14, e:16, phi:18, gamma:18,
+  neg:7, recip:7, sq:9, sqrt:9, ln:13, exp:13, sin:13, cos:13, tan:16, sinh:13, cosh:13, tanh:13, atan:19 /* = "1 atan2" */,
+  '+':4, '-':5, '*':4, '/':5, '^':6, root:7, log:9};
+function wInt(n){ if (n<=9) return W[String(n)]; return 10 + Math.round(10*Math.log10(n)); }
+function complexityOf(tokens){ return tokens.reduce((s,t)=> s + (/^\d+$/.test(t) ? wInt(Number(t)) : W[t]), 0); }
+
+/* ---------- LaTeX tokenizer ---------- */
+const E = (k, ...a) => { const m=T().err[k]; return new Error(typeof m==='function' ? m(...a) : m); };
+function tokenize(src){
+  const out=[]; let i=0;
+  const skip = new Set(['left','right',',',';','!',' ','quad','qquad','displaystyle','mathrm','operatorname','text']);
+  while(i<src.length){
+    const ch=src[i];
+    if (/\s/.test(ch)){ i++; continue; }
+    if (ch==='\\'){
+      let j=i+1;
+      if (j<src.length && !/[A-Za-z]/.test(src[j])){ const c=src[j]; i=j+1; if (c==='{'||c==='}') out.push({t:'sym',v:c}); continue; }
+      while(j<src.length && /[A-Za-z]/.test(src[j])) j++;
+      const name=src.slice(i+1,j); i=j;
+      if (skip.has(name)) continue;
+      if (name==='cdot'||name==='times'){ out.push({t:'sym',v:'*'}); continue; }
+      if (name==='div'){ out.push({t:'sym',v:'/'}); continue; }
+      if (name==='varphi'){ out.push({t:'cmd',v:'phi'}); continue; }
+      out.push({t:'cmd',v:name}); continue;
+    }
+    if (/[0-9.]/.test(ch)){ let j=i; while(j<src.length && /[0-9.]/.test(src[j])) j++; out.push({t:'num',v:src.slice(i,j)}); i=j; continue; }
+    if ('{}()[]^_+-*/'.includes(ch)){ out.push({t:'sym',v:ch}); i++; continue; }
+    if (ch==='−'||ch==='–'){ out.push({t:'sym',v:'-'}); i++; continue; }
+    if (ch==='×'||ch==='·'){ out.push({t:'sym',v:'*'}); i++; continue; }
+    if (ch==='π'){ out.push({t:'cmd',v:'pi'}); i++; continue; }
+    if (ch==='φ'){ out.push({t:'cmd',v:'phi'}); i++; continue; }
+    if (ch==='γ'){ out.push({t:'cmd',v:'gamma'}); i++; continue; }
+    if (/[A-Za-z]/.test(ch)){ out.push({t:'id',v:ch}); i++; continue; }
+    throw E('unknownChar', ch);
+  }
+  return out;
+}
+
+/* ---------- parser -> AST ---------- */
+const CONSTS = new Set(['pi','e','phi','gamma']);
+const FUNCS = new Set(['ln','log','exp','sin','cos','tan','sinh','cosh','tanh','arctan','atan']);
+function parse(tokens){
+  let p=0;
+  const peek=()=>tokens[p], next=()=>tokens[p++];
+  const isSym=(v)=>peek()&&peek().t==='sym'&&peek().v===v;
+  function expect(v){ if(!isSym(v)) throw E('missing', v); p++; }
+  function group(){ if (isSym('{')){ p++; const e=expr(); expect('}'); return e; } return atom(); }
+  function startsAtom(){
+    const t=peek(); if(!t) return false;
+    if (t.t==='num'||t.t==='id') return true;
+    if (t.t==='cmd') return CONSTS.has(t.v)||FUNCS.has(t.v)||t.v==='frac'||t.v==='sqrt';
+    return t.t==='sym' && (t.v==='('||t.v==='{'||t.v==='[');
+  }
+  function expr(){ let a=term(); while(isSym('+')||isSym('-')){ const op=next().v; const b=term(); a={t:'bin',op,a,b}; } return a; }
+  function term(){
+    let a=unary();
+    for(;;){
+      if (isSym('*')){ p++; a={t:'bin',op:'*',a,b:unary()}; }
+      else if (isSym('/')){ p++; a={t:'bin',op:'/',a,b:unary()}; }
+      else if (startsAtom()){ a={t:'bin',op:'*',a,b:unary()}; }
+      else break;
+    }
+    return a;
+  }
+  function unary(){ if(isSym('-')){ p++; return {t:'neg',a:unary()}; } if(isSym('+')){ p++; return unary(); } return power(); }
+  function power(){ let a=atom(); while(isSym('^')){ p++; const b=group(); a={t:'bin',op:'^',a,b}; } return a; }
+  function funcArg(){
+    if (isSym('(')){ p++; const e=expr(); expect(')'); return e; }
+    if (isSym('{')){ p++; const e=expr(); expect('}'); return e; }
+    if (!startsAtom()) throw E('funcArg');
+    let a=power();
+    while(startsAtom()) a={t:'bin',op:'*',a,b:power()};
+    return a;
+  }
+  function atom(){
+    const t=next(); if(!t) throw E('incomplete');
+    if (t.t==='num'){ if(!/^\d+(\.\d+)?$/.test(t.v)) throw E('badNumber', t.v); return {t:'num',v:t.v}; }
+    if (t.t==='id'){ if(t.v==='e') return {t:'const',v:'e'}; throw E('unsupportedVar', t.v); }
+    if (t.t==='sym'){
+      if (t.v==='('){ const e=expr(); expect(')'); return e; }
+      if (t.v==='['){ const e=expr(); expect(']'); return e; }
+      if (t.v==='{'){ const e=expr(); expect('}'); return e; }
+      throw E('unexpectedSym', t.v);
+    }
+    if (CONSTS.has(t.v)) return {t:'const',v:t.v};
+    if (t.v==='frac'){ const a=group(); const b=group(); return {t:'bin',op:'/',a,b}; }
+    if (t.v==='sqrt'){
+      let n=null; if(isSym('[')){ p++; n=expr(); expect(']'); }
+      const a=group(); return n ? {t:'bin',op:'root',a:n,b:a} : {t:'un',f:'sqrt',a};
+    }
+    if (FUNCS.has(t.v)){
+      let f=t.v==='arctan'?'atan':t.v, base=null, pw=null;
+      if (f==='log' && isSym('_')){ p++; base=group(); }
+      if (isSym('^')){ p++; pw=group(); }
+      const arg=funcArg();
+      let node;
+      if (f==='log') node={t:'bin',op:'log',a:base||{t:'num',v:'10'},b:arg};
+      else node={t:'un',f,a:arg};
+      return pw ? {t:'bin',op:'^',a:node,b:pw} : node;
+    }
+    throw E('unsupportedCmd', t.v);
+  }
+  const ast=expr();
+  if (p<tokens.length) throw E('trailing', tokens[p].v);
+  return ast;
+}
+
+/* ---------- evaluate: Decimal value + canonical RIES postfix ---------- */
+Decimal.set({precision:90});
+const D = (x)=>new Decimal(x);
+const PI = Decimal.acos(-1), EE = Decimal.exp(1), PHI = D(1).plus(D(5).sqrt()).div(2);
+const GAMMA = D('0.57721566490153286060651209008240243104215933593992359880576723488486772677766467');
+function isInt(node, v){ return node.t==='num' && !node.v.includes('.') && Number(node.v)===v; }
+function asFrac(node){
+  if (node.t==='num'){
+    if (!node.v.includes('.')) return {p:BigInt(node.v), q:1n};
+    const [a,b]=node.v.split('.'); let p=BigInt(a+b), q=10n**BigInt(b.length);
+    const g=(x,y)=>{ while(y){ [x,y]=[y,x%y]; } return x; }; const d=g(p,q); return {p:p/d, q:q/d};
+  }
+  if (node.t==='bin' && node.op==='/' && node.a.t==='num' && node.b.t==='num' && !node.a.v.includes('.') && !node.b.v.includes('.')) return {p:BigInt(node.a.v), q:BigInt(node.b.v)};
+  return null;
+}
+function ev(node){
+  switch(node.t){
+    case 'num': {
+      const f=asFrac(node);
+      if (f.q===1n) return {v:D(f.p.toString()), pf:[f.p.toString()]};
+      return {v:D(f.p.toString()).div(D(f.q.toString())), pf:[f.p.toString(), f.q.toString(), '/']};
+    }
+    case 'const': return {v:{pi:PI,e:EE,phi:PHI,gamma:GAMMA}[node.v], pf:[node.v]};
+    case 'neg': { const a=ev(node.a); return {v:a.v.neg(), pf:[...a.pf,'neg']}; }
+    case 'un': {
+      const a=ev(node.a);
+      if (node.f==='sqrt'){ if(a.v.isNeg()) throw E('negSqrt'); return {v:a.v.sqrt(), pf:[...a.pf,'sqrt']}; }
+      if (node.f==='ln'){ if(!a.v.isPos()) throw E('logPos'); return {v:a.v.ln(), pf:[...a.pf,'ln']}; }
+      if (node.f==='exp') return {v:a.v.exp(), pf:[...a.pf,'exp']};
+      if (node.f==='atan') return {v:Decimal.atan(a.v), pf:[...a.pf,'atan']};
+      const fn={sin:Decimal.sin,cos:Decimal.cos,tan:Decimal.tan,sinh:Decimal.sinh,cosh:Decimal.cosh,tanh:Decimal.tanh}[node.f];
+      return {v:fn(a.v), pf:[...a.pf,node.f]};
+    }
+    case 'bin': {
+      const op=node.op;
+      if (op==='^'){
+        const a=ev(node.a);
+        if (node.a.t==='const' && node.a.v==='e'){ const b=ev(node.b); return {v:b.v.exp(), pf:[...b.pf,'exp']}; }
+        const f=asFrac(node.b);
+        if (f && f.q===1n && f.p===2n) return {v:a.v.mul(a.v), pf:[...a.pf,'sq']};
+        if (f && f.q===1n && f.p===4n) return {v:a.v.pow(4), pf:[...a.pf,'sq','sq']};
+        if (f && f.p===1n && f.q===2n){ if(a.v.isNeg()) throw E('negSqrt'); return {v:a.v.sqrt(), pf:[...a.pf,'sqrt']}; }
+        if (f && f.p===1n && f.q===4n){ if(a.v.isNeg()) throw E('negSqrt'); return {v:a.v.sqrt().sqrt(), pf:[...a.pf,'sqrt','sqrt']}; }
+        if (f && f.p===1n && f.q>2n){ if(a.v.isNeg()) throw E('negSqrt'); return {v:a.v.pow(D(1).div(D(f.q.toString()))), pf:[f.q.toString(), ...a.pf,'root']}; }
+        const b=ev(node.b);
+        if (a.v.isNeg() && !b.v.isInt()) throw E('negPow');
+        if (a.v.isZero() && b.v.isNeg()) throw E('divZero');
+        return {v:a.v.pow(b.v), pf:[...a.pf,...b.pf,'^']};
+      }
+      if (op==='root'){
+        const n=ev(node.a), a=ev(node.b);
+        if (isInt(node.a,2)) return {v:a.v.sqrt(), pf:[...a.pf,'sqrt']};
+        if (isInt(node.a,4)) return {v:a.v.sqrt().sqrt(), pf:[...a.pf,'sqrt','sqrt']};
+        if (a.v.isNeg()) throw E('negSqrt');
+        return {v:a.v.pow(D(1).div(n.v)), pf:[...n.pf,...a.pf,'root']};
+      }
+      if (op==='log'){
+        const b=ev(node.a), a=ev(node.b);
+        if (!a.v.isPos()||!b.v.isPos()) throw E('logBasePos');
+        return {v:a.v.ln().div(b.v.ln()), pf:[...b.pf,...a.pf,'log']};
+      }
+      const a=ev(node.a), b=ev(node.b);
+      if (op==='+'){ if(node.b.t==='neg'){ const c=ev(node.b.a); return {v:a.v.minus(c.v), pf:[...a.pf,...c.pf,'-']}; } return {v:a.v.plus(b.v), pf:[...a.pf,...b.pf,'+']}; }
+      if (op==='-') return {v:a.v.minus(b.v), pf:[...a.pf,...b.pf,'-']};
+      if (op==='*') return {v:a.v.mul(b.v), pf:[...a.pf,...b.pf,'*']};
+      if (op==='/'){ if(b.v.isZero()) throw E('divZero'); if(isInt(node.a,1)) return {v:D(1).div(b.v), pf:[...b.pf,'recip']}; return {v:a.v.div(b.v), pf:[...a.pf,...b.pf,'/']}; }
+    }
+  }
+  throw E('internal');
+}
+
+/* ---------- warnings for amplifier structures ---------- */
+function warnings(ast, v){
+  const w=[]; let top=ast; while(top.t==='neg') top=top.a;
+  if (top.t==='un' && ['sin','cos','tan'].includes(top.f)){
+    const dist=v.abs().minus(v.abs().round()).abs();
+    if (dist.lt(1e-3)) w.push(T().warnTrig);
+  }
+  if (top.t==='bin' && top.op==='^'){ const f=asFrac(top.b); if (f && f.q===1n && f.p>=5n) w.push(T().warnPow); }
+  return w;
+}
+
+/* ---------- calculator UI ---------- */
+const input=$('#latex-input'), preview=$('#preview'), result=$('#result');
+const EXAMPLES=['e^{\\pi\\sqrt{163}}', '22\\pi^4', '\\frac{163}{\\ln 163}', 'e^{\\pi}-\\pi', '\\sin 11', '126e^{\\pi}+8\\pi^4', '\\left(\\frac{\\ln(2)}{\\pi}+2\\right)^5', '\\frac{5\\phi e}{7\\pi}'];
+$('#examples').innerHTML = EXAMPLES.map(x=>`<button type="button" class="ghost" data-ex="${x.replace(/"/g,'&quot;')}">${x}</button>`).join('');
+$('#examples').addEventListener('click', e=>{ const b=e.target.closest('button[data-ex]'); if(!b) return; input.value=b.dataset.ex; updatePreview(); compute(); });
+let pvTimer=null;
+function updatePreview(){
+  clearTimeout(pvTimer);
+  pvTimer=setTimeout(()=>{
+    const s=input.value.trim();
+    if(!s){ preview.className='preview err'; preview.textContent=T().preview; return; }
+    preview.className='preview'; preview.innerHTML='$'+s.replace(/\$/g,'')+'$';
+    typeset(preview).catch(()=>{ preview.className='preview err'; preview.textContent=T().badLatex; });
+  }, 150);
+}
+function typeset(el){ return (window.MathJax && MathJax.typesetPromise) ? MathJax.typesetPromise([el]) : Promise.resolve(); }
+function idle(){ result.innerHTML=`<p class="small" style="margin:0">${T().resultIdle}</p>`; }
+function compute(){
+  const src=input.value.trim(); const t=T();
+  try{ localStorage.setItem('air-latex', src); }catch(e){}
+  if(!src){ result.innerHTML=`<p class="small" style="margin:0">${t.enterFirst}</p>`; return; }
+  try{
+    const ast=parse(tokenize(src.replace(/\$/g,'')));
+    const {v,pf}=ev(ast);
+    if(!v.isFinite()) throw E('overflow');
+    const nearest=v.round(), dist=v.minus(nearest).abs();
+    const c=complexityOf(pf);
+    const valueStr=v.toFixed(Math.max(0, Math.min(60, 60 - (v.abs().gte(1) ? v.abs().log(10).floor().toNumber()+1 : 0))));
+    if (dist.isZero() || dist.lt('1e-70')){
+      result.innerHTML=`<dl><dt>${t.value}</dt><dd class="val">${renderValue(valueStr)}</dd><dt>${t.complexity}</dt><dd>${c} <span class="small">(${pf.join(' ')})</span></dd></dl>
+        <div class="error">${t.exact}</div>`;
+      return;
+    }
+    const n=dist.log(10).neg().toNumber(), surplus=n-c/10;
+    const rank=DATA.rows.filter(r=>r.surplus>surplus).length+1;
+    const ws=warnings(ast, v);
+    result.innerHTML=`
+      <dl>
+        <dt>${t.value}</dt><dd class="val">${renderValue(valueStr)}</dd>
+        <dt>${t.nearest}</dt><dd class="val">${nearest.toFixed(0)}, ${t.off} ${dist.toExponential(3).replace('e','×10^')}</dd>
+        <dt>${t.n}</dt><dd class="big">${n.toFixed(2)}</dd>
+        <dt>${t.complexity}</dt><dd class="big">${c}</dd>
+        <dt>${t.postfix}</dt><dd class="val small">${pf.join(' ')}</dd>
+        <dt>${t.surplus}</dt><dd class="big ${surplus>0?'pos':''}">${fmt(surplus)}</dd>
+        <dt>${t.position}</dt><dd>${rank<=DATA.rows.length ? t.wouldRank(rank, DATA.rows.length) : t.belowAll(DATA.rows.length)}</dd>
+      </dl>
+      ${ws.map(w=>`<div class="warn">${w}</div>`).join('')}
+      <p class="small" style="margin-block:.8rem 0">${t.footnote}</p>`;
+    typeset(result);
+  }catch(err){
+    result.innerHTML=`<div class="error">${t.cannot}${err.message}</div>`;
+  }
+}
+$('#btn-calc').addEventListener('click', compute);
+$('#btn-clear').addEventListener('click', ()=>{ input.value=''; updatePreview(); result.innerHTML=`<p class="small" style="margin:0">${T().enterFirst}</p>`; input.focus(); });
+input.addEventListener('input', updatePreview);
+input.addEventListener('keydown', e=>{ if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){ e.preventDefault(); compute(); } });
+
+/* ---------- language switch ---------- */
+const typesetDone={};
+function setLang(l){
+  if (l===lang) return;
+  lang=l; applyLang();
+  const slot=renderTexts(); typeset(slot).then(()=>fitExpressions(slot));
+  if (input.value.trim()) compute(); else idle();
+  if (!preview.querySelector('svg')) updatePreview();
+}
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click', ()=>setLang(b.dataset.lang)));
+
+/* ---------- routing ---------- */
+function route(){
+  const h=location.hash.replace(/^#\/?/,'');
+  const name = h.startsWith('rules') ? 'rules' : h.startsWith('calc') ? 'calc' : 'home';
+  document.querySelectorAll('.page').forEach(p=>{ p.hidden = p.id!=='page-'+name; });
+  document.querySelectorAll('nav.tabs a').forEach(a=>{ if(a.dataset.route===name) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+  const el=$('#page-'+name);
+  if(!typesetDone[name]){ typesetDone[name]=true; typeset(el).then(()=>fitExpressions(el)); }
+  if (name==='calc' && !input.value){ try{ input.value=localStorage.getItem('air-latex')||''; }catch(e){} if(input.value){ updatePreview(); compute(); } }
+  if (h.startsWith('note-')){ const tg=document.getElementById(h); if(tg) tg.scrollIntoView({block:'center'}); }
+}
+applyLang();
+renderTable(); renderTexts(); idle();
+window.addEventListener('hashchange', route);
+if (window.MathJax && MathJax.startup && MathJax.startup.promise) MathJax.startup.promise.then(route); else route();
+if (!input.value){ input.value=EXAMPLES[0]; updatePreview(); compute(); }
+})();
+</script>
+<!--END-BODY-->
+</body>
+</html>

@@ -1,0 +1,849 @@
+{
+ "rows": [
+  {
+   "rank": 1,
+   "latex": "\\left(\\frac{\\ln\\left(640320^{3} + 744\\right)}{\\pi}\\right)^{2}",
+   "postfix": "640320 3 ^ 744 + ln pi / sq",
+   "value": "163.0000000000000000000000000000232167779",
+   "n": 28.63,
+   "complexity": 173,
+   "surplus": 11.33,
+   "note": null
+  },
+  {
+   "rank": 2,
+   "latex": "e^{\\pi \\sqrt{163}}",
+   "postfix": "pi 163 sqrt * exp",
+   "value": "262537412640768743.9999999999992500725972",
+   "n": 12.12,
+   "complexity": 72,
+   "surplus": 4.92,
+   "note": null
+  },
+  {
+   "rank": 3,
+   "latex": "e^{\\pi \\sqrt{652}}",
+   "postfix": "pi 652 sqrt * exp",
+   "value": "68925893036109279891085639286943768.0",
+   "n": 9.79,
+   "complexity": 78,
+   "surplus": 1.99,
+   "note": null
+  },
+  {
+   "rank": 4,
+   "latex": "e^{\\pi \\sqrt{58}}",
+   "postfix": "pi 58 sqrt * exp",
+   "value": "24591257751.99999982221324146957619235527",
+   "n": 6.75,
+   "complexity": 68,
+   "surplus": -0.05,
+   "note": null
+  },
+  {
+   "rank": 5,
+   "latex": "22 \\pi^{4}",
+   "postfix": "pi sq sq 22 *",
+   "value": "2143.000002748053619201687319151512447494",
+   "n": 5.56,
+   "complexity": 59,
+   "surplus": -0.34,
+   "note": null
+  },
+  {
+   "rank": 6,
+   "latex": "e^{\\pi \\sqrt{67}}",
+   "postfix": "pi 67 sqrt * exp",
+   "value": "147197952743.9999986624542245068292613126",
+   "n": 5.87,
+   "complexity": 68,
+   "surplus": -0.93,
+   "note": null
+  },
+  {
+   "rank": 7,
+   "latex": "88 \\ln 89",
+   "postfix": "88 89 ln *",
+   "value": "395.0000005364283057719677675789467313076",
+   "n": 6.27,
+   "complexity": 75,
+   "surplus": -1.23,
+   "note": null
+  },
+  {
+   "rank": 8,
+   "latex": "\\operatorname{erfi}\\left(\\operatorname{erfi}\\left(\\frac{1}{\\sqrt{3}}\\right)\\right)",
+   "postfix": "3 sqrt recip erfi erfi",
+   "value": "1.000020873638094301958790984063380991539",
+   "n": 4.68,
+   "complexity": 61,
+   "surplus": -1.42,
+   "note": null
+  },
+  {
+   "rank": 9,
+   "latex": "e^{\\pi} - \\pi",
+   "postfix": "pi exp pi -",
+   "value": "19.99909997918947576726644298466904449607",
+   "n": 3.05,
+   "complexity": 46,
+   "surplus": -1.55,
+   "note": 1
+  },
+  {
+   "rank": 10,
+   "latex": "e^{5 \\pi}",
+   "postfix": "5 pi * exp",
+   "value": "6635623.999341134233266264067099104921836",
+   "n": 3.18,
+   "complexity": 48,
+   "surplus": -1.62,
+   "note": null
+  },
+  {
+   "rank": 11,
+   "latex": "\\frac{22}{\\pi}",
+   "postfix": "22 pi /",
+   "value": "7.002817496043394773830885588390631929516",
+   "n": 2.55,
+   "complexity": 42,
+   "surplus": -1.65,
+   "note": 2
+  },
+  {
+   "rank": 12,
+   "latex": "\\left(\\sqrt{45}\\right)^{\\gamma}",
+   "postfix": "45 sqrt gamma ^",
+   "value": "3.000060964747862089151107609187765116399",
+   "n": 4.21,
+   "complexity": 60,
+   "surplus": -1.79,
+   "note": null
+  },
+  {
+   "rank": 13,
+   "latex": "e^{\\pi \\sqrt{37}}",
+   "postfix": "pi 37 sqrt * exp",
+   "value": "199148647.9999780465518567665009238753359",
+   "n": 4.66,
+   "complexity": 66,
+   "surplus": -1.94,
+   "note": null
+  },
+  {
+   "rank": 14,
+   "latex": "\\frac{4034 \\sqrt[5]{2}}{\\pi}",
+   "postfix": "4034 5 2 root * pi /",
+   "value": "1475.000000004168010349241114246732487378",
+   "n": 8.38,
+   "complexity": 106,
+   "surplus": -2.22,
+   "note": 3
+  },
+  {
+   "rank": 15,
+   "latex": "e^{\\pi \\sqrt{232}}",
+   "postfix": "pi 232 sqrt * exp",
+   "value": "604729957825300084759.9999921715268564303",
+   "n": 5.11,
+   "complexity": 74,
+   "surplus": -2.29,
+   "note": null
+  },
+  {
+   "rank": 16,
+   "latex": "\\frac{163}{\\ln 163}",
+   "postfix": "163 163 ln /",
+   "value": "31.99999873849008267575839302655654794109",
+   "n": 5.9,
+   "complexity": 82,
+   "surplus": -2.3,
+   "note": null
+  },
+  {
+   "rank": 17,
+   "latex": "510 \\log_{10} 7",
+   "postfix": "510 10 7 log *",
+   "value": "431.0000004072709836632302918822444586766",
+   "n": 6.39,
+   "complexity": 88,
+   "surplus": -2.41,
+   "note": null
+  },
+  {
+   "rank": 18,
+   "latex": "272 \\log_{\\pi} 97",
+   "postfix": "272 pi 97 log *",
+   "value": "1087.000000204958515735571061137038727898",
+   "n": 6.69,
+   "complexity": 91,
+   "surplus": -2.41,
+   "note": null
+  },
+  {
+   "rank": 19,
+   "latex": "10 \\left(\\frac{1}{\\sqrt{\\gamma}} - 1\\right)^{2}",
+   "postfix": "10 gamma sqrt recip 1 - sq *",
+   "value": "0.9999980360927256298925092745354615655055",
+   "n": 5.71,
+   "complexity": 82,
+   "surplus": -2.49,
+   "note": null
+  },
+  {
+   "rank": 20,
+   "latex": "\\left(\\frac{23}{9}\\right)^{5}",
+   "postfix": "23 9 / 5 ^",
+   "value": "109.000033870175616860573422073193449508",
+   "n": 4.47,
+   "complexity": 71,
+   "surplus": -2.63,
+   "note": null
+  },
+  {
+   "rank": 21,
+   "latex": "\\frac{1}{\\left(\\ln 2\\right)^{3}}",
+   "postfix": "2 ln 3 ^ recip",
+   "value": "3.00278070715690544349976740721930488951",
+   "n": 2.56,
+   "complexity": 54,
+   "surplus": -2.84,
+   "note": 4
+  },
+  {
+   "rank": 22,
+   "latex": "e^{\\pi \\sqrt{43}}",
+   "postfix": "pi 43 sqrt * exp",
+   "value": "884736743.9997774660349066619374620785854",
+   "n": 3.65,
+   "complexity": 66,
+   "surplus": -2.95,
+   "note": null
+  },
+  {
+   "rank": 23,
+   "latex": "e^{\\pi \\sqrt{719}}",
+   "postfix": "pi 719 sqrt * exp",
+   "value": "3842614373539548891490294277805829193.0",
+   "n": 4.89,
+   "complexity": 79,
+   "surplus": -3.01,
+   "note": null
+  },
+  {
+   "rank": 24,
+   "latex": "e^{-\\psi_0\\left(\\frac{2 + \\sqrt{3}}{4}\\right)}",
+   "postfix": "2 3 sqrt + 4 / digamma neg exp",
+   "value": "1.999999695338384704134659354647933169161",
+   "n": 6.52,
+   "complexity": 97,
+   "surplus": -3.18,
+   "note": null
+  },
+  {
+   "rank": 25,
+   "latex": "163 \\left(\\pi - e\\right)",
+   "postfix": "163 pi e - *",
+   "value": "68.99966449631192450568401364407498298971",
+   "n": 3.47,
+   "complexity": 71,
+   "surplus": -3.63,
+   "note": null
+  },
+  {
+   "rank": 26,
+   "latex": "\\frac{\\phi}{2^{\\ln 2}}",
+   "postfix": "phi 2 2 ln ^ /",
+   "value": "1.00075909911140985808793904356685019454",
+   "n": 3.12,
+   "complexity": 68,
+   "surplus": -3.68,
+   "note": null
+  },
+  {
+   "rank": 27,
+   "latex": "\\frac{\\pi^{9}}{e^{8}}",
+   "postfix": "pi 9 ^ 8 exp /",
+   "value": "9.999838797804880181883277456812637375936",
+   "n": 3.79,
+   "complexity": 76,
+   "surplus": -3.81,
+   "note": null
+  },
+  {
+   "rank": 28,
+   "latex": "e^{\\pi \\sqrt{74}}",
+   "postfix": "pi 74 sqrt * exp",
+   "value": "545518122089.9991746788535498566430173362",
+   "n": 3.08,
+   "complexity": 69,
+   "surplus": -3.82,
+   "note": null
+  },
+  {
+   "rank": 29,
+   "latex": "e^{\\pi \\sqrt{268}}",
+   "postfix": "pi 268 sqrt * exp",
+   "value": "21667237292024856735768.00029203884241296",
+   "n": 3.53,
+   "complexity": 74,
+   "surplus": -3.87,
+   "note": null
+  },
+  {
+   "rank": 30,
+   "latex": "\\ln K - \\ln\\left(\\ln K\\right)",
+   "postfix": "K ln K ln ln -",
+   "value": "1.000074426223593005111266030438952140566",
+   "n": 4.13,
+   "complexity": 80,
+   "surplus": -3.87,
+   "note": null
+  },
+  {
+   "rank": 31,
+   "latex": "e^{\\pi \\sqrt{522}}",
+   "postfix": "pi 522 sqrt * exp",
+   "value": "14871070263238043663567627879007.99984873",
+   "n": 3.82,
+   "complexity": 77,
+   "surplus": -3.88,
+   "note": null
+  },
+  {
+   "rank": 32,
+   "latex": "\\frac{1}{\\sqrt[3]{3} \\ln 2}",
+   "postfix": "3 3 root 2 ln * recip",
+   "value": "1.00030887205011271050752807912612759652",
+   "n": 3.51,
+   "complexity": 74,
+   "surplus": -3.89,
+   "note": null
+  },
+  {
+   "rank": 33,
+   "latex": "\\frac{10 \\left(e^{\\pi} - \\ln 3\\right)}{\\ln 2}",
+   "postfix": "10 pi exp 3 ln - * 2 ln /",
+   "value": "318.0000000332526559944151081114151281951",
+   "n": 7.48,
+   "complexity": 115,
+   "surplus": -4.02,
+   "note": null
+  },
+  {
+   "rank": 34,
+   "latex": "e^{\\pi \\sqrt{148}}",
+   "postfix": "pi 148 sqrt * exp",
+   "value": "39660184000219160.00096667435857524642577",
+   "n": 3.01,
+   "complexity": 72,
+   "surplus": -4.19,
+   "note": null
+  },
+  {
+   "rank": 35,
+   "latex": "\\frac{3}{\\left(\\ln 2\\right)^{4}}",
+   "postfix": "3 2 ln 4 ^ /",
+   "value": "12.9962905052769664622248845429643076305",
+   "n": 2.43,
+   "complexity": 68,
+   "surplus": -4.37,
+   "note": 4
+  },
+  {
+   "rank": 36,
+   "latex": "\\frac{1}{2 \\ln 2}",
+   "postfix": "2 2 ln * recip",
+   "value": "0.7213475204444817036799623405009460687133",
+   "n": 0.55,
+   "complexity": 50,
+   "surplus": -4.45,
+   "note": 4
+  },
+  {
+   "rank": 37,
+   "latex": "\\frac{1}{2 \\left(\\ln 2\\right)^{2}}",
+   "postfix": "2 2 ln sq * recip",
+   "value": "1.040684490502803898934790801867495712532",
+   "n": 1.39,
+   "complexity": 59,
+   "surplus": -4.51,
+   "note": 4
+  },
+  {
+   "rank": 38,
+   "latex": "\\frac{12}{\\left(\\ln 2\\right)^{5}}",
+   "postfix": "12 2 ln 5 ^ /",
+   "value": "74.99873544766160012763455037564470166913",
+   "n": 2.9,
+   "complexity": 75,
+   "surplus": -4.6,
+   "note": 4
+  },
+  {
+   "rank": 39,
+   "latex": "\\frac{e^{\\pi} - \\ln 3}{\\ln 2} - \\frac{4}{5}",
+   "postfix": "pi exp 3 ln - 2 ln / 4 5 / -",
+   "value": "31.00000000332526559944151081114151281951",
+   "n": 8.48,
+   "complexity": 134,
+   "surplus": -4.92,
+   "note": null
+  },
+  {
+   "rank": 40,
+   "latex": "\\ln 2 + \\log_{10} 2",
+   "postfix": "2 ln 10 2 log +",
+   "value": "0.9941771762239265046309710161826695948437",
+   "n": 2.23,
+   "complexity": 72,
+   "surplus": -4.97,
+   "note": null
+  },
+  {
+   "rank": 41,
+   "latex": "\\frac{5 \\phi e}{7 \\pi}",
+   "postfix": "5 phi * e * 7 pi * /",
+   "value": "1.00000970263606061164186678785699304313",
+   "n": 5.01,
+   "complexity": 100,
+   "surplus": -4.99,
+   "note": null
+  },
+  {
+   "rank": 42,
+   "latex": "\\frac{60}{\\left(\\ln 2\\right)^{6}}",
+   "postfix": "60 2 ln 6 ^ /",
+   "value": "541.0015185164235075692027746182564709468",
+   "n": 2.82,
+   "complexity": 83,
+   "surplus": -5.48,
+   "note": 4
+  },
+  {
+   "rank": 43,
+   "latex": "\\sqrt[4]{\\frac{91}{10}} - \\frac{33}{19}",
+   "postfix": "91 10 / sqrt sqrt 33 19 / -",
+   "value": "0.00000003661378056258570376234316589221702231857",
+   "n": 7.44,
+   "complexity": 131,
+   "surplus": -5.66,
+   "note": null
+  },
+  {
+   "rank": 44,
+   "latex": "e^{-\\pi} \\left(8 \\pi - 2\\right)",
+   "postfix": "pi neg exp 8 pi * 2 - *",
+   "value": "0.9996563886748290424994995423837425460775",
+   "n": 3.46,
+   "complexity": 93,
+   "surplus": -5.84,
+   "note": null
+  },
+  {
+   "rank": 45,
+   "latex": "3 \\sqrt{2} \\left(\\sqrt{5} - 2\\right)",
+   "postfix": "3 2 sqrt * 5 sqrt 2 - *",
+   "value": "1.001551606266567703186548288039967129741",
+   "n": 2.81,
+   "complexity": 89,
+   "surplus": -6.09,
+   "note": null
+  },
+  {
+   "rank": 46,
+   "latex": "\\frac{613}{37} e - \\frac{35}{991}",
+   "postfix": "613 37 / e * 35 991 / -",
+   "value": "44.999999999939623550123367441015885459",
+   "n": 10.22,
+   "complexity": 164,
+   "surplus": -6.18,
+   "note": null
+  },
+  {
+   "rank": 47,
+   "latex": "\\frac{360}{\\left(\\ln 2\\right)^{7}}",
+   "postfix": "360 2 ln 7 ^ /",
+   "value": "4683.001247262257437180467152479009585951",
+   "n": 2.9,
+   "complexity": 91,
+   "surplus": -6.2,
+   "note": 4
+  },
+  {
+   "rank": 48,
+   "latex": "e^{6} - \\pi^{4} - \\pi^{5}",
+   "postfix": "6 exp pi sq sq - pi 5 ^ -",
+   "value": "0.00001767345123210920553781124756187587160506",
+   "n": 4.75,
+   "complexity": 110,
+   "surplus": -6.25,
+   "note": null
+  },
+  {
+   "rank": 49,
+   "latex": "\\frac{2520}{\\left(\\ln 2\\right)^{8}}",
+   "postfix": "2520 2 ln 8 ^ /",
+   "value": "47292.99873131462390482283548778630880581",
+   "n": 2.9,
+   "complexity": 100,
+   "surplus": -7.1,
+   "note": 4
+  },
+  {
+   "rank": 50,
+   "latex": "\\frac{53453}{\\ln 53453}",
+   "postfix": "53453 53453 ln /",
+   "value": "4910.000001220760738224697743214026371652",
+   "n": 5.91,
+   "complexity": 132,
+   "surplus": -7.29,
+   "note": null
+  },
+  {
+   "rank": 51,
+   "latex": "\\frac{10}{81} \\left(11 - \\sqrt{40}\\right) - \\gamma",
+   "postfix": "10 81 / 11 40 sqrt - * gamma -",
+   "value": "-0.0000002723505154117173500022880119455408149259",
+   "n": 6.56,
+   "complexity": 141,
+   "surplus": -7.54,
+   "note": null
+  },
+  {
+   "rank": 52,
+   "latex": "\\frac{10 \\phi \\Gamma\\left(\\frac{3}{4}\\right)^{2}}{e^{\\frac{5 \\pi}{6}} \\sqrt{\\pi}}",
+   "postfix": "10 phi * 3 4 / Gamma sq * 5 pi * 6 / exp pi sqrt * /",
+   "value": "1.000000000000045422021366484455723616776",
+   "n": 13.34,
+   "complexity": 209,
+   "surplus": -7.56,
+   "note": null
+  },
+  {
+   "rank": 53,
+   "latex": "2 \\cos\\left(\\cos\\left(\\cos\\left(\\cos\\left(\\cos\\left(\\cos\\left(\\cos 5\\right)\\right)\\right)\\right)\\right)\\right)^{2}",
+   "postfix": "5 cos cos cos cos cos cos cos sq 2 *",
+   "value": "0.9999952547970004481520450588814584668441",
+   "n": 5.32,
+   "complexity": 134,
+   "surplus": -8.08,
+   "note": null
+  },
+  {
+   "rank": 54,
+   "latex": "\\frac{20160}{\\left(\\ln 2\\right)^{9}}",
+   "postfix": "20160 2 ln 9 ^ /",
+   "value": "545834.9979074851670672910397944923634653",
+   "n": 2.68,
+   "complexity": 109,
+   "surplus": -8.22,
+   "note": 4
+  },
+  {
+   "rank": 55,
+   "latex": "\\frac{181440}{\\left(\\ln 2\\right)^{10}}",
+   "postfix": "181440 2 ln 10 ^ /",
+   "value": "7087261.001622899120979187515908220487645",
+   "n": 2.79,
+   "complexity": 120,
+   "surplus": -9.21,
+   "note": 4
+  },
+  {
+   "rank": 56,
+   "latex": "\\left(\\sqrt{2} \\psi\\right)^{24} - e^{\\pi \\sqrt{31}}",
+   "postfix": "2 sqrt psi * 24 ^ pi 31 sqrt * exp -",
+   "value": "24.00000698848638249424700263361726022641",
+   "n": 5.16,
+   "complexity": 144,
+   "surplus": -9.24,
+   "note": null
+  },
+  {
+   "rank": 57,
+   "latex": "10 \\tanh\\left(\\frac{28 \\pi}{15}\\right) - \\frac{\\pi^{9}}{e^{8}}",
+   "postfix": "10 28 pi * 15 / tanh * pi 9 ^ 8 exp / -",
+   "value": "0.000000006004520671120618580489465138000574023827",
+   "n": 8.22,
+   "complexity": 187,
+   "surplus": -10.48,
+   "note": null
+  },
+  {
+   "rank": 58,
+   "latex": "\\frac{1814400}{\\left(\\ln 2\\right)^{11}}",
+   "postfix": "1814400 2 ln 11 ^ /",
+   "value": "102247563.0052710420110883885941994702319",
+   "n": 2.28,
+   "complexity": 130,
+   "surplus": -10.72,
+   "note": 4
+  },
+  {
+   "rank": 59,
+   "latex": "\\frac{7}{64} \\ln 2 - \\frac{131}{1728}",
+   "postfix": "7 64 / 2 ln * 131 1728 / -",
+   "value": "0.000002787688558833032324578099302876948072642",
+   "n": 5.55,
+   "complexity": 164,
+   "surplus": -10.85,
+   "note": null
+  },
+  {
+   "rank": 60,
+   "latex": "\\frac{19958400}{\\left(\\ln 2\\right)^{12}}",
+   "postfix": "19958400 2 ln 12 ^ /",
+   "value": "1622632572.997550049852874861078499079054",
+   "n": 2.61,
+   "complexity": 141,
+   "surplus": -11.49,
+   "note": 4
+  },
+  {
+   "rank": 61,
+   "latex": "\\frac{3987^{12} + 4365^{12}}{4472^{12}}",
+   "postfix": "3987 12 ^ 4365 12 ^ + 4472 12 ^ /",
+   "value": "1.000000000018942640621488779011319678951",
+   "n": 10.72,
+   "complexity": 229,
+   "surplus": -12.18,
+   "note": null
+  },
+  {
+   "rank": 62,
+   "latex": "\\frac{1782^{12} + 1841^{12}}{1922^{12}}",
+   "postfix": "1782 12 ^ 1841 12 ^ + 1922 12 ^ /",
+   "value": "0.999999999724457182571185494402053996829",
+   "n": 9.56,
+   "complexity": 219,
+   "surplus": -12.34,
+   "note": null
+  },
+  {
+   "rank": 63,
+   "latex": "\\frac{\\cos\\left(\\frac{1}{10}\\right) + \\cosh\\left(\\frac{1}{10}\\right) + 2 \\cos\\left(\\frac{\\sqrt{2}}{20}\\right) \\cosh\\left(\\frac{\\sqrt{2}}{20}\\right)}{4}",
+   "postfix": "10 recip cos 10 recip cosh + 2 sqrt 20 / cos 2 sqrt 20 / cosh * 2 * + 4 /",
+   "value": "1.000000000000248015873015873020652493205",
+   "n": 12.61,
+   "complexity": 256,
+   "surplus": -12.99,
+   "note": null
+  },
+  {
+   "rank": 64,
+   "latex": "\\frac{3113510400}{\\left(\\ln 2\\right)^{14}}",
+   "postfix": "3113510400 2 ln 14 ^ /",
+   "value": "526858348381.0012482861804893808362085164",
+   "n": 2.9,
+   "complexity": 163,
+   "surplus": -13.4,
+   "note": 4
+  },
+  {
+   "rank": 65,
+   "latex": "\\frac{239500800}{\\left(\\ln 2\\right)^{13}}",
+   "postfix": "239500800 2 ln 13 ^ /",
+   "value": "28091567594.98157244071518917609952579849",
+   "n": 1.73,
+   "complexity": 152,
+   "surplus": -13.47,
+   "note": 4
+  },
+  {
+   "rank": 66,
+   "latex": "e \\gamma \\phi \\left(C \\pi\\right)^{-\\left(\\frac{2}{7} + \\gamma\\right)}",
+   "postfix": "e gamma * phi * C pi * 2 7 / gamma + neg ^ *",
+   "value": "1.019789015422086636118471080276053614631",
+   "n": 1.7,
+   "complexity": 171,
+   "surplus": -15.4,
+   "note": null
+  },
+  {
+   "rank": 67,
+   "latex": "e C^{\\frac{5}{7} - \\gamma} \\pi^{-\\left(\\frac{2}{7} + \\gamma\\right)}",
+   "postfix": "e C 5 7 / gamma - ^ * pi 2 7 / gamma + neg ^ *",
+   "value": "1.000146781012836845544848417971494178585",
+   "n": 3.83,
+   "complexity": 196,
+   "surplus": -15.77,
+   "note": null
+  },
+  {
+   "rank": 68,
+   "latex": "\\frac{2 + 4 \\sqrt{2} + \\left(4 + \\sqrt{2}\\right) \\sinh^{-1} 1}{30} - \\sqrt{2} + 1",
+   "postfix": "2 4 2 sqrt * + 4 2 sqrt + 1 asinh * + 30 / 2 sqrt - 1 +",
+   "value": "0.00007974022193872862915235436560517328675211",
+   "n": 4.1,
+   "complexity": 205,
+   "surplus": -16.4,
+   "note": null
+  },
+  {
+   "rank": 69,
+   "latex": "\\frac{43589145600}{\\left(\\ln 2\\right)^{15}}",
+   "postfix": "43589145600 2 ln 15 ^ /",
+   "value": "10641342970443.0845319270950701503926392",
+   "n": 1.07,
+   "complexity": 175,
+   "surplus": -16.43,
+   "note": 4
+  },
+  {
+   "rank": 70,
+   "latex": "\\frac{\\sqrt{\\frac{61421 - 23 \\sqrt{5831385}}{30}}}{2}",
+   "postfix": "61421 23 5831385 sqrt * - 30 / sqrt 2 /",
+   "value": "7.00000008573674832857288196931025039126",
+   "n": 7.07,
+   "complexity": 235,
+   "surplus": -16.43,
+   "note": null
+  },
+  {
+   "rank": 71,
+   "latex": "\\frac{653837184000}{\\left(\\ln 2\\right)^{16}}",
+   "postfix": "653837184000 2 ln 16 ^ /",
+   "value": "230283190977853.0374360391259771068310386",
+   "n": 1.43,
+   "complexity": 187,
+   "surplus": -17.27,
+   "note": 4
+  },
+  {
+   "rank": 72,
+   "latex": "\\frac{C^{\\gamma - \\frac{19}{7}} \\pi^{\\frac{2}{7} + \\gamma}}{2 \\phi}",
+   "postfix": "C gamma 19 7 / - ^ pi 2 7 / gamma + ^ * 2 phi * /",
+   "value": "1.001047724529842282867958633461886043529",
+   "n": 2.98,
+   "complexity": 215,
+   "surplus": -18.52,
+   "note": null
+  },
+  {
+   "rank": 73,
+   "latex": "\\frac{10461394944000}{\\left(\\ln 2\\right)^{17}}",
+   "postfix": "10461394944000 2 ln 17 ^ /",
+   "value": "5315654681981354.51307674345680557799539",
+   "n": 0.31,
+   "complexity": 199,
+   "surplus": -19.59,
+   "note": 4
+  },
+  {
+   "rank": 74,
+   "latex": "1 - 262537412640768744 e^{-\\pi \\sqrt{163}} - 196884 e^{-2 \\pi \\sqrt{163}} + 103378831900730205293632 e^{-3 \\pi \\sqrt{163}}",
+   "postfix": "1 262537412640768744 pi 163 sqrt * neg exp * - 196884 2 pi 163 sqrt * * neg exp * - 103378831900730205293632 3 pi 163 sqrt * * neg exp * +",
+   "value": "0.00000000000000000000000000000000000000000000000000000000001613679004761483558545299948868472259513",
+   "n": 58.79,
+   "complexity": 796,
+   "surplus": -20.81,
+   "note": null
+  },
+  {
+   "rank": 75,
+   "latex": "\\frac{177843714048000}{\\left(\\ln 2\\right)^{18}}",
+   "postfix": "177843714048000 2 ln 18 ^ /",
+   "value": "130370767029135900.4579853491967736302239",
+   "n": 0.34,
+   "complexity": 213,
+   "surplus": -20.96,
+   "note": 4
+  },
+  {
+   "rank": 76,
+   "latex": "\\zeta\\left(3\\right) - \\left(\\frac{1}{\\sqrt[3]{\\gamma}} + \\frac{1}{\\pi^{4}} \\frac{1}{\\left(1 + 2 \\gamma - \\frac{2}{130 + \\pi^{2}}\\right)^{3}}\\right)",
+   "postfix": "3 zeta 3 gamma root recip pi sq sq recip 1 2 gamma * + 2 130 pi sq + / - 3 ^ recip * + -",
+   "value": "-0.00002071411405561051759711018212631052048902",
+   "n": 4.68,
+   "complexity": 287,
+   "surplus": -24.02,
+   "note": 5
+  },
+  {
+   "rank": 77,
+   "latex": "\\frac{2411287}{30240} - \\frac{100}{9} \\pi^{2} + \\frac{1877}{21} \\ln 2 - \\frac{200}{3} \\left(\\ln 2\\right)^{2}",
+   "postfix": "2411287 30240 / 100 9 / pi sq * - 1877 21 / 2 ln * + 200 3 / 2 ln sq * -",
+   "value": "0.000009807101402442472906329825824002834327113",
+   "n": 5.01,
+   "complexity": 422,
+   "surplus": -37.19,
+   "note": null
+  },
+  {
+   "rank": 78,
+   "latex": "\\frac{80497}{40320} - \\frac{43}{144} \\pi^{2} + \\frac{3293}{1260} \\ln 2 - \\frac{43}{24} \\left(\\ln 2\\right)^{2}",
+   "postfix": "80497 40320 / 43 144 / pi sq * - 3293 1260 / 2 ln * + 43 24 / 2 ln sq * -",
+   "value": "0.000002841868007148721019193711053492324697819",
+   "n": 5.55,
+   "complexity": 439,
+   "surplus": -38.35,
+   "note": null
+  }
+ ],
+ "notes": [
+  "core of the stripped amplifiers cos(ln(π+20)) and cos(π cos(π cos(ln(π+20))))): e^π ≈ π+20 gives ln(π+20) ≈ π, each cosine squares the error",
+  "core of the stripped amplifiers sin 11 and cos 22: 22 ≈ 7π, and cos(7π+ε) = −1 + ε²/2, sin²11 = (1 − cos 22)/2",
+  "core of the stripped amplifier sin(2017·2^(1/5)): 2017·2^(1/5) ≈ 737.5π, the sine squares the error",
+  "Hickerson number h_n = n!/(2 (ln 2)^(n+1)), shown in lowest terms",
+  "MathWorld alt-text reads π^(−1/4); the Apéry constant approximations page gives π^(−4), which matches the stated 4-digit accuracy"
+ ],
+ "stripped": [
+  {
+   "latex": "\\sin 11",
+   "name": "sin(11)",
+   "n": 5.01,
+   "complexity": 33,
+   "surplus": 1.71,
+   "core": "22/pi ~ 7"
+  },
+  {
+   "latex": "\\cos 22",
+   "name": "cos(22)",
+   "n": 4.41,
+   "complexity": 36,
+   "surplus": 0.81,
+   "core": "22/pi ~ 7"
+  },
+  {
+   "latex": "\\sin\\left(2017 \\sqrt[5]{2}\\right)",
+   "name": "sin(2017*2^(1/5))",
+   "n": 16.67,
+   "complexity": 97,
+   "surplus": 6.97,
+   "core": "4034*2^(1/5)/pi ~ 1475"
+  },
+  {
+   "latex": "\\cos\\left(\\ln\\left(\\pi + 20\\right)\\right)",
+   "name": "cos(ln(pi+20))",
+   "n": 9.12,
+   "complexity": 67,
+   "surplus": 2.42,
+   "core": "e^pi - pi ~ 20 (eq 6)"
+  },
+  {
+   "latex": "\\cos\\left(\\pi \\cos\\left(\\pi \\cos\\left(\\ln\\left(\\pi + 20\\right)\\right)\\right)\\right)",
+   "name": "cos(pi cos(pi cos(ln(pi+20))))",
+   "n": 34.41,
+   "complexity": 93,
+   "surplus": 25.11,
+   "core": "e^pi - pi ~ 20 (eq 6)"
+  },
+  {
+   "latex": "\\psi^{11}",
+   "name": "psi^11 (supergolden)",
+   "n": 3.65,
+   "complexity": 44,
+   "surplus": -0.75,
+   "core": "Pisot power: base 1.46557123188, minpoly [-1, 1, 0, 1] (no almost-integer core)"
+  },
+  {
+   "latex": "\\left(1 + \\frac{2 \\sqrt{21} \\cos\\left(\\frac{\\arctan\\left(\\frac{\\sqrt{3}}{9}\\right)}{3}\\right)}{3}\\right)^{100}",
+   "name": "(1 + 2 sqrt21 cos(atan(sqrt3/9)/3)/3)^100  [user-supplied, not on MathWorld]",
+   "n": 15.99,
+   "complexity": 208,
+   "surplus": -4.81,
+   "core": "Pisot power: base 4.04891733952, minpoly [1, -3, -4, -1] (no almost-integer core)"
+  }
+ ]
+}
