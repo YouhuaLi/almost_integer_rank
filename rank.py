@@ -241,6 +241,65 @@ for it in items:
         kept.append(it)
 items = kept
 
+# ---------------- structural-stability test ----------------
+# A genuine coincidence is destroyed when some constant in the expression is moved by 1%;
+# a structural limit (1/pi^100, cos(pi/8^8), iterated cos near -1) survives any such move.
+# Integer terms added/subtracted at the top level are exempt: perturbing them merely shifts the target.
+CONST_TOKENS = {'pi', 'e', 'phi', 'gamma', 'C', 'K', 'psi'}
+def toplevel_additive_ints(toks):
+    """indices of integer tokens that are direct operands of the outermost chain of + / - / neg"""
+    spans = []                       # stack of (start_index, end_index) per subexpression
+    for i, t in enumerate(toks):
+        if t in UN: a = spans.pop(); spans.append((a[0], i))
+        elif t in BIN: b = spans.pop(); a = spans.pop(); spans.append((a[0], i))
+        else: spans.append((i, i))
+    out = set()
+    def walk(lo, hi):
+        t = toks[hi]
+        if lo == hi:
+            if re.fullmatch(r'\d+', t): out.add(lo)
+            return
+        if t in ('+', '-') or t == 'neg':
+            # find split: the left operand ends where the right operand begins
+            if t == 'neg': walk(lo, hi - 1); return
+            depth = 0
+            for j in range(hi - 1, lo - 1, -1):     # scan right operand backwards
+                tj = toks[j]
+                depth += 1 if (tj not in UN and tj not in BIN) else (0 if tj in UN else -1)
+                if depth == 1: walk(j, hi - 1); walk(lo, j - 1); return
+    walk(0, len(toks) - 1)
+    return out
+def digits_of(pf, dps=60):
+    with mp.workdps(dps):
+        try: x = eval_postfix(pf)
+        except Exception: return None
+        d = fabs(x - nint(x))
+        return float(-log(d)/log(10)) if d != 0 else float('inf')
+def stability(pf):
+    """min over 1% perturbations of every constant of the remaining digits; None if nothing to perturb"""
+    toks = pf.split(); exempt = toplevel_additive_ints(toks); worst = None
+    for i, t in enumerate(toks):
+        if i in exempt or not (re.fullmatch(r'\d+', t) or t in CONST_TOKENS): continue
+        for f in ('101 100 / *', '99 100 / *'):
+            v = digits_of(' '.join(toks[:i+1] + f.split() + toks[i+1:]))
+            if v is None: v = 0.0
+            if worst is None or v < worst: worst = v
+    return worst
+STABLE_DIGITS = 3.0      # every perturbation still leaves >= 3 digits  =>  structural, not a coincidence
+MIN_DIGITS = 2.0         # admission threshold: |x - nint x| < 0.01
+
+kept = []; BELOW = []
+for it in items:
+    eq, name, pf, val, note = it
+    st = stability(pf)
+    if st is not None and st >= STABLE_DIGITS:
+        AMP.append((eq, name, pf, val, 'structurally stable: every constant perturbed by 1%% still leaves %.1f digits' % st))
+    elif n_cont(val) < MIN_DIGITS:
+        BELOW.append(it)
+    else:
+        kept.append(it)
+items = kept
+
 rows = []
 def score(eq, name, pf, val, note=''):
     c = complexity(pf); nc = n_cont(val)
@@ -251,6 +310,9 @@ for eq, name, pf, val, note in items:
 rows.sort(key=lambda r: -r['surplus'])
 
 amps = [dict(score(eq, name, pf, val), core=core) for eq, name, pf, val, core in AMP]
+below = [score(eq, name, pf, val, note) for eq, name, pf, val, note in BELOW]
+print('Below admission threshold (n < %.0f):' % MIN_DIGITS)
+for r in below: print('  eq %-4s %-40s n=%6.2f' % (r['eq'], r['name'][:40], r['n_abs']))
 print('Stripped amplifiers:')
 for r in amps: print('  eq %-4s %-40s n=%6.2f c=%3d surplus=%7.2f -> %s' % (r['eq'], r['name'][:40], r['n_abs'], r['cplx'], r['surplus'], r['core']))
 print()
@@ -319,6 +381,8 @@ def write_results(path='results.md'):
     '- complexity = sum of RIES symbol weights (ries.c: base 10 + per-symbol weight) of the cheapest postfix form. Integer N≥10 weighs 10+round(10·log10 N); cosh/sinh/tanh 13, asinh 15; Gamma/digamma/erfi/zeta 15; gamma(Euler)/Catalan C/Khinchin K/supergolden psi 18',
     '- surplus = n − complexity/10. RIES weights are calibrated so ~10^(c/10) expressions have complexity ≤ c, so surplus > 0 means rarer than chance; brute-force search in trivial families (a·α/b, a/ln a, a·ln b) tops out at about −0.4',
     '- Amplifiers stripped (scored by their core almost integer, or dropped when there is none): error-squaring trig near a critical point, and Pisot powers x^k (algebraic-integer base with all other conjugates inside the unit circle, detected with findpoly). Stripped: ' + '; '.join('%s (surplus as written %.2f)' % (r['name'].split('  [')[0], r['surplus']) for r in amps),
+    '- Admission threshold n ≥ 2 (|x − nint x| < 0.01). Below threshold, not ranked: ' + '; '.join('%s (n = %.2f)' % (r['name'].split('  [')[0], r['n_abs']) for r in below),
+    '- Structural-stability test: every constant is perturbed by ±1% (top-level additive integers exempt); if every perturbation still leaves ≥ 3 digits the near-integrality is a limit, not a coincidence, and the entry is stripped',
     '- Excluded: infinite sums/products, non-closed forms and physical-unit items\n',
     '| rank | expression | value | n | complexity | surplus |', '|---|---|---|---|---|---|']
     notes = {}                                   # note text -> footnote number, in order of first appearance
@@ -344,6 +408,8 @@ def write_site_data(path='site/data.json'):
                          complexity=r['cplx'], surplus=round(r['surplus'], 2), note=k))
     stripped = [dict(latex=to_latex(a['postfix']), name=a['name'], n=round(a['n_abs'], 2), complexity=a['cplx'],
                      surplus=round(a['surplus'], 2), core=a['core']) for a in amps]
-    json.dump(dict(rows=data, notes=[t for t, k in sorted(notes.items(), key=lambda kv: kv[1])], stripped=stripped),
+    below_rows = [dict(latex=to_latex(b['postfix']), name=b['name'], n=round(b['n_abs'], 2), complexity=b['cplx'],
+                       surplus=round(b['surplus'], 2), value=b['value']) for b in below]
+    json.dump(dict(rows=data, notes=[t for t, k in sorted(notes.items(), key=lambda kv: kv[1])], stripped=stripped, below=below_rows),
               open(path, 'w'), indent=1, ensure_ascii=False)
 write_site_data()
