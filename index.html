@@ -223,16 +223,17 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
   <h2>为什么是 n − complexity/10</h2>
   <p>ries.c 的日志记录了复杂度 $\le 64$ 的表达式共 2 236 462 个，$\log_{10}$ 后为 6.35，约等于 $64/10$。也就是说复杂度 $c$ 对应大约 $10^{c/10}$ 个同样简单的表达式。随机实数落在整数 $10^{-n}$ 邻域内的概率约为 $10^{-n}$，于是在复杂度不超过 $c$ 的表达式中，和某条目一样好的近整数期望有 $10^{c/10-n}$ 个。surplus 就是这个期望个数的负对数：大于 0 说明比随机碰巧更罕见，小于 0 说明这种精度在这个复杂度下本来就会出现。这与 Borwein 讨论"high precision fraud"时的判据一致。</p>
   <div class="callout">
-    <p style="margin:0">对平凡家族做穷举检验：$\sqrt2\cdot a/b$（$a\le 20000$, $b\le 300$）最好只有 $-3.1$，$\pi\cdot 113 = 354.99997$ 为 $-0.38$，$a/\ln a$（$a \le 10^6$）最好是 $163/\ln 163$ 的 $-2.3$。对 RIES 全空间枚举到复杂度 74（约 197 万个不同值），剔除放大器后没有任何条目 surplus 为正。表中三个正盈余的条目全部来自模函数（$j$ 不变量）。</p>
+    <p style="margin:0">对平凡家族做穷举检验：$\sqrt2\cdot a/b$（$a\le 20000$, $b\le 300$）最好只有 $-3.1$，$\pi\cdot 113 = 354.99997$ 为 $-0.38$，$a/\ln a$（$a \le 10^6$）最好是 $163/\ln 163$ 的 $-2.3$。对 RIES 全空间枚举到复杂度 74（约 197 万个不同值），剔除放大器后没有任何条目 surplus 为正。表中两个正盈余的条目 $e^{\pi\sqrt{163}}$、$e^{\pi\sqrt{652}}$ 都来自模函数（$j$ 不变量）。</p>
   </div>
   <p>作为比较，$n/c$ 与 $n/c^2$ 没有概率含义：$n/c$ 把 5 位换 33 的 $\sin 11$ 与 34 位换 93 的嵌套余弦看成只差 2.4 倍，实际稀有程度差 $10^{23}$ 倍；$n/c^2$ 的排名会随 RIES 基数的任意选择而重排。</p>
 
   <p class="eyebrow">剥离</p>
   <h2>放大器</h2>
-  <p>按符号计数的复杂度识别不了两类机械结构，它们能用很低的复杂度换取任意多的精度，因此单独处理：</p>
+  <p>按符号计数的复杂度识别不了三类机械结构，它们能用很低的复杂度换取任意多的精度，因此单独处理：</p>
   <ul>
     <li><b>临界点处的三角函数。</b>$\cos y \approx \pm1$ 等价于 $y \approx k\pi$，而 $\cos(k\pi+\varepsilon) = \pm(1 - \varepsilon^2/2)$，底层近似 $y\approx k\pi$ 的误差被平方。$\cos(\pi\cos(\pi\cos(\ln(\pi+20))))$ 有 34 位，全部由 $e^{\pi} - \pi \approx 20$ 的 3 位机械放大而来。此类条目归并到核心近整数打分。</li>
     <li><b>Pisot 数的幂。</b>若代数整数 $x$ 的其余共轭根模都小于 1，则 $x^k$ 与整数的距离按几何级数收缩，而复杂度只随 $\log k$ 增长，surplus 随 $k$ 无界上升。用 findpoly 求底数的最小多项式自动检测，命中者直接退出排名，如 supergolden 数 $\psi^{11}$。</li>
+    <li><b>模函数在 CM 点的代数值。</b>复乘理论保证：模函数（$j$、Weber 函数等）在 CM 点取代数值 $y$，且 $y = e^{\pi\sqrt r}\,(1 + O(e^{-\pi\sqrt r}))$，$r$ 为有理数，例如 $j = e^{\pi\sqrt D} - 744 + O(e^{-\pi\sqrt D})$。这是定理而非巧合：用单位 $a + \sqrt{a^2-1}$ 的乘积拼出类不变量，精度随 $\sqrt D$ 增长而复杂度增长很慢。再套一层 $\ln y/\pi$，$y$ 的相对精度就变成了绝对精度，这正是被拒绝的相对精度从后门回来。检测：对每个代数子式（整数、四则、根号、有理次幂、$\phi$、$\psi$），以及代数数之 ln 的有理线性组合（其指数仍是代数数，防止把 $\ln y$ 拆成 $\sum \ln u_i$），若 $|y| \ge 10^6$，且 $(\ln y/\pi)^2$ 与某个分母 $\le 576$ 的有理数 $r$ 相差 $< 10^{-10}$，或分母 $\le 4$ 时 $|\ln y - \pi\sqrt r| < 1000/|y|$（容纳 744、24 这类常数项），即判为 CM 恒等式。$y$ 为整数时按核心 $e^{\pi\sqrt r}$ 计分，如 $(\ln(640320^3+744)/\pi)^2$ 归并到 $e^{\pi\sqrt{163}}$；否则没有近整数核心，直接退出排名，如 $(\sqrt2\,\psi)^{24} - e^{\pi\sqrt{31}}$。$e^{\pi\sqrt{163}}$ 本身不受影响，因为 $\pi\sqrt{163}$ 不是代数数的对数。</li>
   </ul>
   <div class="stripped-slot"></div>
 
@@ -330,16 +331,17 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
   <h2>Why n − complexity/10</h2>
   <p>The ries.c log records 2 236 462 expressions of complexity $\le 64$; $\log_{10}$ of that is 6.35, about $64/10$. So complexity $c$ corresponds to roughly $10^{c/10}$ equally simple expressions. A random real lands within $10^{-n}$ of an integer with probability about $10^{-n}$, so among expressions of complexity at most $c$ one expects $10^{c/10-n}$ almost integers as good as a given entry. The surplus is the negative log of that expected count: above 0 means rarer than chance, below 0 means such precision is bound to appear at that complexity anyway. This is the same test Borwein used when discussing "high precision fraud".</p>
   <div class="callout">
-    <p style="margin:0">Exhaustive checks on trivial families: $\sqrt2\cdot a/b$ ($a\le 20000$, $b\le 300$) peaks at $-3.1$; $\pi\cdot 113 = 354.99997$ reaches $-0.38$; $a/\ln a$ ($a \le 10^6$) peaks at $163/\ln 163$ with $-2.3$. Enumerating the whole RIES space up to complexity 74 (about 1.97 million distinct values) and removing amplifiers leaves no entry with positive surplus. The three positive entries in the table all come from modular functions (the $j$-invariant).</p>
+    <p style="margin:0">Exhaustive checks on trivial families: $\sqrt2\cdot a/b$ ($a\le 20000$, $b\le 300$) peaks at $-3.1$; $\pi\cdot 113 = 354.99997$ reaches $-0.38$; $a/\ln a$ ($a \le 10^6$) peaks at $163/\ln 163$ with $-2.3$. Enumerating the whole RIES space up to complexity 74 (about 1.97 million distinct values) and removing amplifiers leaves no entry with positive surplus. The two positive entries in the table, $e^{\pi\sqrt{163}}$ and $e^{\pi\sqrt{652}}$, both come from modular functions (the $j$-invariant).</p>
   </div>
   <p>By comparison, $n/c$ and $n/c^2$ carry no probabilistic meaning: $n/c$ rates $\sin 11$ (5 digits for 33) and the nested cosine (34 digits for 93) as differing by a factor of 2.4, when their rarity differs by $10^{23}$; the ranking under $n/c^2$ reshuffles with the arbitrary choice of the RIES base weight.</p>
 
   <p class="eyebrow">Stripping</p>
   <h2>Amplifiers</h2>
-  <p>A symbol-counting complexity cannot see two mechanical constructions that buy arbitrary precision at almost no cost, so they are handled separately:</p>
+  <p>A symbol-counting complexity cannot see three mechanical constructions that buy arbitrary precision at almost no cost, so they are handled separately:</p>
   <ul>
     <li><b>Trigonometric functions at a critical point.</b> $\cos y \approx \pm1$ is the same as $y \approx k\pi$, and $\cos(k\pi+\varepsilon) = \pm(1 - \varepsilon^2/2)$ squares the error of the underlying approximation $y\approx k\pi$. The 34 digits of $\cos(\pi\cos(\pi\cos(\ln(\pi+20))))$ are all manufactured from the 3 digits of $e^{\pi} - \pi \approx 20$. Such entries are scored on their core almost integer.</li>
     <li><b>Powers of Pisot numbers.</b> If an algebraic integer $x$ has all its other conjugates inside the unit circle, then $x^k$ approaches integers geometrically while complexity grows only like $\log k$, so the surplus rises without bound. The base's minimal polynomial is found with findpoly and matching entries are dropped from the ranking, e.g. the supergolden ratio $\psi^{11}$.</li>
+    <li><b>Algebraic values of modular functions at CM points.</b> Complex multiplication guarantees that a modular function ($j$, the Weber functions, …) takes an algebraic value $y$ at a CM point with $y = e^{\pi\sqrt r}\,(1 + O(e^{-\pi\sqrt r}))$, $r$ rational; for example $j = e^{\pi\sqrt D} - 744 + O(e^{-\pi\sqrt D})$. This is a theorem, not a coincidence: a class invariant assembled from products of units $a + \sqrt{a^2-1}$ gains precision like $\sqrt D$ while its complexity grows slowly. Wrapping it in $\ln y/\pi$ turns the relative precision of $y$ into absolute precision, which brings the rejected relative-precision metric back through the side door. Detection: for every algebraic subexpression (integers, arithmetic, roots, rational powers, $\phi$, $\psi$) and every rational combination of logarithms of algebraic numbers (whose exponential is again algebraic, so splitting $\ln y$ into $\sum \ln u_i$ does not help), if $|y| \ge 10^6$ and $(\ln y/\pi)^2$ lies within $10^{-10}$ of a rational $r$ with denominator $\le 576$, or within $|\ln y - \pi\sqrt r| < 1000/|y|$ for denominator $\le 4$ (allowing constant terms such as 744 or 24), the entry is a CM identity. When $y$ is an integer the entry is scored on its core $e^{\pi\sqrt r}$, so $(\ln(640320^3+744)/\pi)^2$ is merged into $e^{\pi\sqrt{163}}$; otherwise there is no almost-integer core and the entry is dropped, e.g. $(\sqrt2\,\psi)^{24} - e^{\pi\sqrt{31}}$. $e^{\pi\sqrt{163}}$ itself is unaffected, since $\pi\sqrt{163}$ is not the logarithm of an algebraic number.</li>
   </ul>
   <div class="stripped-slot"></div>
 
@@ -452,23 +454,13 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
 </section>
 </main>
 
-<footer><span class="l-zh">数据由 <code>rank.py</code> 生成；公式用 MathJax 渲染，高精度计算用 decimal.js。</span><span class="l-en">Data generated by <code>rank.py</code>; formulas rendered with MathJax, high-precision arithmetic by decimal.js.</span><span id="build"> 生成于 2026-09-30。</span></footer>
+<footer><span class="l-zh">数据由 <code>rank.py</code> 生成；公式用 MathJax 渲染，高精度计算用 decimal.js。</span><span class="l-en">Data generated by <code>rank.py</code>; formulas rendered with MathJax, high-precision arithmetic by decimal.js.</span><span id="build"> 生成于 2026-10-09。</span></footer>
 </div>
 
 <script id="data" type="application/json">{
  "rows": [
   {
    "rank": 1,
-   "latex": "\\left(\\frac{\\ln\\left(640320^{3} + 744\\right)}{\\pi}\\right)^{2}",
-   "postfix": "640320 3 ^ 744 + ln pi / sq",
-   "value": "163.0000000000000000000000000000232167779",
-   "n": 28.63,
-   "complexity": 173,
-   "surplus": 11.33,
-   "note": null
-  },
-  {
-   "rank": 2,
    "latex": "e^{\\pi \\sqrt{163}}",
    "postfix": "pi 163 sqrt * exp",
    "value": "262537412640768743.9999999999992500725972",
@@ -478,7 +470,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 3,
+   "rank": 2,
    "latex": "e^{\\pi \\sqrt{652}}",
    "postfix": "pi 652 sqrt * exp",
    "value": "68925893036109279891085639286943768.0",
@@ -488,7 +480,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 4,
+   "rank": 3,
    "latex": "e^{\\pi \\sqrt{58}}",
    "postfix": "pi 58 sqrt * exp",
    "value": "24591257751.99999982221324146957619235527",
@@ -498,7 +490,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 5,
+   "rank": 4,
    "latex": "22 \\pi^{4}",
    "postfix": "pi sq sq 22 *",
    "value": "2143.000002748053619201687319151512447494",
@@ -508,7 +500,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 6,
+   "rank": 5,
    "latex": "e^{\\pi \\sqrt{67}}",
    "postfix": "pi 67 sqrt * exp",
    "value": "147197952743.9999986624542245068292613126",
@@ -516,6 +508,16 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "complexity": 68,
    "surplus": -0.93,
    "note": null
+  },
+  {
+   "rank": 6,
+   "latex": "533 \\cos 23",
+   "postfix": "533 23 cos *",
+   "value": "-283.9999998377008969299988312684790531807",
+   "n": 6.79,
+   "complexity": 78,
+   "surplus": -1.01,
+   "note": 1
   },
   {
    "rank": 7,
@@ -545,7 +547,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "n": 3.05,
    "complexity": 46,
    "surplus": -1.55,
-   "note": 1
+   "note": 2
   },
   {
    "rank": 10,
@@ -565,7 +567,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "n": 2.55,
    "complexity": 42,
    "surplus": -1.65,
-   "note": 2
+   "note": 3
   },
   {
    "rank": 12,
@@ -595,7 +597,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "n": 8.38,
    "complexity": 106,
    "surplus": -2.22,
-   "note": 3
+   "note": 4
   },
   {
    "rank": 15,
@@ -649,6 +651,16 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
   },
   {
    "rank": 20,
+   "latex": "2 \\left(\\ln \\pi\\right)^{3}",
+   "postfix": "2 pi ln 3 ^ *",
+   "value": "3.000122992781408643057119744480242638993",
+   "n": 3.91,
+   "complexity": 65,
+   "surplus": -2.59,
+   "note": 1
+  },
+  {
+   "rank": 21,
    "latex": "\\left(\\frac{23}{9}\\right)^{5}",
    "postfix": "23 9 / 5 ^",
    "value": "109.000033870175616860573422073193449508",
@@ -658,17 +670,17 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 21,
+   "rank": 22,
    "latex": "\\frac{1}{\\left(\\ln 2\\right)^{3}}",
    "postfix": "2 ln 3 ^ recip",
    "value": "3.00278070715690544349976740721930488951",
    "n": 2.56,
    "complexity": 54,
    "surplus": -2.84,
-   "note": 4
+   "note": 5
   },
   {
-   "rank": 22,
+   "rank": 23,
    "latex": "e^{\\pi \\sqrt{43}}",
    "postfix": "pi 43 sqrt * exp",
    "value": "884736743.9997774660349066619374620785854",
@@ -678,7 +690,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 23,
+   "rank": 24,
    "latex": "e^{\\pi \\sqrt{719}}",
    "postfix": "pi 719 sqrt * exp",
    "value": "3842614373539548891490294277805829193.0",
@@ -688,7 +700,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 24,
+   "rank": 25,
    "latex": "e^{-\\psi_0\\left(\\frac{2 + \\sqrt{3}}{4}\\right)}",
    "postfix": "2 3 sqrt + 4 / digamma neg exp",
    "value": "1.999999695338384704134659354647933169161",
@@ -698,7 +710,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 25,
+   "rank": 26,
    "latex": "163 \\left(\\pi - e\\right)",
    "postfix": "163 pi e - *",
    "value": "68.99966449631192450568401364407498298971",
@@ -708,7 +720,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 26,
+   "rank": 27,
    "latex": "\\frac{\\phi}{2^{\\ln 2}}",
    "postfix": "phi 2 2 ln ^ /",
    "value": "1.00075909911140985808793904356685019454",
@@ -718,7 +730,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 27,
+   "rank": 28,
    "latex": "\\frac{\\pi^{9}}{e^{8}}",
    "postfix": "pi 9 ^ 8 exp /",
    "value": "9.999838797804880181883277456812637375936",
@@ -728,7 +740,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 28,
+   "rank": 29,
    "latex": "e^{\\pi \\sqrt{74}}",
    "postfix": "pi 74 sqrt * exp",
    "value": "545518122089.9991746788535498566430173362",
@@ -738,7 +750,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 29,
+   "rank": 30,
    "latex": "e^{\\pi \\sqrt{268}}",
    "postfix": "pi 268 sqrt * exp",
    "value": "21667237292024856735768.00029203884241296",
@@ -748,7 +760,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 30,
+   "rank": 31,
    "latex": "\\ln K - \\ln\\left(\\ln K\\right)",
    "postfix": "K ln K ln ln -",
    "value": "1.000074426223593005111266030438952140566",
@@ -758,7 +770,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 31,
+   "rank": 32,
    "latex": "e^{\\pi \\sqrt{522}}",
    "postfix": "pi 522 sqrt * exp",
    "value": "14871070263238043663567627879007.99984873",
@@ -768,7 +780,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 32,
+   "rank": 33,
    "latex": "\\frac{1}{\\sqrt[3]{3} \\ln 2}",
    "postfix": "3 3 root 2 ln * recip",
    "value": "1.00030887205011271050752807912612759652",
@@ -778,7 +790,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 33,
+   "rank": 34,
    "latex": "\\frac{10 \\left(e^{\\pi} - \\ln 3\\right)}{\\ln 2}",
    "postfix": "10 pi exp 3 ln - * 2 ln /",
    "value": "318.0000000332526559944151081114151281951",
@@ -788,7 +800,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 34,
+   "rank": 35,
    "latex": "e^{\\pi \\sqrt{148}}",
    "postfix": "pi 148 sqrt * exp",
    "value": "39660184000219160.00096667435857524642577",
@@ -798,27 +810,27 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 35,
+   "rank": 36,
    "latex": "\\frac{3}{\\left(\\ln 2\\right)^{4}}",
    "postfix": "3 2 ln 4 ^ /",
    "value": "12.9962905052769664622248845429643076305",
    "n": 2.43,
    "complexity": 68,
    "surplus": -4.37,
-   "note": 4
+   "note": 5
   },
   {
-   "rank": 36,
+   "rank": 37,
    "latex": "\\frac{12}{\\left(\\ln 2\\right)^{5}}",
    "postfix": "12 2 ln 5 ^ /",
    "value": "74.99873544766160012763455037564470166913",
    "n": 2.9,
    "complexity": 75,
    "surplus": -4.6,
-   "note": 4
+   "note": 5
   },
   {
-   "rank": 37,
+   "rank": 38,
    "latex": "\\frac{e^{\\pi} - \\ln 3}{\\ln 2} - \\frac{4}{5}",
    "postfix": "pi exp 3 ln - 2 ln / 4 5 / -",
    "value": "31.00000000332526559944151081114151281951",
@@ -828,7 +840,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 38,
+   "rank": 39,
    "latex": "\\ln 2 + \\log_{10} 2",
    "postfix": "2 ln 10 2 log +",
    "value": "0.9941771762239265046309710161826695948437",
@@ -838,7 +850,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 39,
+   "rank": 40,
    "latex": "\\frac{5 \\phi e}{7 \\pi}",
    "postfix": "5 phi * e * 7 pi * /",
    "value": "1.00000970263606061164186678785699304313",
@@ -848,17 +860,17 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 40,
+   "rank": 41,
    "latex": "\\frac{60}{\\left(\\ln 2\\right)^{6}}",
    "postfix": "60 2 ln 6 ^ /",
    "value": "541.0015185164235075692027746182564709468",
    "n": 2.82,
    "complexity": 83,
    "surplus": -5.48,
-   "note": 4
+   "note": 5
   },
   {
-   "rank": 41,
+   "rank": 42,
    "latex": "\\sqrt[4]{\\frac{91}{10}} - \\frac{33}{19}",
    "postfix": "91 10 / sqrt sqrt 33 19 / -",
    "value": "0.00000003661378056258570376234316589221702231857",
@@ -868,7 +880,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 42,
+   "rank": 43,
    "latex": "e^{-\\pi} \\left(8 \\pi - 2\\right)",
    "postfix": "pi neg exp 8 pi * 2 - *",
    "value": "0.9996563886748290424994995423837425460775",
@@ -878,7 +890,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 43,
+   "rank": 44,
    "latex": "3 \\sqrt{2} \\left(\\sqrt{5} - 2\\right)",
    "postfix": "3 2 sqrt * 5 sqrt 2 - *",
    "value": "1.001551606266567703186548288039967129741",
@@ -888,7 +900,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 44,
+   "rank": 45,
    "latex": "\\frac{613}{37} e - \\frac{35}{991}",
    "postfix": "613 37 / e * 35 991 / -",
    "value": "44.999999999939623550123367441015885459",
@@ -898,17 +910,17 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 45,
+   "rank": 46,
    "latex": "\\frac{360}{\\left(\\ln 2\\right)^{7}}",
    "postfix": "360 2 ln 7 ^ /",
    "value": "4683.001247262257437180467152479009585951",
    "n": 2.9,
    "complexity": 91,
    "surplus": -6.2,
-   "note": 4
+   "note": 5
   },
   {
-   "rank": 46,
+   "rank": 47,
    "latex": "e^{6} - \\pi^{4} - \\pi^{5}",
    "postfix": "6 exp pi sq sq - pi 5 ^ -",
    "value": "0.00001767345123210920553781124756187587160506",
@@ -918,17 +930,17 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 47,
+   "rank": 48,
    "latex": "\\frac{2520}{\\left(\\ln 2\\right)^{8}}",
    "postfix": "2520 2 ln 8 ^ /",
    "value": "47292.99873131462390482283548778630880581",
    "n": 2.9,
    "complexity": 100,
    "surplus": -7.1,
-   "note": 4
+   "note": 5
   },
   {
-   "rank": 48,
+   "rank": 49,
    "latex": "\\frac{53453}{\\ln 53453}",
    "postfix": "53453 53453 ln /",
    "value": "4910.000001220760738224697743214026371652",
@@ -938,7 +950,7 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "note": null
   },
   {
-   "rank": 49,
+   "rank": 50,
    "latex": "\\frac{10}{81} \\left(11 - \\sqrt{40}\\right) - \\gamma",
    "postfix": "10 81 / 11 40 sqrt - * gamma -",
    "value": "-0.0000002723505154117173500022880119455408149259",
@@ -946,224 +958,14 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "complexity": 141,
    "surplus": -7.54,
    "note": null
-  },
-  {
-   "rank": 50,
-   "latex": "\\frac{10 \\phi \\Gamma\\left(\\frac{3}{4}\\right)^{2}}{e^{\\frac{5 \\pi}{6}} \\sqrt{\\pi}}",
-   "postfix": "10 phi * 3 4 / Gamma sq * 5 pi * 6 / exp pi sqrt * /",
-   "value": "1.000000000000045422021366484455723616776",
-   "n": 13.34,
-   "complexity": 209,
-   "surplus": -7.56,
-   "note": null
-  },
-  {
-   "rank": 51,
-   "latex": "2 \\cos\\left(\\cos\\left(\\cos\\left(\\cos\\left(\\cos\\left(\\cos\\left(\\cos 5\\right)\\right)\\right)\\right)\\right)\\right)^{2}",
-   "postfix": "5 cos cos cos cos cos cos cos sq 2 *",
-   "value": "0.9999952547970004481520450588814584668441",
-   "n": 5.32,
-   "complexity": 134,
-   "surplus": -8.08,
-   "note": null
-  },
-  {
-   "rank": 52,
-   "latex": "\\frac{20160}{\\left(\\ln 2\\right)^{9}}",
-   "postfix": "20160 2 ln 9 ^ /",
-   "value": "545834.9979074851670672910397944923634653",
-   "n": 2.68,
-   "complexity": 109,
-   "surplus": -8.22,
-   "note": 4
-  },
-  {
-   "rank": 53,
-   "latex": "\\frac{181440}{\\left(\\ln 2\\right)^{10}}",
-   "postfix": "181440 2 ln 10 ^ /",
-   "value": "7087261.001622899120979187515908220487645",
-   "n": 2.79,
-   "complexity": 120,
-   "surplus": -9.21,
-   "note": 4
-  },
-  {
-   "rank": 54,
-   "latex": "\\left(\\sqrt{2} \\psi\\right)^{24} - e^{\\pi \\sqrt{31}}",
-   "postfix": "2 sqrt psi * 24 ^ pi 31 sqrt * exp -",
-   "value": "24.00000698848638249424700263361726022641",
-   "n": 5.16,
-   "complexity": 144,
-   "surplus": -9.24,
-   "note": null
-  },
-  {
-   "rank": 55,
-   "latex": "10 \\tanh\\left(\\frac{28 \\pi}{15}\\right) - \\frac{\\pi^{9}}{e^{8}}",
-   "postfix": "10 28 pi * 15 / tanh * pi 9 ^ 8 exp / -",
-   "value": "0.000000006004520671120618580489465138000574023827",
-   "n": 8.22,
-   "complexity": 187,
-   "surplus": -10.48,
-   "note": null
-  },
-  {
-   "rank": 56,
-   "latex": "\\frac{1814400}{\\left(\\ln 2\\right)^{11}}",
-   "postfix": "1814400 2 ln 11 ^ /",
-   "value": "102247563.0052710420110883885941994702319",
-   "n": 2.28,
-   "complexity": 130,
-   "surplus": -10.72,
-   "note": 4
-  },
-  {
-   "rank": 57,
-   "latex": "\\frac{7}{64} \\ln 2 - \\frac{131}{1728}",
-   "postfix": "7 64 / 2 ln * 131 1728 / -",
-   "value": "0.000002787688558833032324578099302876948072642",
-   "n": 5.55,
-   "complexity": 164,
-   "surplus": -10.85,
-   "note": null
-  },
-  {
-   "rank": 58,
-   "latex": "\\frac{19958400}{\\left(\\ln 2\\right)^{12}}",
-   "postfix": "19958400 2 ln 12 ^ /",
-   "value": "1622632572.997550049852874861078499079054",
-   "n": 2.61,
-   "complexity": 141,
-   "surplus": -11.49,
-   "note": 4
-  },
-  {
-   "rank": 59,
-   "latex": "\\frac{3987^{12} + 4365^{12}}{4472^{12}}",
-   "postfix": "3987 12 ^ 4365 12 ^ + 4472 12 ^ /",
-   "value": "1.000000000018942640621488779011319678951",
-   "n": 10.72,
-   "complexity": 229,
-   "surplus": -12.18,
-   "note": null
-  },
-  {
-   "rank": 60,
-   "latex": "\\frac{1782^{12} + 1841^{12}}{1922^{12}}",
-   "postfix": "1782 12 ^ 1841 12 ^ + 1922 12 ^ /",
-   "value": "0.999999999724457182571185494402053996829",
-   "n": 9.56,
-   "complexity": 219,
-   "surplus": -12.34,
-   "note": null
-  },
-  {
-   "rank": 61,
-   "latex": "\\frac{\\cos\\left(\\frac{1}{10}\\right) + \\cosh\\left(\\frac{1}{10}\\right) + 2 \\cos\\left(\\frac{\\sqrt{2}}{20}\\right) \\cosh\\left(\\frac{\\sqrt{2}}{20}\\right)}{4}",
-   "postfix": "10 recip cos 10 recip cosh + 2 sqrt 20 / cos 2 sqrt 20 / cosh * 2 * + 4 /",
-   "value": "1.000000000000248015873015873020652493205",
-   "n": 12.61,
-   "complexity": 256,
-   "surplus": -12.99,
-   "note": null
-  },
-  {
-   "rank": 62,
-   "latex": "\\frac{3113510400}{\\left(\\ln 2\\right)^{14}}",
-   "postfix": "3113510400 2 ln 14 ^ /",
-   "value": "526858348381.0012482861804893808362085164",
-   "n": 2.9,
-   "complexity": 163,
-   "surplus": -13.4,
-   "note": 4
-  },
-  {
-   "rank": 63,
-   "latex": "e C^{\\frac{5}{7} - \\gamma} \\pi^{-\\left(\\frac{2}{7} + \\gamma\\right)}",
-   "postfix": "e C 5 7 / gamma - ^ * pi 2 7 / gamma + neg ^ *",
-   "value": "1.000146781012836845544848417971494178585",
-   "n": 3.83,
-   "complexity": 196,
-   "surplus": -15.77,
-   "note": null
-  },
-  {
-   "rank": 64,
-   "latex": "\\frac{2 + 4 \\sqrt{2} + \\left(4 + \\sqrt{2}\\right) \\sinh^{-1} 1}{30} - \\sqrt{2} + 1",
-   "postfix": "2 4 2 sqrt * + 4 2 sqrt + 1 asinh * + 30 / 2 sqrt - 1 +",
-   "value": "0.00007974022193872862915235436560517328675211",
-   "n": 4.1,
-   "complexity": 205,
-   "surplus": -16.4,
-   "note": null
-  },
-  {
-   "rank": 65,
-   "latex": "\\frac{\\sqrt{\\frac{61421 - 23 \\sqrt{5831385}}{30}}}{2}",
-   "postfix": "61421 23 5831385 sqrt * - 30 / sqrt 2 /",
-   "value": "7.00000008573674832857288196931025039126",
-   "n": 7.07,
-   "complexity": 235,
-   "surplus": -16.43,
-   "note": null
-  },
-  {
-   "rank": 66,
-   "latex": "\\frac{C^{\\gamma - \\frac{19}{7}} \\pi^{\\frac{2}{7} + \\gamma}}{2 \\phi}",
-   "postfix": "C gamma 19 7 / - ^ pi 2 7 / gamma + ^ * 2 phi * /",
-   "value": "1.001047724529842282867958633461886043529",
-   "n": 2.98,
-   "complexity": 215,
-   "surplus": -18.52,
-   "note": null
-  },
-  {
-   "rank": 67,
-   "latex": "1 - 262537412640768744 e^{-\\pi \\sqrt{163}} - 196884 e^{-2 \\pi \\sqrt{163}} + 103378831900730205293632 e^{-3 \\pi \\sqrt{163}}",
-   "postfix": "1 262537412640768744 pi 163 sqrt * neg exp * - 196884 2 pi 163 sqrt * * neg exp * - 103378831900730205293632 3 pi 163 sqrt * * neg exp * +",
-   "value": "0.00000000000000000000000000000000000000000000000000000000001613679004761483558545299948868472259513",
-   "n": 58.79,
-   "complexity": 796,
-   "surplus": -20.81,
-   "note": null
-  },
-  {
-   "rank": 68,
-   "latex": "\\zeta\\left(3\\right) - \\left(\\frac{1}{\\sqrt[3]{\\gamma}} + \\frac{1}{\\pi^{4}} \\frac{1}{\\left(1 + 2 \\gamma - \\frac{2}{130 + \\pi^{2}}\\right)^{3}}\\right)",
-   "postfix": "3 zeta 3 gamma root recip pi sq sq recip 1 2 gamma * + 2 130 pi sq + / - 3 ^ recip * + -",
-   "value": "-0.00002071411405561051759711018212631052048902",
-   "n": 4.68,
-   "complexity": 287,
-   "surplus": -24.02,
-   "note": 5
-  },
-  {
-   "rank": 69,
-   "latex": "\\frac{2411287}{30240} - \\frac{100}{9} \\pi^{2} + \\frac{1877}{21} \\ln 2 - \\frac{200}{3} \\left(\\ln 2\\right)^{2}",
-   "postfix": "2411287 30240 / 100 9 / pi sq * - 1877 21 / 2 ln * + 200 3 / 2 ln sq * -",
-   "value": "0.000009807101402442472906329825824002834327113",
-   "n": 5.01,
-   "complexity": 422,
-   "surplus": -37.19,
-   "note": null
-  },
-  {
-   "rank": 70,
-   "latex": "\\frac{80497}{40320} - \\frac{43}{144} \\pi^{2} + \\frac{3293}{1260} \\ln 2 - \\frac{43}{24} \\left(\\ln 2\\right)^{2}",
-   "postfix": "80497 40320 / 43 144 / pi sq * - 3293 1260 / 2 ln * + 43 24 / 2 ln sq * -",
-   "value": "0.000002841868007148721019193711053492324697819",
-   "n": 5.55,
-   "complexity": 439,
-   "surplus": -38.35,
-   "note": null
   }
  ],
  "notes": [
+  "user-supplied, not on MathWorld",
   "core of the stripped amplifiers cos(ln(π+20)) and cos(π cos(π cos(ln(π+20))))): e^π ≈ π+20 gives ln(π+20) ≈ π, each cosine squares the error",
   "core of the stripped amplifiers sin 11 and cos 22: 22 ≈ 7π, and cos(7π+ε) = −1 + ε²/2, sin²11 = (1 − cos 22)/2",
   "core of the stripped amplifier sin(2017·2^(1/5)): 2017·2^(1/5) ≈ 737.5π, the sine squares the error",
-  "Hickerson number h_n = n!/(2 (ln 2)^(n+1)), shown in lowest terms",
-  "MathWorld alt-text reads π^(−1/4); the Apéry constant approximations page gives π^(−4), which matches the stated 4-digit accuracy"
+  "Hickerson number h_n = n!/(2 (ln 2)^(n+1)), shown in lowest terms"
  ],
  "stripped": [
   {
@@ -1205,6 +1007,38 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
    "complexity": 93,
    "surplus": 25.11,
    "core": "e^pi - pi ~ 20 (eq 6)"
+  },
+  {
+   "latex": "\\left(\\sqrt{2} \\psi\\right)^{24} - e^{\\pi \\sqrt{31}}",
+   "name": "(sqrt2 psi)^24 - e^(pi sqrt31)",
+   "n": 5.16,
+   "complexity": 144,
+   "surplus": -9.24,
+   "core": "CM identity: algebraic 39493561.9066 ~ e^(pi sqrt 31) (no almost-integer core)"
+  },
+  {
+   "latex": "\\left(\\frac{\\ln\\left(640320^{3} + 744\\right)}{\\pi}\\right)^{2}",
+   "name": "[ln(640320^3+744)/pi]^2",
+   "n": 28.63,
+   "complexity": 173,
+   "surplus": 11.33,
+   "core": "CM identity: integer 262537412640768744 ~ e^(pi sqrt 163), core e^(pi sqrt 163)"
+  },
+  {
+   "latex": "1 - 262537412640768744 e^{-\\pi \\sqrt{163}} - 196884 e^{-2 \\pi \\sqrt{163}} + 103378831900730205293632 e^{-3 \\pi \\sqrt{163}}",
+   "name": "1 - 262537412640768744 q - 196884 q^2 + 103378831900730205293632 q^3, q=e^(-pi sqrt163)",
+   "n": 58.79,
+   "complexity": 796,
+   "surplus": -20.81,
+   "core": "CM identity: integer 262537412640768744 ~ e^(pi sqrt 163), core e^(pi sqrt 163)"
+  },
+  {
+   "latex": "\\left(\\frac{\\ln\\left(\\left(\\left(2 \\left(\\frac{23 + 4 \\sqrt{34}}{2} + \\sqrt{\\left(\\frac{23 + 4 \\sqrt{34}}{2}\\right)^{2} - 1}\\right)^{2} \\left(\\frac{19 \\sqrt{2} + 7 \\sqrt{17}}{2} + \\sqrt{\\left(\\frac{19 \\sqrt{2} + 7 \\sqrt{17}}{2}\\right)^{2} - 1}\\right)^{2} \\left(429 + 304 \\sqrt{2} + \\sqrt{\\left(429 + 304 \\sqrt{2}\\right)^{2} - 1}\\right) \\left(\\frac{627 + 442 \\sqrt{2}}{2} + \\sqrt{\\left(\\frac{627 + 442 \\sqrt{2}}{2}\\right)^{2} - 1}\\right)\\right)^{6} + 24\\right)^{2} - 552\\right)}{\\pi}\\right)^{2}",
+   "name": "[ln(((2P)^6+24)^2 - 552)/pi]^2, P = product of quadratic units  [user-supplied, not on MathWorld]",
+   "n": 236.73,
+   "complexity": 1233,
+   "surplus": 113.43,
+   "core": "CM identity: algebraic 3.0290400943e+161 ~ e^(pi sqrt 14008) (no almost-integer core)"
   },
   {
    "latex": "\\psi^{11}",
@@ -1318,18 +1152,23 @@ const I18N = {
     structuralMsg:(m)=>`结构性极限：把式中每个常数各改动 1% 后，最差情况仍保留 ${m.toFixed(1)} 位精度。近整数性来自极限结构而不是巧合，不参与排名。`,
     pisotMsg:'底数是 Pisot 数：其整数次幂与整数的距离按几何级数收缩，精度可以靠加大指数无限增加。排行榜剥离此类条目，不参与排名。',
     trigMsg:'最外层是临界点处的三角函数，它把内部近似 y ≈ kπ 的误差平方了一次。排行榜按核心近整数计分：',
+    cmAlgMsg:(y,r)=>`CM 恒等式：式中的代数数 ${y} ≈ e^(π√${r})。这是复乘理论的定理（模函数在 CM 点取代数值），不是巧合；若外面再取 ln，只是把相对精度换成绝对精度。该代数数不是整数，没有近整数核心，不参与排名。`,
+    cmIntMsg:(y,r)=>`CM 恒等式：式中的整数 ${y} ≈ e^(π√${r})，近整数性就是 e^(π√${r}) 本身，外层运算只是换了写法（外层取 ln 还会把相对精度换成绝对精度）。排行榜按核心 e^(π√${r}) 计分：`,
+    cmCoreInt:(y,r)=>`CM 恒等式：整数 ${y} ≈ e^(π√${r})，归并到 e^(π√${r})`,
+    cmCoreAlg:(y,r)=>`CM 恒等式：代数数 ${y} ≈ e^(π√${r})（没有近整数核心）`,
     coreExpr:'核心表达式', coreValue:'核心数值', coreN:'核心 n', coreC:'核心复杂度', coreSurplus:'核心 surplus',
     coreBelow:'核心本身 n < 2，不算 almost integer，不参与排名。',
     err:{ precision:(i,p)=>`整数部分约 ${i} 位，需要 ${p} 位精度，超过 1000 位上限`, unknownChar:(c)=>`无法识别的字符 “${c}”`, missing:(v)=>`缺少 “${v}”`, funcArg:'函数缺少参数', incomplete:'表达式不完整',
       badNumber:(v)=>`数字格式错误 “${v}”`, unsupportedVar:(v)=>`不支持变量 “${v}”`, unexpectedSym:(v)=>`意外的符号 “${v}”`,
       unsupportedCmd:(v)=>`不支持的命令 “\\${v}”`, trailing:(v)=>`多余的内容从 “${v}” 开始`, negSqrt:'负数开方', logPos:'对数的参数必须为正',
       divZero:'除以零', negPow:'负数的非整数次幂', logBasePos:'对数的参数与底数必须为正', overflow:'数值溢出', internal:'内部错误' },
-    notes:[
-      '被剥离的放大器 cos(ln(π+20)) 与 cos(π cos(π cos(ln(π+20)))) 的核心：由 e^π ≈ π+20 得 ln(π+20) ≈ π，每一层余弦把误差平方一次',
-      '被剥离的放大器 sin 11 与 cos 22 的核心：22 ≈ 7π，而 cos(7π+ε) = −1 + ε²/2，sin²11 = (1 − cos 22)/2',
-      '被剥离的放大器 sin(2017·2^(1/5)) 的核心：2017·2^(1/5) ≈ 737.5π，正弦把误差平方',
-      'Hickerson 数 h_n = n!/(2 (ln 2)^(n+1))，表中为约化形式',
-      'MathWorld 公式图片的 alt 文本写作 π^(−1/4)；Apéry 常数近似页面给出 π^(−4)，与其声称的 4 位精度相符' ]
+    notes:{   // keyed by the start of the English note text, so the order and the top-50 cut do not matter
+      'core of the stripped amplifiers cos(ln': '被剥离的放大器 cos(ln(π+20)) 与 cos(π cos(π cos(ln(π+20)))) 的核心：由 e^π ≈ π+20 得 ln(π+20) ≈ π，每一层余弦把误差平方一次',
+      'core of the stripped amplifiers sin 11': '被剥离的放大器 sin 11 与 cos 22 的核心：22 ≈ 7π，而 cos(7π+ε) = −1 + ε²/2，sin²11 = (1 − cos 22)/2',
+      'core of the stripped amplifier sin(2017': '被剥离的放大器 sin(2017·2^(1/5)) 的核心：2017·2^(1/5) ≈ 737.5π，正弦把误差平方',
+      'Hickerson number': 'Hickerson 数 h_n = n!/(2 (ln 2)^(n+1))，表中为约化形式',
+      'user-supplied, not on MathWorld': '用户提供，不在 MathWorld 上',
+      'MathWorld alt-text': 'MathWorld 公式图片的 alt 文本写作 π^(−1/4)；Apéry 常数近似页面给出 π^(−4)，与其声称的 4 位精度相符' }
   },
   en: {
     entries:'entries', positive:'surplus > 0', stripped:'amplifiers stripped', notesTitle:'Notes', seeNote:'see note',
@@ -1349,6 +1188,10 @@ const I18N = {
     structuralMsg:(m)=>`Structural limit: after changing each constant in the expression by 1%, the worst case still keeps ${m.toFixed(1)} digits. The near-integrality comes from a limiting structure, not a coincidence; not ranked.`,
     pisotMsg:'The base is a Pisot number: its integer powers approach integers geometrically, so precision can be increased without bound by raising the exponent. The ranking strips such entries; not ranked.',
     trigMsg:'The outermost operation is a trigonometric function at a critical point, which squares the error of the inner approximation y ≈ kπ. The ranking scores the core almost integer instead:',
+    cmAlgMsg:(y,r)=>`CM identity: the algebraic number ${y} in the expression is ≈ e^(π√${r}). This is a theorem of complex multiplication (modular functions take algebraic values at CM points), not a coincidence; a logarithm around it would merely turn relative precision into absolute precision. The algebraic number is not an integer, so there is no almost-integer core; not ranked.`,
+    cmIntMsg:(y,r)=>`CM identity: the integer ${y} in the expression is ≈ e^(π√${r}), so the near-integrality is that of e^(π√${r}) itself and the outer operations only rewrite it (an outer logarithm also turns relative precision into absolute precision). The ranking scores the core e^(π√${r}) instead:`,
+    cmCoreInt:(y,r)=>`CM identity: integer ${y} ≈ e^(π√${r}), merged into e^(π√${r})`,
+    cmCoreAlg:(y,r)=>`CM identity: algebraic ${y} ≈ e^(π√${r}) (no almost-integer core)`,
     coreExpr:'Core expression', coreValue:'Core value', coreN:'Core n', coreC:'Core complexity', coreSurplus:'Core surplus',
     coreBelow:'The core itself has n < 2, so it is not an almost integer; not ranked.',
     err:{ precision:(i,p)=>`about ${i} integer digits would need ${p} digits of precision, above the 1000-digit limit`, unknownChar:(c)=>`unrecognised character “${c}”`, missing:(v)=>`missing “${v}”`, funcArg:'function without an argument', incomplete:'incomplete expression',
@@ -1367,10 +1210,17 @@ function applyLang(){
   document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.lang===lang)));
   try{ localStorage.setItem('air-lang', lang); }catch(e){}
 }
-function noteText(i){ const z=I18N.zh.notes; return (lang==='zh' && z && z[i]) ? z[i] : DATA.notes[i]; }
+function noteText(i){
+  const en=DATA.notes[i], z=I18N.zh.notes, k=z && Object.keys(z).find(k=>en.startsWith(k));
+  return (lang==='zh' && k) ? z[k] : en;
+}
 function coreText(core){
   const m = /^Pisot power: base (\S+), minpoly (\[.*\]) \(no almost-integer core\)$/.exec(core);
   if (m) return T().pisotCore(m[1], m[2]);
+  const ci = /^CM identity: integer (\d+) ~ e\^\(pi sqrt (\S+)\), core/.exec(core);
+  if (ci) return T().cmCoreInt(ci[1], ci[2]);
+  const ca = /^CM identity: algebraic (\S+) ~ e\^\(pi sqrt (\S+)\) \(no almost-integer core\)$/.exec(core);
+  if (ca) return T().cmCoreAlg(ca[1], ca[2]);
   return core.replace(/\(eq 6\)/,'').replace(/~/g,'≈').replace(/pi/g,'π');
 }
 
@@ -1421,7 +1271,7 @@ async function fitExpressions(root){
 }
 
 /* ---------- home ---------- */
-const rows = DATA.rows.slice(0, 100);
+const rows = DATA.rows.slice(0, 50);   // the ranking keeps only the top 50
 function renderTable(){   // language-independent, rendered once
   $('#ranktable tbody').innerHTML = rows.map(r => `
     <tr class="${r.surplus>0?'positive':''}">
@@ -1712,6 +1562,70 @@ function trigCore(ast, v, P, depth=0){  // outermost sin/cos/tan at a critical p
   return {ast:coreAst, v:r.v, pf:r.pf, n:dg.n, c, surplus:dg.n-c/10, nearest:dg.nearest};
 }
 
+/* CM / modular-function identity: an algebraic subexpression y (integers, + - * /, roots, rational powers, phi)
+   with y ~ e^(pi sqrt r), r = p/q, is a theorem of complex multiplication, and ln y turns its relative precision
+   into absolute precision.  Also checks log-algebraic subexpressions (ln of algebraic numbers and their rational
+   combinations, y = exp of them).  Hit: |ln y| >= ln 10^6 and either |(ln y/pi)^2 - p/q| < 1e-10 with q <= 576,
+   or |ln y - pi sqrt(p/q)| < 1000/|y| with q <= 4 (Hauptmodul constant terms such as 744 or 24).  Same rule as rank.py. */
+function cmIdentity(ast, P){
+  PERT=null; evalAt(ast, P);
+  const PI=consts().pi, MINLOG=D(10).pow(6).ln(), TOL=D(10).pow(-10), hits=[];
+  function walk(n){
+    let r;
+    if (n.t==='num') r={k:'alg', int:!n.v.includes('.'), rat:true};
+    else if (n.t==='const') r={k:n.v==='phi'?'alg':null, int:false, rat:false};
+    else if (n.t==='neg'){ const a=walk(n.a); r={...a}; }
+    else if (n.t==='un'){
+      const a=walk(n.a);
+      r = a.k==='alg' && n.f==='sqrt' ? {k:'alg', int:false, rat:false} : a.k==='alg' && n.f==='ln' ? {k:'log', int:false, rat:false} : {k:null};
+    } else {
+      const a=walk(n.a), b=walk(n.b), op=n.op;
+      if (a.k==='alg' && b.k==='alg' && '+-*/'.includes(op)) r={k:'alg', int:a.int&&b.int&&op!=='/', rat:a.rat&&b.rat};
+      else if (op==='^' && a.k==='alg' && b.rat) r={k:'alg', int:a.int&&b.int, rat:a.rat&&b.int};
+      else if (op==='root' && a.int && b.k==='alg') r={k:'alg', int:false, rat:false};
+      else if (a.k==='log' && b.k==='log' && (op==='+'||op==='-')) r={k:'log'};
+      else if (op==='*' && ((a.k==='log' && b.rat) || (a.rat && b.k==='log'))) r={k:'log'};
+      else if (op==='/' && a.k==='log' && b.rat) r={k:'log'};
+      else r={k:null};
+    }
+    r.size = n.lo===undefined ? 0 : n.hi-n.lo;
+    if (r.k){
+      const v=ev(n).v;
+      if (!v.isZero()){
+        const lny = r.k==='alg' ? v.abs().ln() : v, L=lny.abs();
+        if (L.gte(MINLOG)){
+          const rr=lny.div(PI).pow(2);
+          for (let q=1; q<=576; q++){
+            const p=rr.times(q).round(), pq=p.div(q);
+            if (rr.minus(pq).abs().lt(TOL) || (q<=4 && L.minus(PI.times(pq.sqrt())).abs().lt(D(1000).times(L.neg().exp())))){
+              hits.push({alg:r.k==='alg', size:r.size, p:BigInt(p.toFixed(0)), q:BigInt(q), int:r.k==='alg'&&r.int, y: r.k==='alg' ? v : v.exp()}); break;
+            }
+          }
+        }
+      }
+    }
+    return r;
+  }
+  walk(ast);
+  if (!hits.length) return null;
+  hits.sort((x,y)=> (y.alg-x.alg) || (y.size-x.size));
+  const h=hits[0], g=(x,y)=>{ while(y){ [x,y]=[y,x%y]; } return x; }, d=g(h.p,h.q);
+  return {p:h.p/d, q:h.q/d, int:h.int, y:h.y};
+}
+function cmCore(cm){                    // e^(pi sqrt r), scored on its own
+  const pi={t:'const',v:'pi'}; let arg;
+  if (cm.q===1n){
+    const s=BigInt(Math.round(Math.sqrt(Number(cm.p))));
+    arg = s*s===cm.p ? (s===1n ? pi : {t:'bin',op:'*',a:{t:'num',v:s.toString()},b:pi}) : {t:'bin',op:'*',a:pi,b:{t:'un',f:'sqrt',a:{t:'num',v:cm.p.toString()}}};
+  } else arg={t:'bin',op:'*',a:pi,b:{t:'un',f:'sqrt',a:{t:'bin',op:'/',a:{t:'num',v:cm.p.toString()},b:{t:'num',v:cm.q.toString()}}}};
+  const coreAst=annotate({t:'bin',op:'^',a:{t:'const',v:'e'},b:arg});
+  const idig=Math.ceil(Math.PI*Math.sqrt(Number(cm.p)/Number(cm.q))/Math.LN10)+1;
+  const P=Math.min(PMAX, Math.max(90, idig+FRAC));
+  PERT=null; const r=evalAt(coreAst, P); const dg=digitsOf(r.v), c=complexityOf(r.pf);
+  return {ast:coreAst, v:r.v, pf:r.pf, n:dg.n, c, surplus:dg.n-c/10, nearest:dg.nearest};
+}
+const rStr = (cm)=> cm.q===1n ? cm.p.toString() : `${cm.p}/${cm.q}`;
+
 /* ---------- calculator UI ---------- */
 const input=$('#latex-input'), preview=$('#preview'), result=$('#result');
 const EXAMPLES=['e^{\\pi\\sqrt{163}}', '22\\pi^4', '\\frac{163}{\\ln 163}', 'e^{\\pi}-\\pi', '\\sin 11', '126e^{\\pi}+8\\pi^4', '\\frac{1}{\\pi^{100}}', '\\pi'];
@@ -1730,7 +1644,7 @@ function updatePreview(){
 function typeset(el){ return (window.MathJax && MathJax.typesetPromise) ? MathJax.typesetPromise([el]) : Promise.resolve(); }
 function idle(){ result.innerHTML=`<p class="small" style="margin:0">${T().resultIdle}</p>`; }
 function valueString(v){ const id = v.abs().gte(1) ? v.e+1 : 0; return v.toFixed(Math.max(0, Math.min(60, 60-id))); }
-function rankOf(surplus){ return DATA.rows.filter(r=>r.surplus>surplus).length+1; }
+function rankOf(surplus){ const s=Math.round(surplus*100)/100; return DATA.rows.filter(r=>r.surplus>s).length+1; }   // table surpluses are rounded to 2 places
 function compute(){
   const src=input.value.trim(); const t=T();
   try{ localStorage.setItem('air-latex', src); }catch(e){}
@@ -1766,9 +1680,24 @@ function compute(){
     if (n < 2){
       tail=`<dt>${t.position}</dt><dd>${t.notRanked}</dd></dl><div class="warn">${t.belowMsg}</div>`;
     } else {
-      const core=trigCore(ast, v, P);
+      const cm=cmIdentity(ast, P);
+      const core = cm ? null : trigCore(ast, v, P);
       const stCore = core ? stability(core.ast, P) : null;
-      if (pisotLike(ast, P)){
+      if (cm && !cm.int){
+        tail=`<dt>${t.position}</dt><dd>${t.notRanked}</dd></dl><div class="warn">${t.cmAlgMsg(cm.y.toExponential(10).replace('e+','×10^').replace('e-','×10^-'), rStr(cm))}</div>`;
+      } else if (cm){
+        const cc=cmCore(cm); PREC=P; Decimal.set({precision:P});
+        const rk=rankOf(cc.surplus);
+        tail=`<dt>${t.position}</dt><dd>${rk<=DATA.rows.length ? t.wouldRank(rk, DATA.rows.length) : t.belowAll(DATA.rows.length)}</dd></dl>
+          <div class="warn">${t.cmIntMsg(cm.y.toFixed(0), rStr(cm))}</div>
+          <dl style="margin-top:.6rem">
+            <dt>${t.coreExpr}</dt><dd class="val small">${cc.pf.join(' ')}</dd>
+            <dt>${t.coreValue}</dt><dd class="val">${renderValue(valueString(cc.v))}</dd>
+            <dt>${t.coreN}</dt><dd class="big">${cc.n.toFixed(2)}</dd>
+            <dt>${t.coreC}</dt><dd class="big">${cc.c}</dd>
+            <dt>${t.coreSurplus}</dt><dd class="big ${cc.surplus>0?'pos':''}">${fmt(cc.surplus)}</dd>
+          </dl>`;
+      } else if (pisotLike(ast, P)){
         tail=`<dt>${t.position}</dt><dd>${t.notRanked}</dd></dl><div class="warn">${t.pisotMsg}</div>`;
       } else if (core && stCore!==null && stCore>=3){
         tail=`<dt>${t.position}</dt><dd>${t.notRanked}</dd></dl><div class="warn">${t.structuralMsg(stCore)}</div>`;

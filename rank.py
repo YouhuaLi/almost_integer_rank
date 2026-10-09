@@ -185,9 +185,19 @@ add('66', '1 - 262537412640768744 q - 196884 q^2 + 103378831900730205293632 q^3,
     1-262537412640768744*q-196884*q**2+103378831900730205293632*q**3)
 add('67', 'd = 1/2 sqrt(1/30(61421-23 sqrt5831385))', '61421 23 5831385 sqrt * - 30 / sqrt 2 /',
     sqrt((61421-23*sqrt(5831385))/30)/2)
+add('ext', '2 (ln pi)^3  [user-supplied, not on MathWorld]', '2 pi ln 3 ^ *', 2*log(pi)**3, 'user-supplied, not on MathWorld')
+add('ext', '533 cos 23  [user-supplied, not on MathWorld]', '533 23 cos *', 533*cos(23), 'user-supplied, not on MathWorld')
 add('ext', '(1 + 2 sqrt21 cos(atan(sqrt3/9)/3)/3)^100  [user-supplied, not on MathWorld]',
     '1 2 21 sqrt * 3 sqrt 9 atan2 3 / cos * 3 / + 100 ^',
     (1 + 2*sqrt(21)*cos(mp.atan(sqrt(3)/9)/3)/3)**100, 'user-supplied')
+def _unit(a, pf): return a + sqrt(a*a - 1), '%s %s sq 1 - sqrt +' % (pf, pf)      # a + sqrt(a^2 - 1)
+with mp.workdps(400):
+    _u = [_unit((23+4*sqrt(34))/2, '23 4 34 sqrt * + 2 /'), _unit((19*sqrt(2)+7*sqrt(17))/2, '19 2 sqrt * 7 17 sqrt * + 2 /'),
+          _unit(429+304*sqrt(2), '429 304 2 sqrt * +'), _unit((627+442*sqrt(2))/2, '627 442 2 sqrt * + 2 /')]
+    _P = _u[0][0]**2 * _u[1][0]**2 * _u[2][0] * _u[3][0]
+    _cm_val = (log(((2*_P)**6 + 24)**2 - 552)/pi)**2
+add('ext', '[ln(((2P)^6+24)^2 - 552)/pi]^2, P = product of quadratic units  [user-supplied, not on MathWorld]',
+    '2 %s sq %s sq * %s * %s * * 6 ^ 24 + sq 552 - ln pi / sq' % tuple(x[1] for x in _u), _cm_val, 'user-supplied')
 
 # ---------------- postfix evaluator (validates the hand-written postfix) ----------------
 CONST = {'pi':pi,'e':e,'phi':phi,'gamma':euler,'C':catalan,'K':khinchin}
@@ -229,6 +239,89 @@ def pisot_base(pf):
 for eq, name, pf, val, note in items + [a[:4] + ('',) for a in AMP]:
     v = eval_postfix(pf)
     assert fabs(v - val) <= mpf(10)**-30 * max(1, fabs(val)), (eq, name, v, val)
+
+# ---------------- CM / modular-function identities ----------------
+# At a CM point a modular function takes an algebraic value y with y = e^(pi sqrt r) (1 + O(e^(-pi sqrt r))),
+# r rational (j: r = D; Weber f: r = D/576).  An algebraic subexpression y with (ln y / pi)^2 ~ p/q is such
+# a theorem, not a coincidence, and ln(y) turns it into relative precision.  Also caught: "log-algebraic"
+# subexpressions (ln of algebraic numbers and their rational combinations), whose exponential is algebraic.
+# If y is an integer the core is e^(pi sqrt r) itself, scored on its own; otherwise there is no core.
+ALG_CONST = {'phi', 'psi'}
+CM_MIN_LOG = math.log(10**6)       # |y| >= 10^6 (or <= 10^-6)
+CM_MAXQ, CM_TOL = 576, mpf(10)**-10
+# Hauptmoduln carry a constant term (j = 1/q + 744 + ..., f^24 = 1/q - 24 + ...), so ln y = pi sqrt r + c/y:
+# with r = p/q, q <= 4, accept |ln|y| - pi sqrt r| < 1000/|y| as well
+CM_MAXQ2, CM_C = 4, 1000
+def cm_identity(pf):
+    """return (r, is_int, y) for the outermost algebraic subexpression y ~ e^(pi sqrt r), r = p/q with q <= 576
+    (failing that, the outermost log-algebraic one, y = its exponential); None if there is none"""
+    toks = pf.split(); st = []      # node: (lo, kind, is_int, is_rat); kind in 'alg', 'log', None
+    hits = []
+    for i, t in enumerate(toks):
+        if re.fullmatch(r'\d+', t): node = (i, 'alg', True, True)
+        elif t in ALG_CONST: node = (i, 'alg', False, False)
+        elif t in CONST or t == 'psi': node = (i, None, False, False)
+        elif t in UN:
+            lo, k, it, rt = st.pop()
+            if k == 'alg' and t in ('neg', 'recip', 'sq', 'sqrt'):
+                node = (lo, 'alg', it and t in ('neg', 'sq'), rt and t in ('neg', 'recip', 'sq'))
+            elif k == 'alg' and t == 'ln': node = (lo, 'log', False, False)
+            elif k == 'log' and t == 'neg': node = (lo, 'log', False, False)
+            else: node = (lo, None, False, False)
+        elif t in BIN:
+            b = st.pop(); a = st.pop(); lo = a[0]; ka, kb = a[1], b[1]
+            if ka == kb == 'alg' and t in ('+', '-', '*', '/'):
+                node = (lo, 'alg', a[2] and b[2] and t != '/', a[3] and b[3])
+            elif ka == 'alg' and b[3] and t == '^':
+                node = (lo, 'alg', a[2] and b[2], a[3] and b[2])
+            elif a[2] and kb == 'alg' and t == 'root': node = (lo, 'alg', False, False)
+            elif ka == kb == 'log' and t in ('+', '-'): node = (lo, 'log', False, False)
+            elif t == '*' and ((ka == 'log' and b[3]) or (a[3] and kb == 'log')): node = (lo, 'log', False, False)
+            elif t == '/' and ka == 'log' and b[3]: node = (lo, 'log', False, False)
+            else: node = (lo, None, False, False)
+        else: raise ValueError(t)
+        st.append(node)
+        lo, k, it, rt = node
+        if k is None: continue
+        sub = ' '.join(toks[lo:i+1])
+        with mp.workdps(200):
+            v = eval_postfix(sub)
+            lny = log(fabs(v)) if k == 'alg' else v
+            if fabs(lny) < CM_MIN_LOG: continue
+            r = (lny/pi)**2
+            for q in range(1, CM_MAXQ + 1):
+                p = int(nint(r*q))
+                if fabs(r - mpf(p)/q) < CM_TOL or \
+                   (q <= CM_MAXQ2 and fabs(fabs(lny) - pi*sqrt(mpf(p)/q)) < CM_C*exp(-fabs(lny))):
+                    hits.append((k == 'alg', i - lo, (p, q), k == 'alg' and it, v if k == 'alg' else exp(v))); break
+    if not hits: return None
+    _, _, r, is_int, y = max(hits, key=lambda h: h[:2])
+    return r, is_int, y
+def cm_core_pf(r):
+    p, q = r; g = math.gcd(p, q); p, q = p//g, q//g
+    if q == 1:
+        s = math.isqrt(p)
+        if s*s == p: return 'pi exp' if s == 1 else '%d pi * exp' % s
+        return 'pi %d sqrt * exp' % p
+    return 'pi %d %d / sqrt * exp' % (p, q)
+
+kept = []
+for it in items:
+    eq, name, pf, val, note = it
+    cm = cm_identity(pf)
+    if cm:
+        r, is_int, y = cm
+        rs = '%d/%d' % r if r[1] > 1 else str(r[0])
+        if is_int:
+            core = cm_core_pf(r)
+            AMP.append((eq, name, pf, val, 'CM identity: integer %d ~ e^(pi sqrt %s), core e^(pi sqrt %s)' % (int(nint(y)), rs, rs)))
+            if not any(x[2] == core for x in items):
+                kept.append(('cm', '%s  [core of eq %s]' % (core, eq), core, eval_postfix(core), 'core of the stripped CM identity eq %s' % eq))
+        else:
+            AMP.append((eq, name, pf, val, 'CM identity: algebraic %s ~ e^(pi sqrt %s) (no almost-integer core)' % (mp.nstr(y, 12), rs)))
+    else:
+        kept.append(it)
+items = kept
 
 kept = []
 for it in items:
@@ -308,6 +401,8 @@ def score(eq, name, pf, val, note=''):
 for eq, name, pf, val, note in items:
     rows.append(score(eq, name, pf, val, note))
 rows.sort(key=lambda r: -r['surplus'])
+TOP = 50                 # the ranking keeps only the top 50
+N_ADMITTED = len(rows); rows = rows[:TOP]
 
 amps = [dict(score(eq, name, pf, val), core=core) for eq, name, pf, val, core in AMP]
 below = [score(eq, name, pf, val, note) for eq, name, pf, val, note in BELOW]
@@ -380,10 +475,11 @@ def write_results(path='results.md'):
     '- n = −log10 |x − nint(x)|, absolute precision, continuous',
     '- complexity = sum of RIES symbol weights (ries.c: base 10 + per-symbol weight) of the cheapest postfix form. Integer N≥10 weighs 10+round(10·log10 N); cosh/sinh/tanh 13, asinh 15; Gamma/digamma/erfi/zeta 15; gamma(Euler)/Catalan C/Khinchin K/supergolden psi 18',
     '- surplus = n − complexity/10. RIES weights are calibrated so ~10^(c/10) expressions have complexity ≤ c, so surplus > 0 means rarer than chance; brute-force search in trivial families (a·α/b, a/ln a, a·ln b) tops out at about −0.4',
-    '- Amplifiers stripped (scored by their core almost integer, or dropped when there is none): error-squaring trig near a critical point, and Pisot powers x^k (algebraic-integer base with all other conjugates inside the unit circle, detected with findpoly). Stripped: ' + '; '.join('%s (surplus as written %.2f)' % (r['name'].split('  [')[0], r['surplus']) for r in amps),
+    '- Amplifiers stripped (scored by their core almost integer, or dropped when there is none): error-squaring trig near a critical point, and Pisot powers x^k (algebraic-integer base with all other conjugates inside the unit circle, detected with findpoly), and CM identities (an algebraic subexpression y, or the exponential of a rational combination of logs of algebraic numbers, with y ≈ e^(π√r): a theorem of complex multiplication, and ln y turns its relative precision into absolute precision; y an integer is scored on its core e^(π√r), otherwise dropped). Stripped: ' + '; '.join('%s (surplus as written %.2f)' % (r['name'].split('  [')[0], r['surplus']) for r in amps),
     '- Admission threshold n ≥ 2 (|x − nint x| < 0.01). Below threshold, not ranked: ' + '; '.join('%s (n = %.2f)' % (r['name'].split('  [')[0], r['n_abs']) for r in below),
     '- Structural-stability test: every constant is perturbed by ±1% (top-level additive integers exempt); if every perturbation still leaves ≥ 3 digits the near-integrality is a limit, not a coincidence, and the entry is stripped',
-    '- Excluded: infinite sums/products, non-closed forms and physical-unit items\n',
+    '- Excluded: infinite sums/products, non-closed forms and physical-unit items',
+    '- Only the top %d of %d admitted entries are listed\n' % (TOP, N_ADMITTED),
     '| rank | expression | value | n | complexity | surplus |', '|---|---|---|---|---|---|']
     notes = {}                                   # note text -> footnote number, in order of first appearance
     for i, r in enumerate(rows, 1):

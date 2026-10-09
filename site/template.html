@@ -223,16 +223,17 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
   <h2>为什么是 n − complexity/10</h2>
   <p>ries.c 的日志记录了复杂度 $\le 64$ 的表达式共 2 236 462 个，$\log_{10}$ 后为 6.35，约等于 $64/10$。也就是说复杂度 $c$ 对应大约 $10^{c/10}$ 个同样简单的表达式。随机实数落在整数 $10^{-n}$ 邻域内的概率约为 $10^{-n}$，于是在复杂度不超过 $c$ 的表达式中，和某条目一样好的近整数期望有 $10^{c/10-n}$ 个。surplus 就是这个期望个数的负对数：大于 0 说明比随机碰巧更罕见，小于 0 说明这种精度在这个复杂度下本来就会出现。这与 Borwein 讨论"high precision fraud"时的判据一致。</p>
   <div class="callout">
-    <p style="margin:0">对平凡家族做穷举检验：$\sqrt2\cdot a/b$（$a\le 20000$, $b\le 300$）最好只有 $-3.1$，$\pi\cdot 113 = 354.99997$ 为 $-0.38$，$a/\ln a$（$a \le 10^6$）最好是 $163/\ln 163$ 的 $-2.3$。对 RIES 全空间枚举到复杂度 74（约 197 万个不同值），剔除放大器后没有任何条目 surplus 为正。表中三个正盈余的条目全部来自模函数（$j$ 不变量）。</p>
+    <p style="margin:0">对平凡家族做穷举检验：$\sqrt2\cdot a/b$（$a\le 20000$, $b\le 300$）最好只有 $-3.1$，$\pi\cdot 113 = 354.99997$ 为 $-0.38$，$a/\ln a$（$a \le 10^6$）最好是 $163/\ln 163$ 的 $-2.3$。对 RIES 全空间枚举到复杂度 74（约 197 万个不同值），剔除放大器后没有任何条目 surplus 为正。表中两个正盈余的条目 $e^{\pi\sqrt{163}}$、$e^{\pi\sqrt{652}}$ 都来自模函数（$j$ 不变量）。</p>
   </div>
   <p>作为比较，$n/c$ 与 $n/c^2$ 没有概率含义：$n/c$ 把 5 位换 33 的 $\sin 11$ 与 34 位换 93 的嵌套余弦看成只差 2.4 倍，实际稀有程度差 $10^{23}$ 倍；$n/c^2$ 的排名会随 RIES 基数的任意选择而重排。</p>
 
   <p class="eyebrow">剥离</p>
   <h2>放大器</h2>
-  <p>按符号计数的复杂度识别不了两类机械结构，它们能用很低的复杂度换取任意多的精度，因此单独处理：</p>
+  <p>按符号计数的复杂度识别不了三类机械结构，它们能用很低的复杂度换取任意多的精度，因此单独处理：</p>
   <ul>
     <li><b>临界点处的三角函数。</b>$\cos y \approx \pm1$ 等价于 $y \approx k\pi$，而 $\cos(k\pi+\varepsilon) = \pm(1 - \varepsilon^2/2)$，底层近似 $y\approx k\pi$ 的误差被平方。$\cos(\pi\cos(\pi\cos(\ln(\pi+20))))$ 有 34 位，全部由 $e^{\pi} - \pi \approx 20$ 的 3 位机械放大而来。此类条目归并到核心近整数打分。</li>
     <li><b>Pisot 数的幂。</b>若代数整数 $x$ 的其余共轭根模都小于 1，则 $x^k$ 与整数的距离按几何级数收缩，而复杂度只随 $\log k$ 增长，surplus 随 $k$ 无界上升。用 findpoly 求底数的最小多项式自动检测，命中者直接退出排名，如 supergolden 数 $\psi^{11}$。</li>
+    <li><b>模函数在 CM 点的代数值。</b>复乘理论保证：模函数（$j$、Weber 函数等）在 CM 点取代数值 $y$，且 $y = e^{\pi\sqrt r}\,(1 + O(e^{-\pi\sqrt r}))$，$r$ 为有理数，例如 $j = e^{\pi\sqrt D} - 744 + O(e^{-\pi\sqrt D})$。这是定理而非巧合：用单位 $a + \sqrt{a^2-1}$ 的乘积拼出类不变量，精度随 $\sqrt D$ 增长而复杂度增长很慢。再套一层 $\ln y/\pi$，$y$ 的相对精度就变成了绝对精度，这正是被拒绝的相对精度从后门回来。检测：对每个代数子式（整数、四则、根号、有理次幂、$\phi$、$\psi$），以及代数数之 ln 的有理线性组合（其指数仍是代数数，防止把 $\ln y$ 拆成 $\sum \ln u_i$），若 $|y| \ge 10^6$，且 $(\ln y/\pi)^2$ 与某个分母 $\le 576$ 的有理数 $r$ 相差 $< 10^{-10}$，或分母 $\le 4$ 时 $|\ln y - \pi\sqrt r| < 1000/|y|$（容纳 744、24 这类常数项），即判为 CM 恒等式。$y$ 为整数时按核心 $e^{\pi\sqrt r}$ 计分，如 $(\ln(640320^3+744)/\pi)^2$ 归并到 $e^{\pi\sqrt{163}}$；否则没有近整数核心，直接退出排名，如 $(\sqrt2\,\psi)^{24} - e^{\pi\sqrt{31}}$。$e^{\pi\sqrt{163}}$ 本身不受影响，因为 $\pi\sqrt{163}$ 不是代数数的对数。</li>
   </ul>
   <div class="stripped-slot"></div>
 
@@ -330,16 +331,17 @@ window.MathJax = { tex:{inlineMath:[['$','$']], displayMath:[['$$','$$']]}, svg:
   <h2>Why n − complexity/10</h2>
   <p>The ries.c log records 2 236 462 expressions of complexity $\le 64$; $\log_{10}$ of that is 6.35, about $64/10$. So complexity $c$ corresponds to roughly $10^{c/10}$ equally simple expressions. A random real lands within $10^{-n}$ of an integer with probability about $10^{-n}$, so among expressions of complexity at most $c$ one expects $10^{c/10-n}$ almost integers as good as a given entry. The surplus is the negative log of that expected count: above 0 means rarer than chance, below 0 means such precision is bound to appear at that complexity anyway. This is the same test Borwein used when discussing "high precision fraud".</p>
   <div class="callout">
-    <p style="margin:0">Exhaustive checks on trivial families: $\sqrt2\cdot a/b$ ($a\le 20000$, $b\le 300$) peaks at $-3.1$; $\pi\cdot 113 = 354.99997$ reaches $-0.38$; $a/\ln a$ ($a \le 10^6$) peaks at $163/\ln 163$ with $-2.3$. Enumerating the whole RIES space up to complexity 74 (about 1.97 million distinct values) and removing amplifiers leaves no entry with positive surplus. The three positive entries in the table all come from modular functions (the $j$-invariant).</p>
+    <p style="margin:0">Exhaustive checks on trivial families: $\sqrt2\cdot a/b$ ($a\le 20000$, $b\le 300$) peaks at $-3.1$; $\pi\cdot 113 = 354.99997$ reaches $-0.38$; $a/\ln a$ ($a \le 10^6$) peaks at $163/\ln 163$ with $-2.3$. Enumerating the whole RIES space up to complexity 74 (about 1.97 million distinct values) and removing amplifiers leaves no entry with positive surplus. The two positive entries in the table, $e^{\pi\sqrt{163}}$ and $e^{\pi\sqrt{652}}$, both come from modular functions (the $j$-invariant).</p>
   </div>
   <p>By comparison, $n/c$ and $n/c^2$ carry no probabilistic meaning: $n/c$ rates $\sin 11$ (5 digits for 33) and the nested cosine (34 digits for 93) as differing by a factor of 2.4, when their rarity differs by $10^{23}$; the ranking under $n/c^2$ reshuffles with the arbitrary choice of the RIES base weight.</p>
 
   <p class="eyebrow">Stripping</p>
   <h2>Amplifiers</h2>
-  <p>A symbol-counting complexity cannot see two mechanical constructions that buy arbitrary precision at almost no cost, so they are handled separately:</p>
+  <p>A symbol-counting complexity cannot see three mechanical constructions that buy arbitrary precision at almost no cost, so they are handled separately:</p>
   <ul>
     <li><b>Trigonometric functions at a critical point.</b> $\cos y \approx \pm1$ is the same as $y \approx k\pi$, and $\cos(k\pi+\varepsilon) = \pm(1 - \varepsilon^2/2)$ squares the error of the underlying approximation $y\approx k\pi$. The 34 digits of $\cos(\pi\cos(\pi\cos(\ln(\pi+20))))$ are all manufactured from the 3 digits of $e^{\pi} - \pi \approx 20$. Such entries are scored on their core almost integer.</li>
     <li><b>Powers of Pisot numbers.</b> If an algebraic integer $x$ has all its other conjugates inside the unit circle, then $x^k$ approaches integers geometrically while complexity grows only like $\log k$, so the surplus rises without bound. The base's minimal polynomial is found with findpoly and matching entries are dropped from the ranking, e.g. the supergolden ratio $\psi^{11}$.</li>
+    <li><b>Algebraic values of modular functions at CM points.</b> Complex multiplication guarantees that a modular function ($j$, the Weber functions, …) takes an algebraic value $y$ at a CM point with $y = e^{\pi\sqrt r}\,(1 + O(e^{-\pi\sqrt r}))$, $r$ rational; for example $j = e^{\pi\sqrt D} - 744 + O(e^{-\pi\sqrt D})$. This is a theorem, not a coincidence: a class invariant assembled from products of units $a + \sqrt{a^2-1}$ gains precision like $\sqrt D$ while its complexity grows slowly. Wrapping it in $\ln y/\pi$ turns the relative precision of $y$ into absolute precision, which brings the rejected relative-precision metric back through the side door. Detection: for every algebraic subexpression (integers, arithmetic, roots, rational powers, $\phi$, $\psi$) and every rational combination of logarithms of algebraic numbers (whose exponential is again algebraic, so splitting $\ln y$ into $\sum \ln u_i$ does not help), if $|y| \ge 10^6$ and $(\ln y/\pi)^2$ lies within $10^{-10}$ of a rational $r$ with denominator $\le 576$, or within $|\ln y - \pi\sqrt r| < 1000/|y|$ for denominator $\le 4$ (allowing constant terms such as 744 or 24), the entry is a CM identity. When $y$ is an integer the entry is scored on its core $e^{\pi\sqrt r}$, so $(\ln(640320^3+744)/\pi)^2$ is merged into $e^{\pi\sqrt{163}}$; otherwise there is no almost-integer core and the entry is dropped, e.g. $(\sqrt2\,\psi)^{24} - e^{\pi\sqrt{31}}$. $e^{\pi\sqrt{163}}$ itself is unaffected, since $\pi\sqrt{163}$ is not the logarithm of an algebraic number.</li>
   </ul>
   <div class="stripped-slot"></div>
 
@@ -484,18 +486,23 @@ const I18N = {
     structuralMsg:(m)=>`结构性极限：把式中每个常数各改动 1% 后，最差情况仍保留 ${m.toFixed(1)} 位精度。近整数性来自极限结构而不是巧合，不参与排名。`,
     pisotMsg:'底数是 Pisot 数：其整数次幂与整数的距离按几何级数收缩，精度可以靠加大指数无限增加。排行榜剥离此类条目，不参与排名。',
     trigMsg:'最外层是临界点处的三角函数，它把内部近似 y ≈ kπ 的误差平方了一次。排行榜按核心近整数计分：',
+    cmAlgMsg:(y,r)=>`CM 恒等式：式中的代数数 ${y} ≈ e^(π√${r})。这是复乘理论的定理（模函数在 CM 点取代数值），不是巧合；若外面再取 ln，只是把相对精度换成绝对精度。该代数数不是整数，没有近整数核心，不参与排名。`,
+    cmIntMsg:(y,r)=>`CM 恒等式：式中的整数 ${y} ≈ e^(π√${r})，近整数性就是 e^(π√${r}) 本身，外层运算只是换了写法（外层取 ln 还会把相对精度换成绝对精度）。排行榜按核心 e^(π√${r}) 计分：`,
+    cmCoreInt:(y,r)=>`CM 恒等式：整数 ${y} ≈ e^(π√${r})，归并到 e^(π√${r})`,
+    cmCoreAlg:(y,r)=>`CM 恒等式：代数数 ${y} ≈ e^(π√${r})（没有近整数核心）`,
     coreExpr:'核心表达式', coreValue:'核心数值', coreN:'核心 n', coreC:'核心复杂度', coreSurplus:'核心 surplus',
     coreBelow:'核心本身 n < 2，不算 almost integer，不参与排名。',
     err:{ precision:(i,p)=>`整数部分约 ${i} 位，需要 ${p} 位精度，超过 1000 位上限`, unknownChar:(c)=>`无法识别的字符 “${c}”`, missing:(v)=>`缺少 “${v}”`, funcArg:'函数缺少参数', incomplete:'表达式不完整',
       badNumber:(v)=>`数字格式错误 “${v}”`, unsupportedVar:(v)=>`不支持变量 “${v}”`, unexpectedSym:(v)=>`意外的符号 “${v}”`,
       unsupportedCmd:(v)=>`不支持的命令 “\\${v}”`, trailing:(v)=>`多余的内容从 “${v}” 开始`, negSqrt:'负数开方', logPos:'对数的参数必须为正',
       divZero:'除以零', negPow:'负数的非整数次幂', logBasePos:'对数的参数与底数必须为正', overflow:'数值溢出', internal:'内部错误' },
-    notes:[
-      '被剥离的放大器 cos(ln(π+20)) 与 cos(π cos(π cos(ln(π+20)))) 的核心：由 e^π ≈ π+20 得 ln(π+20) ≈ π，每一层余弦把误差平方一次',
-      '被剥离的放大器 sin 11 与 cos 22 的核心：22 ≈ 7π，而 cos(7π+ε) = −1 + ε²/2，sin²11 = (1 − cos 22)/2',
-      '被剥离的放大器 sin(2017·2^(1/5)) 的核心：2017·2^(1/5) ≈ 737.5π，正弦把误差平方',
-      'Hickerson 数 h_n = n!/(2 (ln 2)^(n+1))，表中为约化形式',
-      'MathWorld 公式图片的 alt 文本写作 π^(−1/4)；Apéry 常数近似页面给出 π^(−4)，与其声称的 4 位精度相符' ]
+    notes:{   // keyed by the start of the English note text, so the order and the top-50 cut do not matter
+      'core of the stripped amplifiers cos(ln': '被剥离的放大器 cos(ln(π+20)) 与 cos(π cos(π cos(ln(π+20)))) 的核心：由 e^π ≈ π+20 得 ln(π+20) ≈ π，每一层余弦把误差平方一次',
+      'core of the stripped amplifiers sin 11': '被剥离的放大器 sin 11 与 cos 22 的核心：22 ≈ 7π，而 cos(7π+ε) = −1 + ε²/2，sin²11 = (1 − cos 22)/2',
+      'core of the stripped amplifier sin(2017': '被剥离的放大器 sin(2017·2^(1/5)) 的核心：2017·2^(1/5) ≈ 737.5π，正弦把误差平方',
+      'Hickerson number': 'Hickerson 数 h_n = n!/(2 (ln 2)^(n+1))，表中为约化形式',
+      'user-supplied, not on MathWorld': '用户提供，不在 MathWorld 上',
+      'MathWorld alt-text': 'MathWorld 公式图片的 alt 文本写作 π^(−1/4)；Apéry 常数近似页面给出 π^(−4)，与其声称的 4 位精度相符' }
   },
   en: {
     entries:'entries', positive:'surplus > 0', stripped:'amplifiers stripped', notesTitle:'Notes', seeNote:'see note',
@@ -515,6 +522,10 @@ const I18N = {
     structuralMsg:(m)=>`Structural limit: after changing each constant in the expression by 1%, the worst case still keeps ${m.toFixed(1)} digits. The near-integrality comes from a limiting structure, not a coincidence; not ranked.`,
     pisotMsg:'The base is a Pisot number: its integer powers approach integers geometrically, so precision can be increased without bound by raising the exponent. The ranking strips such entries; not ranked.',
     trigMsg:'The outermost operation is a trigonometric function at a critical point, which squares the error of the inner approximation y ≈ kπ. The ranking scores the core almost integer instead:',
+    cmAlgMsg:(y,r)=>`CM identity: the algebraic number ${y} in the expression is ≈ e^(π√${r}). This is a theorem of complex multiplication (modular functions take algebraic values at CM points), not a coincidence; a logarithm around it would merely turn relative precision into absolute precision. The algebraic number is not an integer, so there is no almost-integer core; not ranked.`,
+    cmIntMsg:(y,r)=>`CM identity: the integer ${y} in the expression is ≈ e^(π√${r}), so the near-integrality is that of e^(π√${r}) itself and the outer operations only rewrite it (an outer logarithm also turns relative precision into absolute precision). The ranking scores the core e^(π√${r}) instead:`,
+    cmCoreInt:(y,r)=>`CM identity: integer ${y} ≈ e^(π√${r}), merged into e^(π√${r})`,
+    cmCoreAlg:(y,r)=>`CM identity: algebraic ${y} ≈ e^(π√${r}) (no almost-integer core)`,
     coreExpr:'Core expression', coreValue:'Core value', coreN:'Core n', coreC:'Core complexity', coreSurplus:'Core surplus',
     coreBelow:'The core itself has n < 2, so it is not an almost integer; not ranked.',
     err:{ precision:(i,p)=>`about ${i} integer digits would need ${p} digits of precision, above the 1000-digit limit`, unknownChar:(c)=>`unrecognised character “${c}”`, missing:(v)=>`missing “${v}”`, funcArg:'function without an argument', incomplete:'incomplete expression',
@@ -533,10 +544,17 @@ function applyLang(){
   document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.lang===lang)));
   try{ localStorage.setItem('air-lang', lang); }catch(e){}
 }
-function noteText(i){ const z=I18N.zh.notes; return (lang==='zh' && z && z[i]) ? z[i] : DATA.notes[i]; }
+function noteText(i){
+  const en=DATA.notes[i], z=I18N.zh.notes, k=z && Object.keys(z).find(k=>en.startsWith(k));
+  return (lang==='zh' && k) ? z[k] : en;
+}
 function coreText(core){
   const m = /^Pisot power: base (\S+), minpoly (\[.*\]) \(no almost-integer core\)$/.exec(core);
   if (m) return T().pisotCore(m[1], m[2]);
+  const ci = /^CM identity: integer (\d+) ~ e\^\(pi sqrt (\S+)\), core/.exec(core);
+  if (ci) return T().cmCoreInt(ci[1], ci[2]);
+  const ca = /^CM identity: algebraic (\S+) ~ e\^\(pi sqrt (\S+)\) \(no almost-integer core\)$/.exec(core);
+  if (ca) return T().cmCoreAlg(ca[1], ca[2]);
   return core.replace(/\(eq 6\)/,'').replace(/~/g,'≈').replace(/pi/g,'π');
 }
 
@@ -587,7 +605,7 @@ async function fitExpressions(root){
 }
 
 /* ---------- home ---------- */
-const rows = DATA.rows.slice(0, 100);
+const rows = DATA.rows.slice(0, 50);   // the ranking keeps only the top 50
 function renderTable(){   // language-independent, rendered once
   $('#ranktable tbody').innerHTML = rows.map(r => `
     <tr class="${r.surplus>0?'positive':''}">
@@ -878,6 +896,70 @@ function trigCore(ast, v, P, depth=0){  // outermost sin/cos/tan at a critical p
   return {ast:coreAst, v:r.v, pf:r.pf, n:dg.n, c, surplus:dg.n-c/10, nearest:dg.nearest};
 }
 
+/* CM / modular-function identity: an algebraic subexpression y (integers, + - * /, roots, rational powers, phi)
+   with y ~ e^(pi sqrt r), r = p/q, is a theorem of complex multiplication, and ln y turns its relative precision
+   into absolute precision.  Also checks log-algebraic subexpressions (ln of algebraic numbers and their rational
+   combinations, y = exp of them).  Hit: |ln y| >= ln 10^6 and either |(ln y/pi)^2 - p/q| < 1e-10 with q <= 576,
+   or |ln y - pi sqrt(p/q)| < 1000/|y| with q <= 4 (Hauptmodul constant terms such as 744 or 24).  Same rule as rank.py. */
+function cmIdentity(ast, P){
+  PERT=null; evalAt(ast, P);
+  const PI=consts().pi, MINLOG=D(10).pow(6).ln(), TOL=D(10).pow(-10), hits=[];
+  function walk(n){
+    let r;
+    if (n.t==='num') r={k:'alg', int:!n.v.includes('.'), rat:true};
+    else if (n.t==='const') r={k:n.v==='phi'?'alg':null, int:false, rat:false};
+    else if (n.t==='neg'){ const a=walk(n.a); r={...a}; }
+    else if (n.t==='un'){
+      const a=walk(n.a);
+      r = a.k==='alg' && n.f==='sqrt' ? {k:'alg', int:false, rat:false} : a.k==='alg' && n.f==='ln' ? {k:'log', int:false, rat:false} : {k:null};
+    } else {
+      const a=walk(n.a), b=walk(n.b), op=n.op;
+      if (a.k==='alg' && b.k==='alg' && '+-*/'.includes(op)) r={k:'alg', int:a.int&&b.int&&op!=='/', rat:a.rat&&b.rat};
+      else if (op==='^' && a.k==='alg' && b.rat) r={k:'alg', int:a.int&&b.int, rat:a.rat&&b.int};
+      else if (op==='root' && a.int && b.k==='alg') r={k:'alg', int:false, rat:false};
+      else if (a.k==='log' && b.k==='log' && (op==='+'||op==='-')) r={k:'log'};
+      else if (op==='*' && ((a.k==='log' && b.rat) || (a.rat && b.k==='log'))) r={k:'log'};
+      else if (op==='/' && a.k==='log' && b.rat) r={k:'log'};
+      else r={k:null};
+    }
+    r.size = n.lo===undefined ? 0 : n.hi-n.lo;
+    if (r.k){
+      const v=ev(n).v;
+      if (!v.isZero()){
+        const lny = r.k==='alg' ? v.abs().ln() : v, L=lny.abs();
+        if (L.gte(MINLOG)){
+          const rr=lny.div(PI).pow(2);
+          for (let q=1; q<=576; q++){
+            const p=rr.times(q).round(), pq=p.div(q);
+            if (rr.minus(pq).abs().lt(TOL) || (q<=4 && L.minus(PI.times(pq.sqrt())).abs().lt(D(1000).times(L.neg().exp())))){
+              hits.push({alg:r.k==='alg', size:r.size, p:BigInt(p.toFixed(0)), q:BigInt(q), int:r.k==='alg'&&r.int, y: r.k==='alg' ? v : v.exp()}); break;
+            }
+          }
+        }
+      }
+    }
+    return r;
+  }
+  walk(ast);
+  if (!hits.length) return null;
+  hits.sort((x,y)=> (y.alg-x.alg) || (y.size-x.size));
+  const h=hits[0], g=(x,y)=>{ while(y){ [x,y]=[y,x%y]; } return x; }, d=g(h.p,h.q);
+  return {p:h.p/d, q:h.q/d, int:h.int, y:h.y};
+}
+function cmCore(cm){                    // e^(pi sqrt r), scored on its own
+  const pi={t:'const',v:'pi'}; let arg;
+  if (cm.q===1n){
+    const s=BigInt(Math.round(Math.sqrt(Number(cm.p))));
+    arg = s*s===cm.p ? (s===1n ? pi : {t:'bin',op:'*',a:{t:'num',v:s.toString()},b:pi}) : {t:'bin',op:'*',a:pi,b:{t:'un',f:'sqrt',a:{t:'num',v:cm.p.toString()}}};
+  } else arg={t:'bin',op:'*',a:pi,b:{t:'un',f:'sqrt',a:{t:'bin',op:'/',a:{t:'num',v:cm.p.toString()},b:{t:'num',v:cm.q.toString()}}}};
+  const coreAst=annotate({t:'bin',op:'^',a:{t:'const',v:'e'},b:arg});
+  const idig=Math.ceil(Math.PI*Math.sqrt(Number(cm.p)/Number(cm.q))/Math.LN10)+1;
+  const P=Math.min(PMAX, Math.max(90, idig+FRAC));
+  PERT=null; const r=evalAt(coreAst, P); const dg=digitsOf(r.v), c=complexityOf(r.pf);
+  return {ast:coreAst, v:r.v, pf:r.pf, n:dg.n, c, surplus:dg.n-c/10, nearest:dg.nearest};
+}
+const rStr = (cm)=> cm.q===1n ? cm.p.toString() : `${cm.p}/${cm.q}`;
+
 /* ---------- calculator UI ---------- */
 const input=$('#latex-input'), preview=$('#preview'), result=$('#result');
 const EXAMPLES=['e^{\\pi\\sqrt{163}}', '22\\pi^4', '\\frac{163}{\\ln 163}', 'e^{\\pi}-\\pi', '\\sin 11', '126e^{\\pi}+8\\pi^4', '\\frac{1}{\\pi^{100}}', '\\pi'];
@@ -896,7 +978,7 @@ function updatePreview(){
 function typeset(el){ return (window.MathJax && MathJax.typesetPromise) ? MathJax.typesetPromise([el]) : Promise.resolve(); }
 function idle(){ result.innerHTML=`<p class="small" style="margin:0">${T().resultIdle}</p>`; }
 function valueString(v){ const id = v.abs().gte(1) ? v.e+1 : 0; return v.toFixed(Math.max(0, Math.min(60, 60-id))); }
-function rankOf(surplus){ return DATA.rows.filter(r=>r.surplus>surplus).length+1; }
+function rankOf(surplus){ const s=Math.round(surplus*100)/100; return DATA.rows.filter(r=>r.surplus>s).length+1; }   // table surpluses are rounded to 2 places
 function compute(){
   const src=input.value.trim(); const t=T();
   try{ localStorage.setItem('air-latex', src); }catch(e){}
@@ -932,9 +1014,24 @@ function compute(){
     if (n < 2){
       tail=`<dt>${t.position}</dt><dd>${t.notRanked}</dd></dl><div class="warn">${t.belowMsg}</div>`;
     } else {
-      const core=trigCore(ast, v, P);
+      const cm=cmIdentity(ast, P);
+      const core = cm ? null : trigCore(ast, v, P);
       const stCore = core ? stability(core.ast, P) : null;
-      if (pisotLike(ast, P)){
+      if (cm && !cm.int){
+        tail=`<dt>${t.position}</dt><dd>${t.notRanked}</dd></dl><div class="warn">${t.cmAlgMsg(cm.y.toExponential(10).replace('e+','×10^').replace('e-','×10^-'), rStr(cm))}</div>`;
+      } else if (cm){
+        const cc=cmCore(cm); PREC=P; Decimal.set({precision:P});
+        const rk=rankOf(cc.surplus);
+        tail=`<dt>${t.position}</dt><dd>${rk<=DATA.rows.length ? t.wouldRank(rk, DATA.rows.length) : t.belowAll(DATA.rows.length)}</dd></dl>
+          <div class="warn">${t.cmIntMsg(cm.y.toFixed(0), rStr(cm))}</div>
+          <dl style="margin-top:.6rem">
+            <dt>${t.coreExpr}</dt><dd class="val small">${cc.pf.join(' ')}</dd>
+            <dt>${t.coreValue}</dt><dd class="val">${renderValue(valueString(cc.v))}</dd>
+            <dt>${t.coreN}</dt><dd class="big">${cc.n.toFixed(2)}</dd>
+            <dt>${t.coreC}</dt><dd class="big">${cc.c}</dd>
+            <dt>${t.coreSurplus}</dt><dd class="big ${cc.surplus>0?'pos':''}">${fmt(cc.surplus)}</dd>
+          </dl>`;
+      } else if (pisotLike(ast, P)){
         tail=`<dt>${t.position}</dt><dd>${t.notRanked}</dd></dl><div class="warn">${t.pisotMsg}</div>`;
       } else if (core && stCore!==null && stCore>=3){
         tail=`<dt>${t.position}</dt><dd>${t.notRanked}</dd></dl><div class="warn">${t.structuralMsg(stCore)}</div>`;
