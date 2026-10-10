@@ -187,6 +187,8 @@ add('67', 'd = 1/2 sqrt(1/30(61421-23 sqrt5831385))', '61421 23 5831385 sqrt * -
     sqrt((61421-23*sqrt(5831385))/30)/2)
 add('ext', '2 (ln pi)^3  [user-supplied, not on MathWorld]', '2 pi ln 3 ^ *', 2*log(pi)**3, 'user-supplied, not on MathWorld')
 add('ext', '533 cos 23  [user-supplied, not on MathWorld]', '533 23 cos *', 533*cos(23), 'user-supplied, not on MathWorld')
+add('ext', '2 tan 281240  [user-supplied, not on MathWorld]', '2 281240 tan *', 2*tan(281240), 'user-supplied, not on MathWorld')
+add('ext', '483 ln 24  [user-supplied, not on MathWorld]', '483 24 ln *', 483*log(24), 'user-supplied, not on MathWorld')
 add('ext', '(1 + 2 sqrt21 cos(atan(sqrt3/9)/3)/3)^100  [user-supplied, not on MathWorld]',
     '1 2 21 sqrt * 3 sqrt 9 atan2 3 / cos * 3 / + 100 ^',
     (1 + 2*sqrt(21)*cos(mp.atan(sqrt(3)/9)/3)/3)**100, 'user-supplied')
