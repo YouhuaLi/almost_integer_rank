@@ -191,6 +191,10 @@ add('ext', '2 tan 281240  [user-supplied, not on MathWorld]', '2 281240 tan *', 
 add('ext', '483 ln 24  [user-supplied, not on MathWorld]', '483 24 ln *', 483*log(24), 'user-supplied, not on MathWorld')
 add('ext', 'tan(49 e)  [user-supplied, not on MathWorld]', '49 e * tan', tan(49*e), 'user-supplied, not on MathWorld')
 add('ext', 'tan(e^2)  [user-supplied, not on MathWorld]', 'e sq tan', tan(e**2), 'user-supplied, not on MathWorld')
+add('ext', 'e^sqrt23  [user-supplied, not on MathWorld]', '23 sqrt exp', exp(sqrt(23)), 'user-supplied, not on MathWorld')
+add('ext', '18 e^2  [user-supplied, not on MathWorld]', '18 e sq *', 18*e**2, 'user-supplied, not on MathWorld')
+add('ext', '15 sqrt(1/sqrt2 + 1/sqrt3)  [user-supplied, not on MathWorld]', '15 2 sqrt recip 3 sqrt recip + sqrt *',
+    15*sqrt(1/sqrt(2) + 1/sqrt(3)), 'user-supplied, not on MathWorld')
 add('ext', '(1 + 2 sqrt21 cos(atan(sqrt3/9)/3)/3)^100  [user-supplied, not on MathWorld]',
     '1 2 21 sqrt * 3 sqrt 9 atan2 3 / cos * 3 / + 100 ^',
     (1 + 2*sqrt(21)*cos(mp.atan(sqrt(3)/9)/3)/3)**100, 'user-supplied')
