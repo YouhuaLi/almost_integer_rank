@@ -195,6 +195,7 @@ add('ext', 'e^sqrt23  [user-supplied, not on MathWorld]', '23 sqrt exp', exp(sqr
 add('ext', '18 e^2  [user-supplied, not on MathWorld]', '18 e sq *', 18*e**2, 'user-supplied, not on MathWorld')
 add('ext', '15 sqrt(1/sqrt2 + 1/sqrt3)  [user-supplied, not on MathWorld]', '15 2 sqrt recip 3 sqrt recip + sqrt *',
     15*sqrt(1/sqrt(2) + 1/sqrt(3)), 'user-supplied, not on MathWorld')
+add('ext', 'sqrt3 gamma  [user-supplied, not on MathWorld]', '3 sqrt gamma *', sqrt(3)*gam, 'user-supplied, not on MathWorld')
 add('ext', '(1 + 2 sqrt21 cos(atan(sqrt3/9)/3)/3)^100  [user-supplied, not on MathWorld]',
     '1 2 21 sqrt * 3 sqrt 9 atan2 3 / cos * 3 / + 100 ^',
     (1 + 2*sqrt(21)*cos(mp.atan(sqrt(3)/9)/3)/3)**100, 'user-supplied')

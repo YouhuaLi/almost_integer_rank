@@ -72,6 +72,16 @@
   },
   {
    "rank": 8,
+   "latex": "\\sqrt{3} \\gamma",
+   "postfix": "3 sqrt gamma *",
+   "value": "0.9997668585341064519813571910870538504216",
+   "n": 3.63,
+   "complexity": 46,
+   "surplus": -0.97,
+   "note": 1
+  },
+  {
+   "rank": 9,
    "latex": "533 \\cos 23",
    "postfix": "533 23 cos *",
    "value": "-283.9999998377008969299988312684790531807",
@@ -81,7 +91,7 @@
    "note": 1
   },
   {
-   "rank": 9,
+   "rank": 10,
    "latex": "88 \\ln 89",
    "postfix": "88 89 ln *",
    "value": "395.0000005364283057719677675789467313076",
@@ -91,7 +101,7 @@
    "note": null
   },
   {
-   "rank": 10,
+   "rank": 11,
    "latex": "\\operatorname{erfi}\\left(\\operatorname{erfi}\\left(\\frac{1}{\\sqrt{3}}\\right)\\right)",
    "postfix": "3 sqrt recip erfi erfi",
    "value": "1.000020873638094301958790984063380991539",
@@ -101,7 +111,7 @@
    "note": null
   },
   {
-   "rank": 11,
+   "rank": 12,
    "latex": "e^{\\pi} - \\pi",
    "postfix": "pi exp pi -",
    "value": "19.99909997918947576726644298466904449607",
@@ -111,7 +121,7 @@
    "note": 2
   },
   {
-   "rank": 12,
+   "rank": 13,
    "latex": "e^{5 \\pi}",
    "postfix": "5 pi * exp",
    "value": "6635623.999341134233266264067099104921836",
@@ -121,7 +131,7 @@
    "note": null
   },
   {
-   "rank": 13,
+   "rank": 14,
    "latex": "\\frac{22}{\\pi}",
    "postfix": "22 pi /",
    "value": "7.002817496043394773830885588390631929516",
@@ -131,7 +141,7 @@
    "note": 3
   },
   {
-   "rank": 14,
+   "rank": 15,
    "latex": "\\left(\\sqrt{45}\\right)^{\\gamma}",
    "postfix": "45 sqrt gamma ^",
    "value": "3.000060964747862089151107609187765116399",
@@ -141,7 +151,7 @@
    "note": null
   },
   {
-   "rank": 15,
+   "rank": 16,
    "latex": "\\tan\\left(e^{2}\\right)",
    "postfix": "e sq tan",
    "value": "1.993626655640915620494950320638659449564",
@@ -151,7 +161,7 @@
    "note": 1
   },
   {
-   "rank": 16,
+   "rank": 17,
    "latex": "e^{\\pi \\sqrt{37}}",
    "postfix": "pi 37 sqrt * exp",
    "value": "199148647.9999780465518567665009238753359",
@@ -161,7 +171,7 @@
    "note": null
   },
   {
-   "rank": 17,
+   "rank": 18,
    "latex": "\\frac{4034 \\sqrt[5]{2}}{\\pi}",
    "postfix": "4034 5 2 root * pi /",
    "value": "1475.000000004168010349241114246732487378",
@@ -171,7 +181,7 @@
    "note": 4
   },
   {
-   "rank": 18,
+   "rank": 19,
    "latex": "e^{\\pi \\sqrt{232}}",
    "postfix": "pi 232 sqrt * exp",
    "value": "604729957825300084759.9999921715268564303",
@@ -181,7 +191,7 @@
    "note": null
   },
   {
-   "rank": 19,
+   "rank": 20,
    "latex": "e^{\\sqrt{23}}",
    "postfix": "23 sqrt exp",
    "value": "121.0049584052247595383375792224430506264",
@@ -191,7 +201,7 @@
    "note": 1
   },
   {
-   "rank": 20,
+   "rank": 21,
    "latex": "\\frac{163}{\\ln 163}",
    "postfix": "163 163 ln /",
    "value": "31.99999873849008267575839302655654794109",
@@ -201,7 +211,7 @@
    "note": null
   },
   {
-   "rank": 21,
+   "rank": 22,
    "latex": "510 \\log_{10} 7",
    "postfix": "510 10 7 log *",
    "value": "431.0000004072709836632302918822444586766",
@@ -211,7 +221,7 @@
    "note": null
   },
   {
-   "rank": 22,
+   "rank": 23,
    "latex": "272 \\log_{\\pi} 97",
    "postfix": "272 pi 97 log *",
    "value": "1087.000000204958515735571061137038727898",
@@ -221,7 +231,7 @@
    "note": null
   },
   {
-   "rank": 23,
+   "rank": 24,
    "latex": "10 \\left(\\frac{1}{\\sqrt{\\gamma}} - 1\\right)^{2}",
    "postfix": "10 gamma sqrt recip 1 - sq *",
    "value": "0.9999980360927256298925092745354615655055",
@@ -231,7 +241,7 @@
    "note": null
   },
   {
-   "rank": 24,
+   "rank": 25,
    "latex": "2 \\left(\\ln \\pi\\right)^{3}",
    "postfix": "2 pi ln 3 ^ *",
    "value": "3.000122992781408643057119744480242638993",
@@ -241,7 +251,7 @@
    "note": 1
   },
   {
-   "rank": 25,
+   "rank": 26,
    "latex": "\\left(\\frac{23}{9}\\right)^{5}",
    "postfix": "23 9 / 5 ^",
    "value": "109.000033870175616860573422073193449508",
@@ -251,7 +261,7 @@
    "note": null
   },
   {
-   "rank": 26,
+   "rank": 27,
    "latex": "18 e^{2}",
    "postfix": "18 e sq *",
    "value": "133.0030097807517040901476942903501406372",
@@ -261,7 +271,7 @@
    "note": 1
   },
   {
-   "rank": 27,
+   "rank": 28,
    "latex": "\\frac{1}{\\left(\\ln 2\\right)^{3}}",
    "postfix": "2 ln 3 ^ recip",
    "value": "3.00278070715690544349976740721930488951",
@@ -271,7 +281,7 @@
    "note": 5
   },
   {
-   "rank": 28,
+   "rank": 29,
    "latex": "e^{\\pi \\sqrt{43}}",
    "postfix": "pi 43 sqrt * exp",
    "value": "884736743.9997774660349066619374620785854",
@@ -281,7 +291,7 @@
    "note": null
   },
   {
-   "rank": 29,
+   "rank": 30,
    "latex": "e^{\\pi \\sqrt{719}}",
    "postfix": "pi 719 sqrt * exp",
    "value": "3842614373539548891490294277805829193.0",
@@ -291,7 +301,7 @@
    "note": null
   },
   {
-   "rank": 30,
+   "rank": 31,
    "latex": "e^{-\\psi_0\\left(\\frac{2 + \\sqrt{3}}{4}\\right)}",
    "postfix": "2 3 sqrt + 4 / digamma neg exp",
    "value": "1.999999695338384704134659354647933169161",
@@ -301,7 +311,7 @@
    "note": null
   },
   {
-   "rank": 31,
+   "rank": 32,
    "latex": "\\tan\\left(49 e\\right)",
    "postfix": "49 e * tan",
    "value": "2.998724201714872996931598182643727570348",
@@ -311,7 +321,7 @@
    "note": 1
   },
   {
-   "rank": 32,
+   "rank": 33,
    "latex": "163 \\left(\\pi - e\\right)",
    "postfix": "163 pi e - *",
    "value": "68.99966449631192450568401364407498298971",
@@ -321,7 +331,7 @@
    "note": null
   },
   {
-   "rank": 33,
+   "rank": 34,
    "latex": "\\frac{\\phi}{2^{\\ln 2}}",
    "postfix": "phi 2 2 ln ^ /",
    "value": "1.00075909911140985808793904356685019454",
@@ -331,7 +341,7 @@
    "note": null
   },
   {
-   "rank": 34,
+   "rank": 35,
    "latex": "\\frac{\\pi^{9}}{e^{8}}",
    "postfix": "pi 9 ^ 8 exp /",
    "value": "9.999838797804880181883277456812637375936",
@@ -341,7 +351,7 @@
    "note": null
   },
   {
-   "rank": 35,
+   "rank": 36,
    "latex": "e^{\\pi \\sqrt{74}}",
    "postfix": "pi 74 sqrt * exp",
    "value": "545518122089.9991746788535498566430173362",
@@ -351,7 +361,7 @@
    "note": null
   },
   {
-   "rank": 36,
+   "rank": 37,
    "latex": "e^{\\pi \\sqrt{268}}",
    "postfix": "pi 268 sqrt * exp",
    "value": "21667237292024856735768.00029203884241296",
@@ -361,7 +371,7 @@
    "note": null
   },
   {
-   "rank": 37,
+   "rank": 38,
    "latex": "\\ln K - \\ln\\left(\\ln K\\right)",
    "postfix": "K ln K ln ln -",
    "value": "1.000074426223593005111266030438952140566",
@@ -371,7 +381,7 @@
    "note": null
   },
   {
-   "rank": 38,
+   "rank": 39,
    "latex": "e^{\\pi \\sqrt{522}}",
    "postfix": "pi 522 sqrt * exp",
    "value": "14871070263238043663567627879007.99984873",
@@ -381,7 +391,7 @@
    "note": null
   },
   {
-   "rank": 39,
+   "rank": 40,
    "latex": "\\frac{1}{\\sqrt[3]{3} \\ln 2}",
    "postfix": "3 3 root 2 ln * recip",
    "value": "1.00030887205011271050752807912612759652",
@@ -391,7 +401,7 @@
    "note": null
   },
   {
-   "rank": 40,
+   "rank": 41,
    "latex": "\\frac{10 \\left(e^{\\pi} - \\ln 3\\right)}{\\ln 2}",
    "postfix": "10 pi exp 3 ln - * 2 ln /",
    "value": "318.0000000332526559944151081114151281951",
@@ -401,7 +411,7 @@
    "note": null
   },
   {
-   "rank": 41,
+   "rank": 42,
    "latex": "e^{\\pi \\sqrt{148}}",
    "postfix": "pi 148 sqrt * exp",
    "value": "39660184000219160.00096667435857524642577",
@@ -411,7 +421,7 @@
    "note": null
   },
   {
-   "rank": 42,
+   "rank": 43,
    "latex": "\\frac{3}{\\left(\\ln 2\\right)^{4}}",
    "postfix": "3 2 ln 4 ^ /",
    "value": "12.9962905052769664622248845429643076305",
@@ -421,7 +431,7 @@
    "note": 5
   },
   {
-   "rank": 43,
+   "rank": 44,
    "latex": "\\frac{12}{\\left(\\ln 2\\right)^{5}}",
    "postfix": "12 2 ln 5 ^ /",
    "value": "74.99873544766160012763455037564470166913",
@@ -431,7 +441,7 @@
    "note": 5
   },
   {
-   "rank": 44,
+   "rank": 45,
    "latex": "\\frac{e^{\\pi} - \\ln 3}{\\ln 2} - \\frac{4}{5}",
    "postfix": "pi exp 3 ln - 2 ln / 4 5 / -",
    "value": "31.00000000332526559944151081114151281951",
@@ -441,7 +451,7 @@
    "note": null
   },
   {
-   "rank": 45,
+   "rank": 46,
    "latex": "\\ln 2 + \\log_{10} 2",
    "postfix": "2 ln 10 2 log +",
    "value": "0.9941771762239265046309710161826695948437",
@@ -451,7 +461,7 @@
    "note": null
   },
   {
-   "rank": 46,
+   "rank": 47,
    "latex": "\\frac{5 \\phi e}{7 \\pi}",
    "postfix": "5 phi * e * 7 pi * /",
    "value": "1.00000970263606061164186678785699304313",
@@ -461,7 +471,7 @@
    "note": null
   },
   {
-   "rank": 47,
+   "rank": 48,
    "latex": "\\frac{60}{\\left(\\ln 2\\right)^{6}}",
    "postfix": "60 2 ln 6 ^ /",
    "value": "541.0015185164235075692027746182564709468",
@@ -471,7 +481,7 @@
    "note": 5
   },
   {
-   "rank": 48,
+   "rank": 49,
    "latex": "\\sqrt[4]{\\frac{91}{10}} - \\frac{33}{19}",
    "postfix": "91 10 / sqrt sqrt 33 19 / -",
    "value": "0.00000003661378056258570376234316589221702231857",
@@ -481,7 +491,7 @@
    "note": null
   },
   {
-   "rank": 49,
+   "rank": 50,
    "latex": "15 \\sqrt{\\frac{1}{\\sqrt{2}} + \\frac{1}{\\sqrt{3}}}",
    "postfix": "15 2 sqrt recip 3 sqrt recip + sqrt *",
    "value": "17.00008342140234881279135143484472820681",
@@ -489,16 +499,6 @@
    "complexity": 99,
    "surplus": -5.82,
    "note": 1
-  },
-  {
-   "rank": 50,
-   "latex": "e^{-\\pi} \\left(8 \\pi - 2\\right)",
-   "postfix": "pi neg exp 8 pi * 2 - *",
-   "value": "0.9996563886748290424994995423837425460775",
-   "n": 3.46,
-   "complexity": 93,
-   "surplus": -5.84,
-   "note": null
   }
  ],
  "notes": [
