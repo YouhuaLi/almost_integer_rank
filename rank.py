@@ -196,6 +196,15 @@ add('ext', '18 e^2  [user-supplied, not on MathWorld]', '18 e sq *', 18*e**2, 'u
 add('ext', '15 sqrt(1/sqrt2 + 1/sqrt3)  [user-supplied, not on MathWorld]', '15 2 sqrt recip 3 sqrt recip + sqrt *',
     15*sqrt(1/sqrt(2) + 1/sqrt(3)), 'user-supplied, not on MathWorld')
 add('ext', 'sqrt3 gamma  [user-supplied, not on MathWorld]', '3 sqrt gamma *', sqrt(3)*gam, 'user-supplied, not on MathWorld')
+add('ext', '(ln 5769)^2  [user-supplied, not on MathWorld]', '5769 ln sq', log(5769)**2, 'user-supplied, not on MathWorld')
+add('ext', 'atan2(1114961, -7821733)  [user-supplied, not on MathWorld]', '1114961 7821733 neg atan2', atan2(1114961, -7821733),
+    'user-supplied, not on MathWorld; 1114961/7821733 is the continued-fraction convergent of -tan 3 = [0; 7, 65, 1, 1, 3, 2, 12, 1, 1, 9, 1, 3, 794, ...] just before the partial quotient 794, so the precision is a property of the continued fraction rather than a coincidence')
+add('ext', '32^tan 17  [user-supplied, not on MathWorld]', '32 17 tan ^', mpf(32)**tan(17), 'user-supplied, not on MathWorld')
+add('ext', 'tan 14817  [user-supplied, not on MathWorld]', '14817 tan', tan(14817), 'user-supplied, not on MathWorld')
+add('ext', '11 ln 13981  [user-supplied, not on MathWorld]', '11 13981 ln *', 11*log(13981), 'user-supplied, not on MathWorld')
+add('ext', '8010 sin 293  [user-supplied, not on MathWorld]', '8010 293 sin *', 8010*sin(293), 'user-supplied, not on MathWorld')
+add('ext', 'tan 643 / sin 113  [user-supplied, not on MathWorld]', '643 tan 113 sin /', tan(643)/sin(113), 'user-supplied, not on MathWorld')
+add('ext', '462 e^pi  [user-supplied, not on MathWorld]', '462 e pi ^ *', 462*e**pi, 'user-supplied, not on MathWorld')
 add('ext', '(1 + 2 sqrt21 cos(atan(sqrt3/9)/3)/3)^100  [user-supplied, not on MathWorld]',
     '1 2 21 sqrt * 3 sqrt 9 atan2 3 / cos * 3 / + 100 ^',
     (1 + 2*sqrt(21)*cos(mp.atan(sqrt(3)/9)/3)/3)**100, 'user-supplied')
@@ -474,7 +483,11 @@ def to_latex(pf):
         elif t == '^': b = st.pop(); a = st.pop(); st.append((base(a) + '^{' + b[0] + '}', 3))
         elif t == 'root': b = st.pop(); a = st.pop(); st.append((r'\sqrt[' + a[0] + ']{' + b[0] + '}', 4))
         elif t == 'log': b = st.pop(); a = st.pop(); st.append((r'\log_{' + a[0] + '} ' + par(b, 4), 4))
-        elif t == 'atan2': b = st.pop(); a = st.pop(); st.append((r'\arctan\left(\frac{' + a[0] + '}{' + b[0] + r'}\right)', 4))
+        elif t == 'atan2':
+            b = st.pop(); a = st.pop()
+            if b[0].startswith('-'):    # x < 0: arctan(y/x) would be the wrong branch
+                st.append((r'\operatorname{atan2}\left(' + a[0] + ', ' + b[0] + r'\right)', 4))
+            else: st.append((r'\arctan\left(\frac{' + a[0] + '}{' + b[0] + r'}\right)', 4))
         else: raise ValueError(t)
     assert len(st) == 1
     return st[0][0]
