@@ -197,6 +197,7 @@ add('ext', '15 sqrt(1/sqrt2 + 1/sqrt3)  [user-supplied, not on MathWorld]', '15 
     15*sqrt(1/sqrt(2) + 1/sqrt(3)), 'user-supplied, not on MathWorld')
 add('ext', 'sqrt3 gamma  [user-supplied, not on MathWorld]', '3 sqrt gamma *', sqrt(3)*gam, 'user-supplied, not on MathWorld')
 add('ext', '(ln 5769)^2  [user-supplied, not on MathWorld]', '5769 ln sq', log(5769)**2, 'user-supplied, not on MathWorld')
+add('ext', '(ln 25115272447804)^2  [user-supplied, not on MathWorld]', '25115272447804 ln sq', log(25115272447804)**2, 'user-supplied, not on MathWorld')
 add('ext', 'atan2(1114961, -7821733)  [user-supplied, not on MathWorld]', '1114961 7821733 neg atan2', atan2(1114961, -7821733),
     'user-supplied, not on MathWorld; 1114961/7821733 is the continued-fraction convergent of -tan 3 = [0; 7, 65, 1, 1, 3, 2, 12, 1, 1, 9, 1, 3, 794, ...] just before the partial quotient 794, so the precision is a property of the continued fraction rather than a coincidence')
 add('ext', '32^tan 17  [user-supplied, not on MathWorld]', '32 17 tan ^', mpf(32)**tan(17), 'user-supplied, not on MathWorld')
